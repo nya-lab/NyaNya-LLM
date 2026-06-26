@@ -1,0 +1,338 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" width="900" height="550">
+  <defs>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; }
+      .title { font-size: 11px; font-weight: bold; fill: #222; }
+      .axis-label { font-size: 9px; fill: #444; }
+      .tick-label { font-size: 8px; fill: #555; }
+      .insight { font-size: 7.5px; fill: #555; }
+      .subplot-label { font-size: 12px; font-weight: bold; fill: #222; }
+      .curve { fill: none; stroke: #3a6b97; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+      .dot { fill: #3a6b97; stroke: #fff; stroke-width: 1; }
+      .dashed { fill: none; stroke: #888; stroke-width: 1.2; stroke-dasharray: 6,4; }
+      .grid-line { fill: none; stroke: #e0e0e0; stroke-width: 0.5; }
+      .axis-line { fill: none; stroke: #333; stroke-width: 1; }
+      .tick { fill: none; stroke: #333; stroke-width: 0.8; }
+    </style>
+  </defs>
+
+  <!-- White background -->
+  <rect width="900" height="550" fill="white"/>
+
+  <!-- ============================================================ -->
+  <!-- SUBPLOT (a): α Sensitivity — top-left -->
+  <!-- ============================================================ -->
+  <g transform="translate(0,0)">
+    <!-- Subplot label -->
+    <text x="55" y="22" class="subplot-label">(a)</text>
+    <text x="73" y="22" class="title">α 敏感度 (N 缩放指数)</text>
+
+    <!-- Plot area background -->
+    <rect x="100" y="32" width="325" height="170" fill="#fafbfc" stroke="none"/>
+
+    <!-- Y-axis grid lines and ticks -->
+    <!-- y=0.6 → 202, y=0.8 → 180.75, y=1.0 → 159.5, y=1.2 → 138.25, y=1.4 → 117, y=1.6 → 95.75, y=1.8 → 74.5, y=2.0 → 53.25, y=2.2 → 32 -->
+    <line x1="100" y1="202" x2="425" y2="202" class="grid-line"/>
+    <line x1="100" y1="180.75" x2="425" y2="180.75" class="grid-line"/>
+    <line x1="100" y1="159.5" x2="425" y2="159.5" class="grid-line"/>
+    <line x1="100" y1="138.25" x2="425" y2="138.25" class="grid-line"/>
+    <line x1="100" y1="117" x2="425" y2="117" class="grid-line"/>
+    <line x1="100" y1="95.75" x2="425" y2="95.75" class="grid-line"/>
+    <line x1="100" y1="74.5" x2="425" y2="74.5" class="grid-line"/>
+    <line x1="100" y1="53.25" x2="425" y2="53.25" class="grid-line"/>
+    <line x1="100" y1="32" x2="425" y2="32" class="grid-line"/>
+
+    <!-- Y-axis tick labels -->
+    <text x="95" y="205" text-anchor="end" class="tick-label">0.6</text>
+    <text x="95" y="183.75" text-anchor="end" class="tick-label">0.8</text>
+    <text x="95" y="162.5" text-anchor="end" class="tick-label">1.0</text>
+    <text x="95" y="141.25" text-anchor="end" class="tick-label">1.2</text>
+    <text x="95" y="120" text-anchor="end" class="tick-label">1.4</text>
+    <text x="95" y="98.75" text-anchor="end" class="tick-label">1.6</text>
+    <text x="95" y="77.5" text-anchor="end" class="tick-label">1.8</text>
+    <text x="95" y="56.25" text-anchor="end" class="tick-label">2.0</text>
+    <text x="95" y="35" text-anchor="end" class="tick-label">2.2</text>
+
+    <!-- Y-axis title -->
+    <text x="20" y="117" text-anchor="middle" class="axis-label" transform="rotate(-90,20,117)">相对性能 P</text>
+
+    <!-- X-axis grid lines (vertical) -->
+    <!-- α: 0→100, 0.05→154, 0.10→208, 0.15→263, 0.20→317, 0.25→371, 0.30→425 -->
+    <line x1="100" y1="32" x2="100" y2="202" class="grid-line"/>
+    <line x1="154" y1="32" x2="154" y2="202" class="grid-line"/>
+    <line x1="208" y1="32" x2="208" y2="202" class="grid-line"/>
+    <line x1="263" y1="32" x2="263" y2="202" class="grid-line"/>
+    <line x1="317" y1="32" x2="317" y2="202" class="grid-line"/>
+    <line x1="371" y1="32" x2="371" y2="202" class="grid-line"/>
+    <line x1="425" y1="32" x2="425" y2="202" class="grid-line"/>
+
+    <!-- X-axis tick labels -->
+    <text x="100" y="214" text-anchor="middle" class="tick-label">0</text>
+    <text x="154" y="214" text-anchor="middle" class="tick-label">0.05</text>
+    <text x="208" y="214" text-anchor="middle" class="tick-label">0.10</text>
+    <text x="263" y="214" text-anchor="middle" class="tick-label">0.15</text>
+    <text x="317" y="214" text-anchor="middle" class="tick-label">0.20</text>
+    <text x="371" y="214" text-anchor="middle" class="tick-label">0.25</text>
+    <text x="425" y="214" text-anchor="middle" class="tick-label">0.30</text>
+
+    <!-- X-axis title -->
+    <text x="262" y="228" text-anchor="middle" class="axis-label">α</text>
+
+    <!-- Default α dashed line -->
+    <line x1="208" y1="32" x2="208" y2="202" class="dashed"/>
+
+    <!-- Data curve -->
+    <polyline points="100,190.3 154,176.5 208,159.5 263,139.3 317,114.9 371,86.2 425,52.2" class="curve"/>
+
+    <!-- Data points -->
+    <circle cx="100" cy="190.3" r="3" class="dot"/>
+    <circle cx="154" cy="176.5" r="3" class="dot"/>
+    <circle cx="208" cy="159.5" r="4" class="dot" fill="#e74c3c"/>
+    <circle cx="263" cy="139.3" r="3" class="dot"/>
+    <circle cx="317" cy="114.9" r="3" class="dot"/>
+    <circle cx="371" cy="86.2" r="3" class="dot"/>
+    <circle cx="425" cy="52.2" r="3" class="dot"/>
+
+    <!-- Axis lines -->
+    <line x1="100" y1="202" x2="425" y2="202" class="axis-line"/>
+    <line x1="100" y1="32" x2="100" y2="202" class="axis-line"/>
+
+    <!-- Insight text box -->
+    <rect x="100" y="234" width="325" height="26" rx="3" fill="#f8f9fa" stroke="#ddd" stroke-width="0.5"/>
+    <text x="106" y="246" class="insight">更高的 α 放大集群规模效应；</text>
+    <text x="106" y="256" class="insight">过高的 α 使 P 对单元数量过于敏感</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- SUBPLOT (b): β Sensitivity — top-right -->
+  <!-- ============================================================ -->
+  <g transform="translate(0,0)">
+    <text x="475" y="22" class="subplot-label">(b)</text>
+    <text x="493" y="22" class="title">β 敏感度 (协同轮次指数)</text>
+
+    <rect x="520" y="32" width="325" height="170" fill="#fafbfc" stroke="none"/>
+
+    <!-- Y-axis grid lines and ticks -->
+    <!-- y=0.7→202, 0.8→183.1, 0.9→164.2, 1.0→145.3, 1.1→126.4, 1.2→107.6, 1.3→88.7, 1.4→69.8, 1.5→50.9, 1.6→32 -->
+    <line x1="520" y1="202" x2="845" y2="202" class="grid-line"/>
+    <line x1="520" y1="183.1" x2="845" y2="183.1" class="grid-line"/>
+    <line x1="520" y1="164.2" x2="845" y2="164.2" class="grid-line"/>
+    <line x1="520" y1="145.3" x2="845" y2="145.3" class="grid-line"/>
+    <line x1="520" y1="126.4" x2="845" y2="126.4" class="grid-line"/>
+    <line x1="520" y1="107.6" x2="845" y2="107.6" class="grid-line"/>
+    <line x1="520" y1="88.7" x2="845" y2="88.7" class="grid-line"/>
+    <line x1="520" y1="69.8" x2="845" y2="69.8" class="grid-line"/>
+    <line x1="520" y1="50.9" x2="845" y2="50.9" class="grid-line"/>
+    <line x1="520" y1="32" x2="845" y2="32" class="grid-line"/>
+
+    <text x="515" y="205" text-anchor="end" class="tick-label">0.7</text>
+    <text x="515" y="186.1" text-anchor="end" class="tick-label">0.8</text>
+    <text x="515" y="167.2" text-anchor="end" class="tick-label">0.9</text>
+    <text x="515" y="148.3" text-anchor="end" class="tick-label">1.0</text>
+    <text x="515" y="129.4" text-anchor="end" class="tick-label">1.1</text>
+    <text x="515" y="110.6" text-anchor="end" class="tick-label">1.2</text>
+    <text x="515" y="91.7" text-anchor="end" class="tick-label">1.3</text>
+    <text x="515" y="72.8" text-anchor="end" class="tick-label">1.4</text>
+    <text x="515" y="53.9" text-anchor="end" class="tick-label">1.5</text>
+    <text x="515" y="35" text-anchor="end" class="tick-label">1.6</text>
+
+    <text x="440" y="117" text-anchor="middle" class="axis-label" transform="rotate(-90,440,117)">相对性能 P</text>
+
+    <!-- X-axis: β: 0→520, 0.1→585, 0.2→650, 0.3→715, 0.4→780, 0.5→845 -->
+    <line x1="520" y1="32" x2="520" y2="202" class="grid-line"/>
+    <line x1="585" y1="32" x2="585" y2="202" class="grid-line"/>
+    <line x1="650" y1="32" x2="650" y2="202" class="grid-line"/>
+    <line x1="715" y1="32" x2="715" y2="202" class="grid-line"/>
+    <line x1="780" y1="32" x2="780" y2="202" class="grid-line"/>
+    <line x1="845" y1="32" x2="845" y2="202" class="grid-line"/>
+
+    <text x="520" y="214" text-anchor="middle" class="tick-label">0</text>
+    <text x="585" y="214" text-anchor="middle" class="tick-label">0.1</text>
+    <text x="650" y="214" text-anchor="middle" class="tick-label">0.2</text>
+    <text x="715" y="214" text-anchor="middle" class="tick-label">0.3</text>
+    <text x="780" y="214" text-anchor="middle" class="tick-label">0.4</text>
+    <text x="845" y="214" text-anchor="middle" class="tick-label">0.5</text>
+
+    <text x="682" y="228" text-anchor="middle" class="axis-label">β</text>
+
+    <!-- Default β dashed line -->
+    <line x1="650" y1="32" x2="650" y2="202" class="dashed"/>
+
+    <!-- Data curve -->
+    <polyline points="520,190.7 585,169.9 650,145.3 715,117.0 780,84.9 845,47.1" class="curve"/>
+
+    <!-- Data points -->
+    <circle cx="520" cy="190.7" r="3" class="dot"/>
+    <circle cx="585" cy="169.9" r="3" class="dot"/>
+    <circle cx="650" cy="145.3" r="4" class="dot" fill="#e74c3c"/>
+    <circle cx="715" cy="117.0" r="3" class="dot"/>
+    <circle cx="780" cy="84.9" r="3" class="dot"/>
+    <circle cx="845" cy="47.1" r="3" class="dot"/>
+
+    <line x1="520" y1="202" x2="845" y2="202" class="axis-line"/>
+    <line x1="520" y1="32" x2="520" y2="202" class="axis-line"/>
+
+    <rect x="520" y="234" width="325" height="26" rx="3" fill="#f8f9fa" stroke="#ddd" stroke-width="0.5"/>
+    <text x="526" y="246" class="insight">β 控制协同贡献的弹性；</text>
+    <text x="526" y="256" class="insight">适中的 β 增强多轮价值</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- SUBPLOT (c): γ Sensitivity — bottom-left -->
+  <!-- ============================================================ -->
+  <g transform="translate(0,0)">
+    <text x="55" y="297" class="subplot-label">(c)</text>
+    <text x="73" y="297" class="title">γ 敏感度 (冲突惩罚指数)</text>
+
+    <rect x="100" y="307" width="325" height="170" fill="#fafbfc" stroke="none"/>
+
+    <!-- Risk zone shading: γ > 1.0 → x > 317 -->
+    <rect x="317" y="307" width="108" height="170" fill="#fdecea" stroke="none" opacity="0.6"/>
+
+    <!-- Y-axis grid lines: 0.7→463.9, 0.8→437.8, 0.9→411.6, 1.0→385.5, 1.1→359.3, 1.2→333.2, 1.3→307 -->
+    <line x1="100" y1="463.9" x2="425" y2="463.9" class="grid-line"/>
+    <line x1="100" y1="437.8" x2="425" y2="437.8" class="grid-line"/>
+    <line x1="100" y1="411.6" x2="425" y2="411.6" class="grid-line"/>
+    <line x1="100" y1="385.5" x2="425" y2="385.5" class="grid-line"/>
+    <line x1="100" y1="359.3" x2="425" y2="359.3" class="grid-line"/>
+    <line x1="100" y1="333.2" x2="425" y2="333.2" class="grid-line"/>
+    <line x1="100" y1="307" x2="425" y2="307" class="grid-line"/>
+
+    <text x="95" y="466.9" text-anchor="end" class="tick-label">0.7</text>
+    <text x="95" y="440.8" text-anchor="end" class="tick-label">0.8</text>
+    <text x="95" y="414.6" text-anchor="end" class="tick-label">0.9</text>
+    <text x="95" y="388.5" text-anchor="end" class="tick-label">1.0</text>
+    <text x="95" y="362.3" text-anchor="end" class="tick-label">1.1</text>
+    <text x="95" y="336.2" text-anchor="end" class="tick-label">1.2</text>
+    <text x="95" y="310" text-anchor="end" class="tick-label">1.3</text>
+
+    <text x="20" y="392" text-anchor="middle" class="axis-label" transform="rotate(-90,20,392)">相对性能 P</text>
+
+    <!-- X-axis: γ: 0→100, 0.2→143, 0.5→208, 0.8→273, 1.0→317, 1.2→360, 1.5→425 -->
+    <line x1="100" y1="307" x2="100" y2="477" class="grid-line"/>
+    <line x1="143" y1="307" x2="143" y2="477" class="grid-line"/>
+    <line x1="208" y1="307" x2="208" y2="477" class="grid-line"/>
+    <line x1="273" y1="307" x2="273" y2="477" class="grid-line"/>
+    <line x1="317" y1="307" x2="317" y2="477" class="grid-line"/>
+    <line x1="360" y1="307" x2="360" y2="477" class="grid-line"/>
+    <line x1="425" y1="307" x2="425" y2="477" class="grid-line"/>
+
+    <text x="100" y="489" text-anchor="middle" class="tick-label">0</text>
+    <text x="143" y="489" text-anchor="middle" class="tick-label">0.2</text>
+    <text x="208" y="489" text-anchor="middle" class="tick-label">0.5</text>
+    <text x="273" y="489" text-anchor="middle" class="tick-label">0.8</text>
+    <text x="317" y="489" text-anchor="middle" class="tick-label">1.0</text>
+    <text x="360" y="489" text-anchor="middle" class="tick-label">1.2</text>
+    <text x="425" y="489" text-anchor="middle" class="tick-label">1.5</text>
+
+    <text x="262" y="503" text-anchor="middle" class="axis-label">γ</text>
+
+    <!-- Default γ dashed line -->
+    <line x1="208" y1="307" x2="208" y2="477" class="dashed"/>
+
+    <!-- Risk zone label -->
+    <text x="371" y="320" text-anchor="middle" class="tick-label" fill="#e74c3c" font-weight="bold">高风险区</text>
+
+    <!-- Data curve -->
+    <polyline points="100,333.2 143,354.1 208,385.5 273,411.6 317,427.3 360,443.0 425,458.7" class="curve"/>
+
+    <!-- Data points -->
+    <circle cx="100" cy="333.2" r="3" class="dot"/>
+    <circle cx="143" cy="354.1" r="3" class="dot"/>
+    <circle cx="208" cy="385.5" r="4" class="dot" fill="#e74c3c"/>
+    <circle cx="273" cy="411.6" r="3" class="dot"/>
+    <circle cx="317" cy="427.3" r="3" class="dot"/>
+    <circle cx="360" cy="443.0" r="3" class="dot"/>
+    <circle cx="425" cy="458.7" r="3" class="dot"/>
+
+    <line x1="100" y1="477" x2="425" y2="477" class="axis-line"/>
+    <line x1="100" y1="307" x2="100" y2="477" class="axis-line"/>
+
+    <rect x="100" y="509" width="325" height="26" rx="3" fill="#f8f9fa" stroke="#ddd" stroke-width="0.5"/>
+    <text x="106" y="521" class="insight">γ &gt; 1.0 进入高风险区；</text>
+    <text x="106" y="531" class="insight">冲突惩罚急剧加速</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- SUBPLOT (d): μ Sensitivity — bottom-right -->
+  <!-- ============================================================ -->
+  <g transform="translate(0,0)">
+    <text x="475" y="297" class="subplot-label">(d)</text>
+    <text x="493" y="297" class="title">μ 敏感度 (认知差异指数)</text>
+
+    <rect x="520" y="307" width="325" height="170" fill="#fafbfc" stroke="none"/>
+
+    <!-- Favorable zone shading: μ < 0.4 → x < 607 -->
+    <rect x="520" y="307" width="87" height="170" fill="#eafaf1" stroke="none" opacity="0.6"/>
+
+    <!-- Y-axis grid lines: 0.8→463.9, 0.9→437.8, 1.0→411.6, 1.1→385.5, 1.2→359.3, 1.3→333.2, 1.4→307 -->
+    <line x1="520" y1="463.9" x2="845" y2="463.9" class="grid-line"/>
+    <line x1="520" y1="437.8" x2="845" y2="437.8" class="grid-line"/>
+    <line x1="520" y1="411.6" x2="845" y2="411.6" class="grid-line"/>
+    <line x1="520" y1="385.5" x2="845" y2="385.5" class="grid-line"/>
+    <line x1="520" y1="359.3" x2="845" y2="359.3" class="grid-line"/>
+    <line x1="520" y1="333.2" x2="845" y2="333.2" class="grid-line"/>
+    <line x1="520" y1="307" x2="845" y2="307" class="grid-line"/>
+
+    <text x="515" y="466.9" text-anchor="end" class="tick-label">0.8</text>
+    <text x="515" y="440.8" text-anchor="end" class="tick-label">0.9</text>
+    <text x="515" y="414.6" text-anchor="end" class="tick-label">1.0</text>
+    <text x="515" y="388.5" text-anchor="end" class="tick-label">1.1</text>
+    <text x="515" y="362.3" text-anchor="end" class="tick-label">1.2</text>
+    <text x="515" y="336.2" text-anchor="end" class="tick-label">1.3</text>
+    <text x="515" y="310" text-anchor="end" class="tick-label">1.4</text>
+
+    <text x="440" y="392" text-anchor="middle" class="axis-label" transform="rotate(-90,440,392)">相对性能 P</text>
+
+    <!-- X-axis: μ: 0→520, 0.2→563, 0.4→607, 0.6→650, 0.8→693, 1.0→737, 1.2→780, 1.5→845 -->
+    <line x1="520" y1="307" x2="520" y2="477" class="grid-line"/>
+    <line x1="563" y1="307" x2="563" y2="477" class="grid-line"/>
+    <line x1="607" y1="307" x2="607" y2="477" class="grid-line"/>
+    <line x1="650" y1="307" x2="650" y2="477" class="grid-line"/>
+    <line x1="693" y1="307" x2="693" y2="477" class="grid-line"/>
+    <line x1="737" y1="307" x2="737" y2="477" class="grid-line"/>
+    <line x1="780" y1="307" x2="780" y2="477" class="grid-line"/>
+    <line x1="845" y1="307" x2="845" y2="477" class="grid-line"/>
+
+    <text x="520" y="489" text-anchor="middle" class="tick-label">0</text>
+    <text x="563" y="489" text-anchor="middle" class="tick-label">0.2</text>
+    <text x="607" y="489" text-anchor="middle" class="tick-label">0.4</text>
+    <text x="650" y="489" text-anchor="middle" class="tick-label">0.6</text>
+    <text x="693" y="489" text-anchor="middle" class="tick-label">0.8</text>
+    <text x="737" y="489" text-anchor="middle" class="tick-label">1.0</text>
+    <text x="780" y="489" text-anchor="middle" class="tick-label">1.2</text>
+    <text x="845" y="489" text-anchor="middle" class="tick-label">1.5</text>
+
+    <text x="682" y="503" text-anchor="middle" class="axis-label">μ</text>
+
+    <!-- Default μ dashed line -->
+    <line x1="693" y1="307" x2="693" y2="477" class="dashed"/>
+
+    <!-- Favorable zone annotation -->
+    <text x="563" y="320" text-anchor="middle" class="tick-label" fill="#27ae60" font-weight="bold">高 D 有利</text>
+
+    <!-- Data curve -->
+    <polyline points="520,325.3 563,348.8 607,372.4 650,393.3 693,411.6 737,429.9 780,445.6 845,466.5" class="curve"/>
+
+    <!-- Data points -->
+    <circle cx="520" cy="325.3" r="3" class="dot"/>
+    <circle cx="563" cy="348.8" r="3" class="dot"/>
+    <circle cx="607" cy="372.4" r="3" class="dot"/>
+    <circle cx="650" cy="393.3" r="3" class="dot"/>
+    <circle cx="693" cy="411.6" r="4" class="dot" fill="#e74c3c"/>
+    <circle cx="737" cy="429.9" r="3" class="dot"/>
+    <circle cx="780" cy="445.6" r="3" class="dot"/>
+    <circle cx="845" cy="466.5" r="3" class="dot"/>
+
+    <line x1="520" y1="477" x2="845" y2="477" class="axis-line"/>
+    <line x1="520" y1="307" x2="520" y2="477" class="axis-line"/>
+
+    <rect x="520" y="509" width="325" height="26" rx="3" fill="#f8f9fa" stroke="#ddd" stroke-width="0.5"/>
+    <text x="526" y="521" class="insight">μ 效应方向取决于 D；</text>
+    <text x="526" y="531" class="insight">当 D &lt; 1 时，保持 μ 适中</text>
+  </g>
+
+  <!-- Figure caption -->
+  <text x="450" y="548" text-anchor="middle" class="axis-label" fill="#222">图 6：协调扩展律参数敏感性分析。默认值以红色圆点标记，垂直虚线标识默认参数位置。</text>
+
+</svg>

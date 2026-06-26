@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vallace Research</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="mark" href="#archive" aria-label="Vallace Research home">
+        <span class="mark-symbol">V</span>
+        <span>Vallace Research</span>
+      </a>
+      <nav aria-label="Primary">
+        <a href="#reports">Reports / 报告</a>
+        <a href="#protocols">RFC</a>
+        <a href="#benchmarks">Benchmarks / 基准</a>
+        <a href="#scope">Scope / 边界</a>
+      </nav>
+    </header>
+
+    <main id="archive">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Archive index / active file</p>
+          <h1 id="hero-title">Coordination scales intelligence.</h1>
+          <p class="zh-title">协调扩展智能。</p>
+          <p class="lede">
+            Vallace Research studies a fictional second scaling axis for AI:
+            structured coordination among reasoning processes.
+          </p>
+          <p class="lede zh">
+            Vallace Research 是一个架空 AI 研究实验室。它研究一个虚构但自洽的命题：
+            智能不仅由计算扩展，也可能由协调扩展。
+          </p>
+          <div class="hero-actions" aria-label="Archive actions">
+            <a class="button primary" href="../docs/research/VR-TR-2026-001.md">Read VR-TR-2026-001 / 阅读报告</a>
+            <a class="button" href="../docs/constitution.md">Project Constitution / 项目宪法</a>
+          </div>
+        </div>
+        <figure class="field-panel" aria-label="Coordination field visualization">
+          <canvas id="fieldCanvas" width="920" height="620"></canvas>
+          <figcaption>
+            <span>Field / Merge / Flow</span>
+            <span id="fieldReadout">K=0.73 D=0.18</span>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="ticker" aria-label="Vallace archive statement">
+        <span>Alternate-reality AI lab<br><em>架空 AI 研究实验室</em></span>
+        <span>Academic satire<br><em>学术戏仿</em></span>
+        <span>Real references only<br><em>只使用真实引用</em></span>
+        <span>Fictional claims clearly scoped<br><em>虚构结论必须标明边界</em></span>
+      </section>
+
+      <section class="grid-section" id="reports" aria-labelledby="reports-title">
+        <div class="section-head">
+          <p class="eyebrow">Technical reports / 技术报告</p>
+          <h2 id="reports-title">The first record.</h2>
+          <p class="section-subtitle">第一份档案。</p>
+        </div>
+        <article class="record wide">
+          <div>
+            <p class="record-code">VR-TR-2026-001</p>
+            <h3>The Vallace Project</h3>
+            <p class="zh-line">Vallace 项目</p>
+            <p>
+              Establishes the coordination-first hypothesis and defines
+              intelligence as a function of computation and coordination.
+            </p>
+            <p class="zh">
+              建立“协调优先”的核心假设，并把有效智能定义为计算能力与协调效率的函数。
+            </p>
+          </div>
+          <a href="../docs/research/VR-TR-2026-001.md">Open report / 打开报告</a>
+        </article>
+      </section>
+
+      <section class="grid-section two" id="protocols" aria-label="Protocol and benchmark records">
+        <article class="record">
+          <p class="record-code">VR-RFC-0001</p>
+          <h3>Semantic Consensus Protocol</h3>
+          <p class="zh-line">语义共识协议</p>
+          <p>
+            A draft protocol for exchanging partial interpretations while
+            preserving tension, provenance, and reversible merges.
+          </p>
+          <p class="zh">
+            用于交换局部解释的协议草案，同时保留张力、来源和可逆合并。
+          </p>
+          <a href="../docs/rfc/VR-RFC-0001.md">Open RFC / 打开 RFC</a>
+        </article>
+        <article class="record" id="benchmarks">
+          <p class="record-code">VR-BM-0001</p>
+          <h3>WallBench</h3>
+          <p class="zh-line">墙基准</p>
+          <p>
+            A fictional benchmark family for semantic drift, conflict recovery,
+            and provenance retention under coordinated reasoning.
+          </p>
+          <p class="zh">
+            面向协调推理的虚构基准族，用于观察语义漂移、冲突恢复和来源保留。
+          </p>
+          <a href="../docs/benchmarks/VR-BM-0001.md">Open benchmark / 打开基准</a>
+        </article>
+      </section>
+
+      <section class="scope" id="scope" aria-labelledby="scope-title">
+        <div>
+          <p class="eyebrow">Scope control / 边界控制</p>
+          <h2 id="scope-title">Respect reality. Satirize ideas, not facts.</h2>
+          <p class="section-subtitle">尊重现实。讽刺观念，而不是伪造事实。</p>
+        </div>
+        <div>
+          <p>
+            Vallace may invent systems, protocols, and internal reports. It must
+            not fake real validation, impersonate real institutions, or imply
+            fictional results are established science.
+          </p>
+          <p class="zh">
+            Vallace 可以创造不存在的系统、协议和内部报告，但不能伪造真实验证，
+            不能冒充真实机构，也不能暗示虚构结果已经成为现实科学结论。
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

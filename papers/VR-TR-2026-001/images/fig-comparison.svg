@@ -1,0 +1,235 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="white"/>
+
+  <!-- Main figure title -->
+  <text x="400" y="28" text-anchor="middle" font-size="14" font-weight="bold" fill="#222">Figure 3: Comprehensive Comparison Results</text>
+
+  <!-- ============================================================ -->
+  <!-- Subplot 1: 协同延迟 (top-left) — 3 bars -->
+  <!-- ============================================================ -->
+  <g>
+    <rect x="60" y="50" width="320" height="205" fill="none" stroke="#ddd" stroke-width="1"/>
+    <text x="220" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Coordination Latency (ms)</text>
+
+    <!-- Y-axis -->
+    <line x1="100" y1="78" x2="100" y2="235" stroke="#333" stroke-width="1"/>
+
+    <!-- y=300 (top) -->
+    <line x1="96" y1="78" x2="100" y2="78" stroke="#333" stroke-width="1"/>
+    <text x="92" y="82" text-anchor="end" font-size="8" fill="#555">300</text>
+    <!-- y=200 -->
+    <line x1="96" y1="130.3" x2="100" y2="130.3" stroke="#333" stroke-width="1"/>
+    <text x="92" y="134.3" text-anchor="end" font-size="8" fill="#555">200</text>
+    <line x1="98" y1="130.3" x2="380" y2="130.3" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=100 -->
+    <line x1="96" y1="182.7" x2="100" y2="182.7" stroke="#333" stroke-width="1"/>
+    <text x="92" y="186.7" text-anchor="end" font-size="8" fill="#555">100</text>
+    <line x1="98" y1="182.7" x2="380" y2="182.7" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=0 (bottom) -->
+    <line x1="96" y1="235" x2="100" y2="235" stroke="#333" stroke-width="1"/>
+    <text x="92" y="239" text-anchor="end" font-size="8" fill="#555">0</text>
+
+    <!-- Bars: w=50, gap=19, group=188, start at 220-94=126 -->
+    <!-- Baseline 2: 184.2 → h=96.4, y=138.6 -->
+    <rect x="126" y="138.6" width="50" height="96.4" fill="#c0d0e0" rx="1"/>
+    <text x="151" y="134.6" text-anchor="middle" font-size="8" fill="#333">184.2</text>
+    <!-- Baseline 3: 256.8 → h=134.4, y=100.6 -->
+    <rect x="195" y="100.6" width="50" height="134.4" fill="#a0b8d0" rx="1"/>
+    <text x="220" y="96.6" text-anchor="middle" font-size="8" fill="#333">256.8</text>
+    <!-- Vallace-LLM: 108.7 → h=56.9, y=178.1 -->
+    <rect x="264" y="178.1" width="50" height="56.9" fill="#3a6b97" rx="1"/>
+    <text x="289" y="174.1" text-anchor="middle" font-size="8" font-weight="bold" fill="#3a6b97">108.7</text>
+
+    <!-- X-axis labels -->
+    <text x="151" y="248" text-anchor="middle" font-size="7.5" fill="#555">Baseline 2</text>
+    <text x="151" y="258" text-anchor="middle" font-size="7.5" fill="#888">(MoE)</text>
+    <text x="220" y="248" text-anchor="middle" font-size="7.5" fill="#555">Baseline 3</text>
+    <text x="220" y="258" text-anchor="middle" font-size="7.5" fill="#888">(Unmanaged)</text>
+    <text x="289" y="248" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">Vallace-LLM</text>
+    <text x="289" y="258" text-anchor="middle" font-size="7.5" fill="#3a6b97">(Full)</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- Subplot 2: CHC偏差率 (top-right) — 4 bars -->
+  <!-- ============================================================ -->
+  <g>
+    <rect x="420" y="50" width="320" height="205" fill="none" stroke="#ddd" stroke-width="1"/>
+    <text x="580" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">CHC Bias Rate (%)</text>
+
+    <!-- Y-axis -->
+    <line x1="460" y1="78" x2="460" y2="235" stroke="#333" stroke-width="1"/>
+
+    <!-- y=25 -->
+    <line x1="456" y1="78" x2="460" y2="78" stroke="#333" stroke-width="1"/>
+    <text x="452" y="82" text-anchor="end" font-size="8" fill="#555">25</text>
+    <!-- y=20 -->
+    <line x1="456" y1="109.4" x2="460" y2="109.4" stroke="#333" stroke-width="1"/>
+    <text x="452" y="113.4" text-anchor="end" font-size="8" fill="#555">20</text>
+    <line x1="458" y1="109.4" x2="740" y2="109.4" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=15 -->
+    <line x1="456" y1="140.8" x2="460" y2="140.8" stroke="#333" stroke-width="1"/>
+    <text x="452" y="144.8" text-anchor="end" font-size="8" fill="#555">15</text>
+    <line x1="458" y1="140.8" x2="740" y2="140.8" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=10 -->
+    <line x1="456" y1="172.2" x2="460" y2="172.2" stroke="#333" stroke-width="1"/>
+    <text x="452" y="176.2" text-anchor="end" font-size="8" fill="#555">10</text>
+    <line x1="458" y1="172.2" x2="740" y2="172.2" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=5 -->
+    <line x1="456" y1="203.6" x2="460" y2="203.6" stroke="#333" stroke-width="1"/>
+    <text x="452" y="207.6" text-anchor="end" font-size="8" fill="#555">5</text>
+    <line x1="458" y1="203.6" x2="740" y2="203.6" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=0 -->
+    <line x1="456" y1="235" x2="460" y2="235" stroke="#333" stroke-width="1"/>
+    <text x="452" y="239" text-anchor="end" font-size="8" fill="#555">0</text>
+
+    <!-- Bars: w=40, gap=12, group=196, start at 580-98=482 -->
+    <!-- Baseline 1: 12.7 → h=79.8, y=155.2 -->
+    <rect x="482" y="155.2" width="40" height="79.8" fill="#d8e2ec" rx="1"/>
+    <text x="502" y="151.2" text-anchor="middle" font-size="7.5" fill="#555">12.7</text>
+    <!-- Baseline 2: 10.4 → h=65.3, y=169.7 -->
+    <rect x="534" y="169.7" width="40" height="65.3" fill="#c0d0e0" rx="1"/>
+    <text x="554" y="165.7" text-anchor="middle" font-size="7.5" fill="#555">10.4</text>
+    <!-- Baseline 3: 19.3 → h=121.2, y=113.8 -->
+    <rect x="586" y="113.8" width="40" height="121.2" fill="#a0b8d0" rx="1"/>
+    <text x="606" y="109.8" text-anchor="middle" font-size="7.5" fill="#555">19.3</text>
+    <!-- Vallace-LLM: 5.8 → h=36.4, y=198.6 -->
+    <rect x="638" y="198.6" width="40" height="36.4" fill="#3a6b97" rx="1"/>
+    <text x="658" y="194.6" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">5.8</text>
+
+    <!-- X-axis labels -->
+    <text x="502" y="248" text-anchor="middle" font-size="7.5" fill="#555">Baseline 1</text>
+    <text x="502" y="258" text-anchor="middle" font-size="7.5" fill="#888">(Single)</text>
+    <text x="554" y="248" text-anchor="middle" font-size="7.5" fill="#555">Baseline 2</text>
+    <text x="554" y="258" text-anchor="middle" font-size="7.5" fill="#888">(MoE)</text>
+    <text x="606" y="248" text-anchor="middle" font-size="7.5" fill="#555">Baseline 3</text>
+    <text x="606" y="258" text-anchor="middle" font-size="7.5" fill="#888">(Unmanaged)</text>
+    <text x="658" y="248" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">Vallace-LLM</text>
+    <text x="658" y="258" text-anchor="middle" font-size="7.5" fill="#3a6b97">(Full)</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- Subplot 3: 算力损耗 (bottom-left) — 3 bars -->
+  <!-- ============================================================ -->
+  <g>
+    <rect x="60" y="275" width="320" height="205" fill="none" stroke="#ddd" stroke-width="1"/>
+    <text x="220" y="293" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Compute Waste (%)</text>
+
+    <!-- Y-axis -->
+    <line x1="100" y1="303" x2="100" y2="460" stroke="#333" stroke-width="1"/>
+
+    <!-- y=50 -->
+    <line x1="96" y1="303" x2="100" y2="303" stroke="#333" stroke-width="1"/>
+    <text x="92" y="307" text-anchor="end" font-size="8" fill="#555">50</text>
+    <!-- y=40 -->
+    <line x1="96" y1="334.4" x2="100" y2="334.4" stroke="#333" stroke-width="1"/>
+    <text x="92" y="338.4" text-anchor="end" font-size="8" fill="#555">40</text>
+    <line x1="98" y1="334.4" x2="380" y2="334.4" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=30 -->
+    <line x1="96" y1="365.8" x2="100" y2="365.8" stroke="#333" stroke-width="1"/>
+    <text x="92" y="369.8" text-anchor="end" font-size="8" fill="#555">30</text>
+    <line x1="98" y1="365.8" x2="380" y2="365.8" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=20 -->
+    <line x1="96" y1="397.2" x2="100" y2="397.2" stroke="#333" stroke-width="1"/>
+    <text x="92" y="401.2" text-anchor="end" font-size="8" fill="#555">20</text>
+    <line x1="98" y1="397.2" x2="380" y2="397.2" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=10 -->
+    <line x1="96" y1="428.6" x2="100" y2="428.6" stroke="#333" stroke-width="1"/>
+    <text x="92" y="432.6" text-anchor="end" font-size="8" fill="#555">10</text>
+    <line x1="98" y1="428.6" x2="380" y2="428.6" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=0 -->
+    <line x1="96" y1="460" x2="100" y2="460" stroke="#333" stroke-width="1"/>
+    <text x="92" y="464" text-anchor="end" font-size="8" fill="#555">0</text>
+
+    <!-- Bars: w=50, gap=19, group=188, start at 220-94=126 -->
+    <!-- Baseline 2: 31.5 → h=98.9, y=361.1 -->
+    <rect x="126" y="361.1" width="50" height="98.9" fill="#c0d0e0" rx="1"/>
+    <text x="151" y="357.1" text-anchor="middle" font-size="8" fill="#333">31.5</text>
+    <!-- Baseline 3: 44.2 → h=138.8, y=321.2 -->
+    <rect x="195" y="321.2" width="50" height="138.8" fill="#a0b8d0" rx="1"/>
+    <text x="220" y="317.2" text-anchor="middle" font-size="8" fill="#333">44.2</text>
+    <!-- Vallace-LLM: 14.6 → h=45.8, y=414.2 -->
+    <rect x="264" y="414.2" width="50" height="45.8" fill="#3a6b97" rx="1"/>
+    <text x="289" y="410.2" text-anchor="middle" font-size="8" font-weight="bold" fill="#3a6b97">14.6</text>
+
+    <!-- X-axis labels -->
+    <text x="151" y="473" text-anchor="middle" font-size="7.5" fill="#555">Baseline 2</text>
+    <text x="151" y="483" text-anchor="middle" font-size="7.5" fill="#888">(MoE)</text>
+    <text x="220" y="473" text-anchor="middle" font-size="7.5" fill="#555">Baseline 3</text>
+    <text x="220" y="483" text-anchor="middle" font-size="7.5" fill="#888">(Unmanaged)</text>
+    <text x="289" y="473" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">Vallace-LLM</text>
+    <text x="289" y="483" text-anchor="middle" font-size="7.5" fill="#3a6b97">(Full)</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- Subplot 4: 语义完整度 (bottom-right) — 4 bars -->
+  <!-- ============================================================ -->
+  <g>
+    <rect x="420" y="275" width="320" height="205" fill="none" stroke="#ddd" stroke-width="1"/>
+    <text x="580" y="293" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Semantic Integrity (%)</text>
+
+    <!-- Y-axis -->
+    <line x1="460" y1="303" x2="460" y2="460" stroke="#333" stroke-width="1"/>
+
+    <!-- y=100 -->
+    <line x1="456" y1="303" x2="460" y2="303" stroke="#333" stroke-width="1"/>
+    <text x="452" y="307" text-anchor="end" font-size="8" fill="#555">100</text>
+    <!-- y=75 -->
+    <line x1="456" y1="342.25" x2="460" y2="342.25" stroke="#333" stroke-width="1"/>
+    <text x="452" y="346.25" text-anchor="end" font-size="8" fill="#555">75</text>
+    <line x1="458" y1="342.25" x2="740" y2="342.25" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=50 -->
+    <line x1="456" y1="381.5" x2="460" y2="381.5" stroke="#333" stroke-width="1"/>
+    <text x="452" y="385.5" text-anchor="end" font-size="8" fill="#555">50</text>
+    <line x1="458" y1="381.5" x2="740" y2="381.5" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=25 -->
+    <line x1="456" y1="420.75" x2="460" y2="420.75" stroke="#333" stroke-width="1"/>
+    <text x="452" y="424.75" text-anchor="end" font-size="8" fill="#555">25</text>
+    <line x1="458" y1="420.75" x2="740" y2="420.75" stroke="#e0e0e0" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <!-- y=0 -->
+    <line x1="456" y1="460" x2="460" y2="460" stroke="#333" stroke-width="1"/>
+    <text x="452" y="464" text-anchor="end" font-size="8" fill="#555">0</text>
+
+    <!-- Bars: w=40, gap=12, group=196, start at 580-98=482 -->
+    <!-- Baseline 1: 78.3 → h=122.9, y=337.1 -->
+    <rect x="482" y="337.1" width="40" height="122.9" fill="#d8e2ec" rx="1"/>
+    <text x="502" y="333.1" text-anchor="middle" font-size="7.5" fill="#555">78.3</text>
+    <!-- Baseline 2: 81.6 → h=128.1, y=331.9 -->
+    <rect x="534" y="331.9" width="40" height="128.1" fill="#c0d0e0" rx="1"/>
+    <text x="554" y="327.9" text-anchor="middle" font-size="7.5" fill="#555">81.6</text>
+    <!-- Baseline 3: 72.1 → h=113.2, y=346.8 -->
+    <rect x="586" y="346.8" width="40" height="113.2" fill="#a0b8d0" rx="1"/>
+    <text x="606" y="342.8" text-anchor="middle" font-size="7.5" fill="#555">72.1</text>
+    <!-- Vallace-LLM: 91.4 → h=143.5, y=316.5 -->
+    <rect x="638" y="316.5" width="40" height="143.5" fill="#3a6b97" rx="1"/>
+    <text x="658" y="312.5" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">91.4</text>
+
+    <!-- X-axis labels -->
+    <text x="502" y="473" text-anchor="middle" font-size="7.5" fill="#555">Baseline 1</text>
+    <text x="502" y="483" text-anchor="middle" font-size="7.5" fill="#888">(Single)</text>
+    <text x="554" y="473" text-anchor="middle" font-size="7.5" fill="#555">Baseline 2</text>
+    <text x="554" y="483" text-anchor="middle" font-size="7.5" fill="#888">(MoE)</text>
+    <text x="606" y="473" text-anchor="middle" font-size="7.5" fill="#555">Baseline 3</text>
+    <text x="606" y="483" text-anchor="middle" font-size="7.5" fill="#888">(Unmanaged)</text>
+    <text x="658" y="473" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">Vallace-LLM</text>
+    <text x="658" y="483" text-anchor="middle" font-size="7.5" fill="#3a6b97">(Full)</text>
+  </g>
+
+  <!-- Legend at bottom center -->
+  <g transform="translate(400, 494)">
+    <rect x="-170" y="-6" width="12" height="12" fill="#d8e2ec" rx="1"/>
+    <text x="-154" y="4" font-size="7.5" fill="#555">Baseline 1</text>
+    <rect x="-85" y="-6" width="12" height="12" fill="#c0d0e0" rx="1"/>
+    <text x="-69" y="4" font-size="7.5" fill="#555">Baseline 2</text>
+    <rect x="0" y="-6" width="12" height="12" fill="#a0b8d0" rx="1"/>
+    <text x="16" y="4" font-size="7.5" fill="#555">Baseline 3</text>
+    <rect x="85" y="-6" width="12" height="12" fill="#3a6b97" rx="1"/>
+    <text x="101" y="4" font-size="7.5" font-weight="bold" fill="#3a6b97">Vallace-LLM</text>
+  </g>
+</svg>
