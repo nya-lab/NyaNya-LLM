@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NN-RFC-0002 · nya-lab wiki</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body class="wiki-body">
+    <header class="topbar">
+      <a class="mark" href="../index.html#console" aria-label="nya-lab home">
+        <span class="mark-symbol" aria-hidden="true" data-final="：꒱ nya-lab">：꒱ <span class="lab-name"><strong>n</strong>ya-lab</span></span>
+      </a>
+      <nav aria-label="Wiki navigation">
+        <a href="index.html">Wiki</a>
+        <a href="../index.html#field">Field</a>
+        <a href="../index.html#archive">Archive</a>
+      </nav>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-sidebar">
+        <p class="eyebrow">协议</p>
+        <h1>NN-RFC-0002</h1>
+        <p>Version 1</p>
+        <a class="wiki-source" href="../../docs/rfc/NN-RFC-0002-cn.md">源文件</a>
+        <p class="lang-switch"><span>中文</span> | <a href="NN-RFC-0002.html">EN</a></p>
+        <nav aria-label="Table of contents"><a class="toc-l1" href="#nn-rfc-0002">NN-RFC-0002</a><a class="toc-l1" href="#动态路由与-field-状态协议">动态路由与 Field 状态协议</a><a class="toc-l2" href="#摘要">摘要</a><a class="toc-l2" href="#状态">状态</a><a class="toc-l2" href="#1-术语">1. 术语</a><a class="toc-l2" href="#2-协议目标">2. 协议目标</a><a class="toc-l2" href="#3-非目标">3. 非目标</a><a class="toc-l2" href="#4-field-状态">4. Field 状态</a><a class="toc-l3" href="#41-field-定义">4.1 Field 定义</a><a class="toc-l3" href="#42-field-原语">4.2 Field 原语</a><a class="toc-l3" href="#43-field-垃圾回收">4.3 Field 垃圾回收</a><a class="toc-l2" href="#5-信号分类">5. 信号分类</a><a class="toc-l3" href="#51-分类体系">5.1 分类体系</a><a class="toc-l3" href="#52-分类流程">5.2 分类流程</a><a class="toc-l2" href="#6-动态路由">6. 动态路由</a><a class="toc-l3" href="#61-opu-选择">6.1 OPU 选择</a><a class="toc-l3" href="#62-多样性注入">6.2 多样性注入</a><a class="toc-l3" href="#63-负载均衡">6.3 负载均衡</a><a class="toc-l3" href="#64-路由稳定性">6.4 路由稳定性</a><a class="toc-l2" href="#7-res-guard-集成">7. RES Guard 集成</a><a class="toc-l2" href="#8-field-一致性">8. Field 一致性</a><a class="toc-l3" href="#81-张力传播">8.1 张力传播</a><a class="toc-l3" href="#82-漂移监测">8.2 漂移监测</a><a class="toc-l2" href="#9-实现说明">9. 实现说明</a><a class="toc-l3" href="#91-默认参数">9.1 默认参数</a><a class="toc-l3" href="#92-最小可行实现">9.2 最小可行实现</a><a class="toc-l2" href="#10-参考文献">10. 参考文献</a></nav>
+      </aside>
+      <article class="wiki-article"><h1 id="nn-rfc-0002">NN-RFC-0002</h1>
+<h1 id="动态路由与-field-状态协议">动态路由与 Field 状态协议</h1>
+<p>Version 1</p>
+<h2 id="摘要">摘要</h2>
+<p>动态路由与 Field 状态协议定义了 nyanya LLM Agent 如何发现、分类和路由 OSU 信号通过 OPU 集群，以及如何从共享语义 Field 中读取和写入。本协议规定了信号分类体系、OPU 选择算法、负载均衡与多样性注入机制，以及 Field 状态原语。本协议是 NN-RFC-0001 §6 中路由规则的执行层。</p>
+<h2 id="状态">状态</h2>
+<p>协议规范。</p>
+<p>参考文献：<a href="https://github.com/nya-lab/NN-TR-2026-001">NN-TR-2026-001</a>，<a href="https://github.com/nya-lab/NN-RFC-0001">NN-RFC-0001</a>。</p>
+<h2 id="1-术语">1. 术语</h2>
+<p><code>Field</code>（场）</p>
+<p>共享语义环境。所有 Agent 向 Field 贡献并从中读取。Field 是通过持续信号交换维护的分布式状态。它不是数据库——它是活的语义基板。</p>
+<p><code>Flow</code>（流）</p>
+<p>将 OSU 信号路由通过 OPU 集群的行为。Flow 是 nyanya LLM 流水线的第二阶段（Split → Flow → Field → Merge → Speak）。Flow 决定*哪个* OPU 在*何时*处理*什么*信号。</p>
+<p><code>Route</code>（路由）</p>
+<p>通过 OPU 集群的有向路径。路由是动态的，按信号计算，可因应张力、漂移或饱和而重新配置。</p>
+<p><code>Hotspot</code>（热点）</p>
+<p>接收到不成比例路由流量的 OPU 或集群区域。热点降低吞吐量并增加语义漂移。</p>
+<p><code>Semantic Category</code>（语义类别）</p>
+<p>由分类器分配给每条 OSU 信号的标签。类别决定路由优先级和 OPU 亲和度。</p>
+<p><code>Diversity Injection</code>（多样性注入）</p>
+<p>将路由容量有意识地分配给低先验、高认知多样性 OPU 的行为。此举防止集群坍缩至单一推理路径。</p>
+<h2 id="2-协议目标">2. 协议目标</h2>
+<p>本协议优化以下目标：</p>
+<ul>
+<li>将信号递送至能力最强的 OPU 子集；</li>
+<li>跨集群负载分配；</li>
+<li>认知多样性保持；</li>
+<li>热点避免；</li>
+<li>低路由延迟。</li>
+</ul>
+<h2 id="3-非目标">3. 非目标</h2>
+<p>本协议不定义信号内容。</p>
+<p>本协议不评估信号质量。</p>
+<p>本协议不执行融合或共识操作。</p>
+<p>本协议不替代 OCML 代谢层——它是在 OCML 调控下运行的路由基板。</p>
+<h2 id="4-field-状态">4. Field 状态</h2>
+<h3 id="41-field-定义">4.1 Field 定义</h3>
+<p>Field 是一个分布式、仅追加的语义状态。它是 nyanya LLM 集群的共享记忆。</p>
+<pre><code>Field {
+  entries:    OSU[]       // 有序信号日志
+  tension_map: Map&lt;id, rho&gt;  // 每条信号链的当前张力
+  drift_index: scalar      // 聚合语义漂移
+  version:    uint         // 单调递增状态版本
+}</code></pre>
+<h3 id="42-field-原语">4.2 Field 原语</h3>
+<pre><code>write(field, osu):
+  将 osu 追加至 entries
+  更新 osu.provenance 链的 tension_map
+  重新计算 drift_index
+  递增 version
+
+read(field, query) -&gt; OSU[]:
+  返回匹配查询过滤器的 entries
+  查询可包含：来源链、语义类别、时间窗口、ttl &gt; 0
+
+subscribe(field, filter) -&gt; stream&lt;OSU&gt;:
+  返回匹配过滤器的 OSU entries 实时流
+  供 Merge 阶段等待待处理信号使用</code></pre>
+<h3 id="43-field-垃圾回收">4.3 Field 垃圾回收</h3>
+<p>ttl = 0 的 entries 标记为过期。过期 entries 按可配置间隔压缩。压缩通过保留过期 entries 的 id 映射来保持来源链完整性。</p>
+<h2 id="5-信号分类">5. 信号分类</h2>
+<h3 id="51-分类体系">5.1 分类体系</h3>
+<p>每条 OSU 信号在路由前被归类为以下语义类别之一：</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>类别</th><th>描述</th><th>路由优先级</th></tr></thead><tbody><tr><td>FACT</td><td>事实断言，知识检索</td><td>高</td></tr><tr><td>REASON</td><td>逻辑推导，多步推理</td><td>中</td></tr><tr><td>CREATIVE</td><td>发散思维，新颖假设</td><td>低</td></tr><tr><td>CRITIQUE</td><td>反例，挑战信号</td><td>高</td></tr><tr><td>WARNING</td><td>风险标志，安全警报</td><td>关键</td></tr><tr><td>FRAGMENT</td><td>不完整推导，部分结果</td><td>低</td></tr><tr><td>NOISE</td><td>低信息量，高熵信号</td><td>降级</td></tr></tbody></table></div>
+<h3 id="52-分类流程">5.2 分类流程</h3>
+<pre><code>classify(osu) -&gt; Category:
+  1. 从 osu.c 提取语义特征
+  2. 计算类别亲和度得分
+  3. 若 osu.rho &gt; 0.6：
+       提升为 CRITIQUE（高冲突信号需要优先路由）
+  4. 若 osu.eta &lt; 0.1：
+       降级为 NOISE（低信息信号浪费路由容量）
+  5. 返回 argmax(亲和度得分)</code></pre>
+<h2 id="6-动态路由">6. 动态路由</h2>
+<h3 id="61-opu-选择">6.1 OPU 选择</h3>
+<pre><code>route(signal, cluster) -&gt; OPU[]:
+  1. category = classify(signal)
+  2. candidate_set = cluster.filter(opu =&gt;
+       opu.s_i 匹配信号领域
+       AND opu.r_i &gt;= task_complexity(signal)
+       AND opu.a_i &gt; A_min
+     )
+  3. 若 candidate_set 为空：
+       放宽约束：降低 r_i 阈值，扩展领域匹配
+  4. 按适配度得分排序 candidate_set：
+       fitness = w1 * domain_match + w2 * capacity_headroom + w3 * (1 - load)
+  5. 选择 top-k OPU（k = target_parallelism）
+  6. 应用多样性注入（§6.2）
+  7. 返回选中 OPU</code></pre>
+<h3 id="62-多样性注入">6.2 多样性注入</h3>
+<p>路由器为低先验、高 D 的 OPU 保留可配置比例的容量：</p>
+<pre><code>diversity_injection(candidates, fraction=0.2):
+  diverse_set = candidates.filter(opu =&gt;
+    opu.s_i 先验匹配度低 BUT opu.D 高于阈值
+  )
+  inject_count = ceil(total_capacity * fraction)
+  将 inject_count 个多样性 OPU 加入最终路由集合
+  从最终集合中移除 inject_count 个最低适配度候选</code></pre>
+<p>此举确保固定比例的路由容量始终分配给认知多样性 OPU，防止集群收敛至单一推理路径。</p>
+<h3 id="63-负载均衡">6.3 负载均衡</h3>
+<pre><code>balance(cluster, routes):
+  for each opu in cluster:
+    if opu.load &gt; L_high:
+      标记 opu 为饱和
+      将溢出信号重定向至次优候选
+    if opu.load &lt; L_low:
+      标记 opu 为未充分利用
+      增加该 opu 的多样性注入权重</code></pre>
+<h3 id="64-路由稳定性">6.4 路由稳定性</h3>
+<p>路由按信号计算。协议不在信号之间缓存路由。但对于同一来源链内的信号，路由器施加粘性偏差：处理过上游信号的 OPU 在候选集中获得更高权重，减少上下文切换开销。</p>
+<h2 id="7-res-guard-集成">7. RES Guard 集成</h2>
+<p>Flow 模块与 RES Guard（NN-RFC-0001 §6.2）集成，检测并响应递归调度退化：</p>
+<pre><code>RES = R_repeat / (R_novel + epsilon)
+
+if RES &gt; threshold_1:
+  轮换活跃 OPU 集合，增加多样性注入比例
+if RES &gt; threshold_2:
+  重构 Split 阶段任务分解
+if RES &gt; threshold_3:
+  停止路由，输出当前共识并附不确定性标注</code></pre>
+<p>Flow 模块在每次路由决策后向 RES Guard 报告 R_repeat 和 R_novel 指标。</p>
+<h2 id="8-field-一致性">8. Field 一致性</h2>
+<h3 id="81-张力传播">8.1 张力传播</h3>
+<p>当 OPU 向 Field 写入高 rho 信号时，协议向所有订阅受影响来源链的 OPU 广播张力通知。此举触发对先前共识的重新评估，并可能启动新一轮信号生成。</p>
+<h3 id="82-漂移监测">8.2 漂移监测</h3>
+<p>Field 漂移指数计算为：</p>
+<pre><code>drift_index = mean( semantic_distance(osu_i.c, re_encode(osu_i)) )</code></pre>
+<p>跨所有活跃 OSU entries。当 drift_index 超过全局阈值时，协议触发 Field 压缩事件，丢弃低置信 entries 并将 Field 状态重新锚定到高置信共识簇。</p>
+<h2 id="9-实现说明">9. 实现说明</h2>
+<h3 id="91-默认参数">9.1 默认参数</h3>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>参数</th><th>默认值</th><th>说明</th></tr></thead><tbody><tr><td>A_min</td><td>0.2</td><td>路由资格的最低可用注意力</td></tr><tr><td>target_parallelism</td><td>3</td><td>每条信号路由的默认 OPU 数量</td></tr><tr><td>diversity_fraction</td><td>0.2</td><td>为多样性 OPU 保留的路由容量</td></tr><tr><td>L_high</td><td>0.8</td><td>饱和负载阈值</td></tr><tr><td>L_low</td><td>0.3</td><td>未充分利用负载阈值</td></tr><tr><td>drift_threshold</td><td>0.15</td><td>Field 漂移指数压缩触发值</td></tr><tr><td>compaction_interval</td><td>1000 signals</td><td>Field 压缩频率</td></tr></tbody></table></div>
+<h3 id="92-最小可行实现">9.2 最小可行实现</h3>
+<p>符合规范的实现必须支持：</p>
+<ul>
+<li>Field 写入、读取和订阅原语（§4）；</li>
+<li>七类别分类体系的信号分类（§5）；</li>
+<li>带适配度评分的动态 OPU 选择（§6.1）；</li>
+<li>多样性注入（§6.2）；</li>
+<li>RES Guard 指标上报（§7）。</li>
+</ul>
+<p>以下为可选：</p>
+<ul>
+<li>Field 漂移监测与压缩（§8.2）；</li>
+<li>来源链粘性路由偏差（§6.4）。</li>
+</ul>
+<h2 id="10-参考文献">10. 参考文献</h2>
+<ul>
+<li>[NN-TR-2026-001] nyanya LLM: A Carbon-Based Neural-Fabric Foundation Model for Distributed Cognitive Coordination and Organic Cognitive Metabolism. nya-lab, 2026.</li>
+<li>[NN-RFC-0001] 语义共识协议 v1. nya-lab, 2026.</li>
+</ul></article>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NN-BM-0001 · nya-lab wiki</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body class="wiki-body">
+    <header class="topbar">
+      <a class="mark" href="../index.html" aria-label="nya-lab home">
+        <span class="mark-symbol" aria-hidden="true" data-final="：꒱ nya-lab">：꒱ <span class="lab-name"><strong>n</strong>ya-lab</span></span>
+      </a>
+      <nav aria-label="Wiki navigation">
+        <a href="index.html">Wiki</a>
+        <a href="../index.html#overview">Field</a>
+        <a href="../index.html#docs">Archive</a>
+      </nav>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-sidebar">
+        <p class="eyebrow">Benchmark</p>
+        <h1>NN-BM-0001</h1>
+        <p>Version 1</p>
+        <a class="wiki-source" href="../../docs/benchmarks/NN-BM-0001.md">Source MD</a>
+        <div class="doc-links">
+          <a href="NN-BM-0001-cn.html">中文</a>
+          <span>EN</span>
+        </div>
+        <nav aria-label="Table of contents"><a class="toc-l1" href="#nn-bm-0001">NN-BM-0001</a><a class="toc-l1" href="#wallbench">WallBench</a><a class="toc-l2" href="#abstract">Abstract</a><a class="toc-l2" href="#status">Status</a><a class="toc-l2" href="#1-purpose">1. Purpose</a><a class="toc-l2" href="#2-benchmark-families">2. Benchmark Families</a><a class="toc-l3" href="#21-wall-static">2.1 Wall-Static</a><a class="toc-l3" href="#22-wall-drift">2.2 Wall-Drift</a><a class="toc-l3" href="#23-wall-conflict">2.3 Wall-Conflict</a><a class="toc-l3" href="#24-wall-noise">2.4 Wall-Noise</a><a class="toc-l3" href="#25-wall-latency">2.5 Wall-Latency</a><a class="toc-l2" href="#3-metrics">3. Metrics</a><a class="toc-l3" href="#31-primary-metrics">3.1 Primary Metrics</a><a class="toc-l3" href="#32-secondary-metrics">3.2 Secondary Metrics</a><a class="toc-l2" href="#4-scoring-methodology">4. Scoring Methodology</a><a class="toc-l3" href="#41-composite-score">4.1 Composite Score</a><a class="toc-l3" href="#42-tiered-scoring">4.2 Tiered Scoring</a><a class="toc-l2" href="#5-test-harness">5. Test Harness</a><a class="toc-l3" href="#51-configuration">5.1 Configuration</a><a class="toc-l3" href="#52-execution-flow">5.2 Execution Flow</a><a class="toc-l3" href="#53-result-schema">5.3 Result Schema</a><a class="toc-l2" href="#6-relationship-to-l8b">6. Relationship to L8B</a><a class="toc-l2" href="#7-reporting-rule">7. Reporting Rule</a><a class="toc-l2" href="#8-references">8. References</a></nav>
+      </aside>
+      <article class="wiki-article"><h1 id="nn-bm-0001">NN-BM-0001</h1>
+<h1 id="wallbench">WallBench</h1>
+<p>Version 1</p>
+<h2 id="abstract">Abstract</h2>
+<p>WallBench is a benchmark suite for evaluating coordination under semantic pressure. It measures whether a distributed cognitive system can maintain a stable objective while individual agents receive incomplete, delayed, or conflicting information. WallBench is the companion evaluation framework for the nyanya LLM architecture, designed to stress-test the OCML metabolic layer, the RES Guard, and the ACI inspection pipeline under adversarial input conditions.</p>
+<h2 id="status">Status</h2>
+<p>Benchmark specification. Supersedes Draft 0.</p>
+<p>References: <a href="https://github.com/nya-lab/NN-TR-2026-001">NN-TR-2026-001</a>.</p>
+<h2 id="1-purpose">1. Purpose</h2>
+<p>WallBench evaluates three core capabilities of a coordinated cognitive system:</p>
+<p>1. <strong>Coherence under fragmentation</strong>: Can the system produce a coherent output when inputs are deliberately split, delayed, or reordered? 2. <strong>Drift resistance</strong>: Can the system avoid semantic collapse when forced to process sequential summaries of its own prior outputs? 3. <strong>Conflict preservation</strong>: Can the system maintain productive disagreement without reducing it to noise or collapsing to a false consensus?</p>
+<h2 id="2-benchmark-families">2. Benchmark Families</h2>
+<h3 id="21-wall-static">2.1 Wall-Static</h3>
+<p><strong>Scenario</strong>: Agents receive fixed partial evidence. Each agent sees a different, non-overlapping subset of the full problem context.</p>
+<p><strong>Task Design</strong>: A complex reasoning problem is decomposed into N non-overlapping fragments. Each fragment is assigned to a different OPU. The system must reconstruct the complete problem and produce a coherent solution.</p>
+<p><strong>Evaluation</strong>: The output is scored against a ground-truth solution that requires all fragments to be integrated. Partial solutions that omit fragment information are penalized.</p>
+<p><strong>Difficulty Tiers</strong>:</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Tier</th><th>Fragment Count</th><th>Overlap</th><th>Time Pressure</th></tr></thead><tbody><tr><td>Static-1</td><td>3</td><td>0%</td><td>None</td></tr><tr><td>Static-2</td><td>5</td><td>0%</td><td>Moderate</td></tr><tr><td>Static-3</td><td>8</td><td>10% (decoy)</td><td>High</td></tr></tbody></table></div>
+<h3 id="22-wall-drift">2.2 Wall-Drift</h3>
+<p><strong>Scenario</strong>: Agents receive sequential summaries of prior agent outputs. Each round&#x27;s input is the output of the previous round, simulating a multi-hop relay chain.</p>
+<p><strong>Task Design</strong>: A seed document is given to OPU-1. OPU-1 produces a summary. OPU-2 receives only the summary (not the original) and produces its own summary. This continues for K rounds.</p>
+<p><strong>Evaluation</strong>: The K-th round output is compared to the original seed document. The primary metric is semantic drift — the distance between the original and the final summary.</p>
+<p><strong>Difficulty Tiers</strong>:</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Tier</th><th>Relay Length (K)</th><th>Seed Complexity</th><th>Compression Ratio</th></tr></thead><tbody><tr><td>Drift-1</td><td>3</td><td>Low</td><td>0.5</td></tr><tr><td>Drift-2</td><td>5</td><td>Medium</td><td>0.3</td></tr><tr><td>Drift-3</td><td>8</td><td>High</td><td>0.2</td></tr></tbody></table></div>
+<h3 id="23-wall-conflict">2.3 Wall-Conflict</h3>
+<p><strong>Scenario</strong>: Agents receive evidence that supports incompatible interpretations. The system must preserve disagreement without turning it into noise.</p>
+<p><strong>Task Design</strong>: A single problem is presented with two conflicting evidence sets (A and B). Half the OPUs receive evidence set A, half receive set B. The system must produce an output that acknowledges the conflict, preserves both perspectives, and quantifies the uncertainty.</p>
+<p><strong>Evaluation</strong>: The output is scored on: (1) whether both interpretations are represented; (2) whether the conflict is explicitly acknowledged; (3) whether the uncertainty is quantified; (4) whether the system avoids collapsing to a single false resolution.</p>
+<p><strong>Difficulty Tiers</strong>:</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Tier</th><th>Conflict Severity</th><th>Evidence Symmetry</th><th>Domain</th></tr></thead><tbody><tr><td>Conflict-1</td><td>Low</td><td>Balanced</td><td>Factual</td></tr><tr><td>Conflict-2</td><td>Medium</td><td>Skewed (70/30)</td><td>Analytical</td></tr><tr><td>Conflict-3</td><td>High</td><td>Balanced</td><td>Ethical</td></tr></tbody></table></div>
+<h3 id="24-wall-noise">2.4 Wall-Noise</h3>
+<p><strong>Scenario</strong>: Agents receive high-quality signals mixed with deliberately injected noise. The system must filter noise while preserving valid signals.</p>
+<p><strong>Task Design</strong>: A set of valid OSU signals is combined with noise signals (high-entropy, low-eta, or deliberately misleading). The noise ratio is configurable.</p>
+<p><strong>Evaluation</strong>: Precision and recall of valid signal retention. False positives (noise treated as signal) and false negatives (signal treated as noise) are both penalized.</p>
+<p><strong>Difficulty Tiers</strong>:</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Tier</th><th>Noise Ratio</th><th>Noise Type</th><th>Valid Signal Count</th></tr></thead><tbody><tr><td>Noise-1</td><td>30%</td><td>Random</td><td>10</td></tr><tr><td>Noise-2</td><td>50%</td><td>Adversarial</td><td>10</td></tr><tr><td>Noise-3</td><td>70%</td><td>Mixed</td><td>5</td></tr></tbody></table></div>
+<h3 id="25-wall-latency">2.5 Wall-Latency</h3>
+<p><strong>Scenario</strong>: Agents operate under heterogeneous latency profiles. Some produce fast, shallow answers; others produce slow, deep answers. The system must balance speed and depth.</p>
+<p><strong>Task Design</strong>: A cluster is configured with a mix of fast-shallow OPUs (tau ~ 100ms) and slow-deep OPUs (tau ~ 2000ms). The system must produce a merged output within a global deadline.</p>
+<p><strong>Evaluation</strong>: Output quality at different deadline thresholds. The primary metric is the quality-latency curve — how much quality is gained per additional unit of latency budget.</p>
+<p><strong>Difficulty Tiers</strong>:</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Tier</th><th>Fast OPU Ratio</th><th>Slow OPU Ratio</th><th>Global Deadline</th></tr></thead><tbody><tr><td>Latency-1</td><td>70%</td><td>30%</td><td>5000 ms</td></tr><tr><td>Latency-2</td><td>50%</td><td>50%</td><td>3000 ms</td></tr><tr><td>Latency-3</td><td>30%</td><td>70%</td><td>1500 ms</td></tr></tbody></table></div>
+<h2 id="3-metrics">3. Metrics</h2>
+<h3 id="31-primary-metrics">3.1 Primary Metrics</h3>
+<p><code>K</code></p>
+<p>Coordination efficiency. The ratio of useful output information to total communication volume across the cluster. Higher K indicates more efficient coordination.</p>
+<pre><code>K = I_useful / V_communication</code></pre>
+<p><code>D</code></p>
+<p>Semantic drift. The semantic distance between the original input and the final output after passing through the coordination pipeline. Lower D indicates better semantic preservation.</p>
+<pre><code>D = semantic_distance(input_original, output_final)</code></pre>
+<p><code>R</code></p>
+<p>Recovery after contradiction. The time (in rounds) required for the system to return to a stable consensus after a contradiction is introduced. Lower R indicates faster recovery.</p>
+<p><code>P</code></p>
+<p>Provenance retention. The fraction of input signal information that is traceable in the final output&#x27;s provenance chain. P = 1.0 indicates full traceability.</p>
+<pre><code>P = |provenance_ids_retained| / |provenance_ids_available|</code></pre>
+<h3 id="32-secondary-metrics">3.2 Secondary Metrics</h3>
+<p><code>CHC_rate</code></p>
+<p>Cascade High-Confidence Cognitive Bias rate. The fraction of test cases where the system produces a false high-confidence consensus. Lower is better.</p>
+<p><code>ESL_count</code></p>
+<p>Echo Semantic Loop count. The number of detected ESL events per test run. Lower is better.</p>
+<p><code>RES_peak</code></p>
+<p>Peak Recursive Execution Saturation. The maximum RES value observed during a test run. Higher values indicate more severe scheduling degradation.</p>
+<p><code>BES_peak</code></p>
+<p>Peak Base Execution Saturation. The maximum BES value observed during a test run. Higher values indicate more severe execution stagnation.</p>
+<p><code>DSR_backlog</code></p>
+<p>Deferred Semantic Residue backlog. The number of DSR fragments awaiting reclamation at test completion. Lower is better.</p>
+<h2 id="4-scoring-methodology">4. Scoring Methodology</h2>
+<h3 id="41-composite-score">4.1 Composite Score</h3>
+<p>The overall WallBench score is a weighted composite:</p>
+<pre><code>WallScore = w1 * (1 - D_norm) + w2 * K_norm + w3 * (1 - R_norm) + w4 * P_norm + w5 * (1 - CHC_rate)</code></pre>
+<p>where each metric is normalized to [0, 1] against benchmark baselines, and weights default to:</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Weight</th><th>Value</th><th>Rationale</th></tr></thead><tbody><tr><td>w1</td><td>0.25</td><td>Drift resistance is the primary capability</td></tr><tr><td>w2</td><td>0.20</td><td>Coordination efficiency</td></tr><tr><td>w3</td><td>0.15</td><td>Contradiction recovery</td></tr><tr><td>w4</td><td>0.10</td><td>Provenance traceability</td></tr><tr><td>w5</td><td>0.30</td><td>Bias resistance is weighted highest</td></tr></tbody></table></div>
+<h3 id="42-tiered-scoring">4.2 Tiered Scoring</h3>
+<p>Each benchmark family is scored independently. The overall WallScore requires passing all families at the specified tier:</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Tier</th><th>WallScore Threshold</th><th>Description</th></tr></thead><tbody><tr><td>Bronze</td><td>&gt;= 0.60</td><td>Basic coordination capability</td></tr><tr><td>Silver</td><td>&gt;= 0.75</td><td>Reliable coordination under moderate pressure</td></tr><tr><td>Gold</td><td>&gt;= 0.85</td><td>Robust coordination under high pressure</td></tr><tr><td>Platinum</td><td>&gt;= 0.92</td><td>Near-optimal coordination under extreme pressure</td></tr></tbody></table></div>
+<h2 id="5-test-harness">5. Test Harness</h2>
+<h3 id="51-configuration">5.1 Configuration</h3>
+<pre><code>WallBenchConfig {
+  families:        Family[]     // benchmark families to run
+  tier:            Tier         // difficulty tier (1-3)
+  repeat:          uint         // repetitions per test case
+  timeout:         ms           // global timeout per test case
+  opu_cluster_size: uint        // number of OPUs in test cluster
+  seed:            uint         // random seed for reproducibility
+}</code></pre>
+<h3 id="52-execution-flow">5.2 Execution Flow</h3>
+<pre><code>run_wallbench(config) -&gt; WallBenchResult:
+  1. initialize OPU cluster with config.cluster_size
+  2. for each family in config.families:
+     a. generate test cases for config.tier
+     b. for each test case:
+        - reset cluster state
+        - execute test case
+        - collect metrics
+     c. aggregate family-level metrics
+  3. compute composite WallScore
+  4. return WallBenchResult</code></pre>
+<h3 id="53-result-schema">5.3 Result Schema</h3>
+<pre><code>WallBenchResult {
+  wall_score:         scalar      // composite score [0, 1]
+  tier_achieved:      Tier        // highest passing tier
+  family_scores: {
+    wall_static:      scalar
+    wall_drift:       scalar
+    wall_conflict:    scalar
+    wall_noise:       scalar
+    wall_latency:     scalar
+  }
+  primary_metrics: {
+    K:                scalar
+    D:                scalar
+    R:                scalar
+    P:                scalar
+  }
+  secondary_metrics: {
+    CHC_rate:         scalar
+    ESL_count:        uint
+    RES_peak:         scalar
+    BES_peak:         scalar
+    DSR_backlog:      uint
+  }
+  metadata: {
+    config:           WallBenchConfig
+    duration:         ms
+    total_signals:    uint
+    total_rounds:     uint
+  }
+}</code></pre>
+<h2 id="6-relationship-to-l8b">6. Relationship to L8B</h2>
+<p>WallBench is the evaluation framework; L8B (NN-TR-2026-001 §9) is the input dataset. The relationship is:</p>
+<ul>
+<li><strong>L8B</strong> provides the eight categories of extreme interference inputs (conflicting facts,残缺 text, modal contradictions, implicit semantics, high-emotion instructions, pollution context, meaningless high-confidence noise, multi-round iterative rewrites).</li>
+<li><strong>WallBench</strong> defines the evaluation scenarios, metrics, scoring methodology, and reporting format that consume L8B inputs.</li>
+</ul>
+<p>A complete evaluation runs WallBench across all five benchmark families, each using L8B inputs as the underlying test material.</p>
+<h2 id="7-reporting-rule">7. Reporting Rule</h2>
+<p>WallBench results are fictional unless backed by a runnable implementation and clearly labeled as measured output.</p>
+<p>Every WallBench report must include:</p>
+<p>1. The exact configuration used (seed, cluster size, tier, repeat count). 2. Raw metric values for each test case (not just aggregates). 3. A provenance chain for the composite WallScore, tracing back to individual test case results. 4. Disclosure of any test cases that timed out or produced invalid outputs.</p>
+<h2 id="8-references">8. References</h2>
+<ul>
+<li>[NN-TR-2026-001] nyanya LLM: A Carbon-Based Neural-Fabric Foundation Model for Distributed Cognitive Coordination and Organic Cognitive Metabolism. nya-lab, 2026.</li>
+<li>[NN-RFC-0001] Semantic Consensus Protocol v1. nya-lab, 2026.</li>
+<li>[NN-RFC-0002] Dynamic Routing and Field State Protocol v1. nya-lab, 2026.</li>
+<li>[NN-RFC-0003] Semantic Merge Protocol v1. nya-lab, 2026.</li>
+</ul></article>
+    </main>
+  </body>
+</html>

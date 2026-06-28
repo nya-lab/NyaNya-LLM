@@ -1,24 +1,24 @@
-# Vallace Project Constitution v1.0
+# nyanya LLM Project Constitution v1.0
 
-## 1. Everything must look real.
+## 1. Public artifacts read like institutional work.
 
-All public artifacts should read like serious institutional work.
+All public-facing materials should maintain the register of serious research output.
 
-## 2. Never explain the joke.
+## 2. The work should remain dry, precise, and self-contained.
 
-The work should remain dry, precise, and self-contained.
+Prefer economy of language. Let the content speak for itself.
 
-## 3. Every diagram could appear in Nature.
+## 3. Visual systems should be restrained, legible, and publication-grade.
 
-Visual systems should be restrained, legible, and publication-grade.
+Every diagram should be clear, well-structured, and suitable for archival presentation.
 
-## 4. Every equation should look publishable.
+## 4. Every equation should be well-formed.
 
-Mathematical notation must clarify the fiction rather than decorate it.
+Mathematical notation must clarify the research, not decorate it.
 
-## 5. Every reference must be real.
+## 5. Every reference must be verifiable.
 
-Fictional claims may exist. Fictional citations must not.
+All citations must point to real, retrievable works.
 
 ## 6. Every repository should compile.
 
@@ -28,24 +28,20 @@ If code is included, it must run.
 
 The public surface must remain shippable.
 
-## 8. Every model should answer consistently.
+## 8. All generated material should be consistent with the nyanya LLM research agenda.
 
-All generated material should preserve the Vallace premise.
+Artifacts across the project should align with the core research direction.
 
 ## 9. Never waste words.
 
 One sentence is preferred when one sentence is enough.
 
-## 10. Respect reality. Satirize ideas, not facts.
+## 10. Research integrity.
 
-Vallace is academic satire and an alternate-reality AI lab. It may invent
-systems, protocols, labs, and internal reports. It must not falsify real
-experiments, impersonate real research institutions, or imply fictional results
-have been validated outside the Vallace universe.
+nyanya LLM may introduce novel systems, protocols, and models as part of its research program. All claims must be grounded in the nyanya LLM framework. External validation claims must be clearly scoped.
 
 ## Internal Style
 
 No ChatGPT style.
 
-Use the register of technical reports, RFCs, research notes, and institutional
-archives. Keep names short. Prefer Apple + Bell Labs + RFC.
+Use the register of technical reports, RFCs, research notes, and institutional archives. Keep names short. Prefer Apple + Bell Labs + RFC.

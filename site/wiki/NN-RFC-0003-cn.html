@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NN-RFC-0003 · nya-lab wiki</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body class="wiki-body">
+    <header class="topbar">
+      <a class="mark" href="../index.html#console" aria-label="nya-lab home">
+        <span class="mark-symbol" aria-hidden="true" data-final="：꒱ nya-lab">：꒱ <span class="lab-name"><strong>n</strong>ya-lab</span></span>
+      </a>
+      <nav aria-label="Wiki navigation">
+        <a href="index.html">Wiki</a>
+        <a href="../index.html#field">Field</a>
+        <a href="../index.html#archive">Archive</a>
+      </nav>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-sidebar">
+        <p class="eyebrow">协议</p>
+        <h1>NN-RFC-0003</h1>
+        <p>Version 1</p>
+        <a class="wiki-source" href="../../docs/rfc/NN-RFC-0003-cn.md">源文件</a>
+        <p class="lang-switch"><span>中文</span> | <a href="NN-RFC-0003.html">EN</a></p>
+        <nav aria-label="Table of contents"><a class="toc-l1" href="#nn-rfc-0003">NN-RFC-0003</a><a class="toc-l1" href="#语义融合协议">语义融合协议</a><a class="toc-l2" href="#摘要">摘要</a><a class="toc-l2" href="#状态">状态</a><a class="toc-l2" href="#1-术语">1. 术语</a><a class="toc-l2" href="#2-协议目标">2. 协议目标</a><a class="toc-l2" href="#3-非目标">3. 非目标</a><a class="toc-l2" href="#4-融合流水线">4. 融合流水线</a><a class="toc-l3" href="#41-流水线阶段">4.1 流水线阶段</a><a class="toc-l3" href="#42-collect-阶段">4.2 Collect 阶段</a><a class="toc-l3" href="#43-group-阶段">4.3 Group 阶段</a><a class="toc-l2" href="#5-加权共识">5. 加权共识</a><a class="toc-l3" href="#51-链级融合">5.1 链级融合</a><a class="toc-l3" href="#52-跨链合成">5.2 跨链合成</a><a class="toc-l3" href="#53-有损压缩声明">5.3 有损压缩声明</a><a class="toc-l2" href="#6-aci-对抗性审查">6. ACI 对抗性审查</a><a class="toc-l3" href="#61-审查流水线">6.1 审查流水线</a><a class="toc-l3" href="#62-审查维度">6.2 审查维度</a><a class="toc-l3" href="#63-审查结果">6.3 审查结果</a><a class="toc-l2" href="#7-失效模式检测">7. 失效模式检测</a><a class="toc-l3" href="#71-chc-检测">7.1 CHC 检测</a><a class="toc-l3" href="#72-esl-检测">7.2 ESL 检测</a><a class="toc-l2" href="#8-dsr-延迟语义残留">8. DSR 延迟语义残留</a><a class="toc-l3" href="#81-残留分类">8.1 残留分类</a><a class="toc-l3" href="#82-批量回收">8.2 批量回收</a><a class="toc-l2" href="#9-融合可逆性">9. 融合可逆性</a><a class="toc-l2" href="#10-实现说明">10. 实现说明</a><a class="toc-l3" href="#101-默认参数">10.1 默认参数</a><a class="toc-l3" href="#102-最小可行实现">10.2 最小可行实现</a><a class="toc-l2" href="#11-参考文献">11. 参考文献</a></nav>
+      </aside>
+      <article class="wiki-article"><h1 id="nn-rfc-0003">NN-RFC-0003</h1>
+<h1 id="语义融合协议">语义融合协议</h1>
+<p>Version 1</p>
+<h2 id="摘要">摘要</h2>
+<p>语义融合协议定义了 nyanya LLM Agent 如何将部分 OSU 解释聚合、协调和合成为协调共识状态。本协议规定了融合流程、张力保留规则、ACI 对抗性审查流水线、CHC 与 ESL 失效模式检测，以及 DSR 延迟残留处理。本协议是 NN-RFC-0001 §5 中融合规则的执行层。</p>
+<h2 id="状态">状态</h2>
+<p>协议规范。</p>
+<p>参考文献：<a href="https://github.com/nya-lab/NN-TR-2026-001">NN-TR-2026-001</a>，<a href="https://github.com/nya-lab/NN-RFC-0001">NN-RFC-0001</a>。</p>
+<h2 id="1-术语">1. 术语</h2>
+<p><code>Merge</code>（融合）</p>
+<p>将张力消解为协调状态的行为。Merge 是 nyanya LLM 流水线的第四阶段（Split → Flow → Field → Merge → Speak）。一次有效的融合应当保留未消解的张力，声明有损压缩，并允许结果状态被挑战。</p>
+<p><code>Consensus Cluster</code>（共识簇）</p>
+<p>共享来源链且已收敛至兼容解释的一组 OSU 信号。共识簇不是最终答案——它是可被未来信号挑战的候选状态。</p>
+<p><code>Tension Preservation</code>（张力保留）</p>
+<p>未消解的分歧必须在融合输出中继续传递的规则。张力不被消除，而是编码在输出 OSU 的 rho 字段中。</p>
+<p><code>CHC</code>（碳基级联认知偏差）</p>
+<p>Cascade High-Confidence Cognitive Bias。一种失效模式：多个 OPU 基于共享的缺陷先验达到统一的高置信共识。CHC 比单单元偏差更危险，因为群体置信度掩盖了底层逻辑缺陷。</p>
+<p><code>ESL</code>（回声语义闭环）</p>
+<p>Echo Semantic Loop。一种失效模式：OPU 之间反复循环相似表述，产生不断扩展的文本但新增有效信息趋近于零。ESL 由认知多样性密度 D 严重过低引发。</p>
+<p><code>DSR</code>（延迟语义残留）</p>
+<p>Deferred Semantic Residue。无法即时整合到共识中的碎片语义。DSR 存储在 NLB 缓冲池中，等待延迟批量回收。</p>
+<h2 id="2-协议目标">2. 协议目标</h2>
+<p>本协议优化以下目标：</p>
+<ul>
+<li>从异构输入中计算加权共识；</li>
+<li>可追溯的分歧保留；</li>
+<li>CHC 与 ESL 失效模式检测；</li>
+<li>可逆融合决策；</li>
+<li>高张力场景下的优雅降级。</li>
+</ul>
+<h2 id="3-非目标">3. 非目标</h2>
+<p>本协议不判定任何信号的真值。</p>
+<p>本协议不保证所有张力都将被消解。</p>
+<p>本协议不定义 Speak 阶段输出格式。</p>
+<p>本协议不管理 OPU 生命周期或路由——这些由 Flow 和 OCML 处理。</p>
+<h2 id="4-融合流水线">4. 融合流水线</h2>
+<h3 id="41-流水线阶段">4.1 流水线阶段</h3>
+<pre><code>Merge Pipeline:
+  Collect → Group → Weight → Fuse → Inspect → Output</code></pre>
+<p>1. <strong>Collect</strong>：从 Field 收集当前任务窗口的所有 OSU 信号。2. <strong>Group</strong>：按来源链对信号分区。3. <strong>Weight</strong>：在每条链内计算加权共识。4. <strong>Fuse</strong>：从链级结果组合统一输出 OSU。5. <strong>Inspect</strong>：对融合输出执行 ACI 对抗性审查。6. <strong>Output</strong>：将融合后的 OSU 写入 Field，若审查未通过则延迟至 NLB。</p>
+<h3 id="42-collect-阶段">4.2 Collect 阶段</h3>
+<pre><code>collect(field, task_window) -&gt; OSU[]:
+  return field.read({
+    time_window: task_window,
+    ttl &gt; 0,
+    category != NOISE
+  })</code></pre>
+<p>NOISE 类别信号被排除在融合输入之外，以防止稀释共识质量。</p>
+<h3 id="43-group-阶段">4.3 Group 阶段</h3>
+<pre><code>group(signals) -&gt; Map&lt;provenance_chain, OSU[]&gt;:
+  chains = {}
+  for signal in signals:
+    chain_id = hash(signal.provenance)
+    chains[chain_id].append(signal)
+  return chains</code></pre>
+<p>无来源的信号（Split 阶段的根信号）形成各自的单例链。</p>
+<h2 id="5-加权共识">5. 加权共识</h2>
+<h3 id="51-链级融合">5.1 链级融合</h3>
+<p>对每条来源链，融合流程计算加权共识：</p>
+<pre><code>merge_chain(signals: OSU[]) -&gt; ChainResult:
+  consensus = Σ(omega_i * c_i) / Σ(omega_i)
+  residual_tension = max(rho_i) 跨输入
+  chain_confidence = harmonic_mean(omega_i)
+  information_gain = max(0, eta_current - eta_previous)
+
+  if residual_tension &gt; T_threshold:
+    return ChainResult {
+      consensus: consensus,
+      confidence: chain_confidence * (1 - residual_tension),
+      tension: residual_tension,
+      status: PENDING_INSPECTION
+    }
+  else:
+    return ChainResult {
+      consensus: consensus,
+      confidence: chain_confidence,
+      tension: residual_tension,
+      status: ACCEPTED
+    }</code></pre>
+<h3 id="52-跨链合成">5.2 跨链合成</h3>
+<pre><code>fuse(chain_results: ChainResult[]) -&gt; OSU:
+  1. 跨链聚合共识：
+       final_c = weighted_average(chain_results, weight=confidence)
+  2. final_omega = mean(chain_results.confidence)
+  3. final_rho = max(chain_results.tension)
+  4. final_eta = information_gain(
+       final_c,
+       previous_consensus_state
+     )
+  5. provenance = collect all input signal ids
+  6. return OSU {
+       c: final_c,
+       omega: final_omega,
+       tau: merge_computation_time,
+       rho: final_rho,
+       eta: final_eta,
+       provenance: provenance,
+       ttl: default_ttl
+     }</code></pre>
+<h3 id="53-有损压缩声明">5.3 有损压缩声明</h3>
+<p>若融合从输入信号中移除或抽象了任何信息，输出 OSU 必须在其 <code>c</code> 字段中包含压缩标注：</p>
+<pre><code>compression: {
+  original_signal_count: N,
+  merged_signal_count: 1,
+  compression_ratio: 1/N,
+  dropped_categories: [被丢弃的语义类别列表]
+}</code></pre>
+<p>此声明确保下游消费者能够评估融合带来的信息损失。</p>
+<h2 id="6-aci-对抗性审查">6. ACI 对抗性审查</h2>
+<h3 id="61-审查流水线">6.1 审查流水线</h3>
+<pre><code>inspect(merged_osu: OSU, input_signals: OSU[]) -&gt; InspectionResult:
+  contradiction_score = measure_contradiction(merged_osu, input_signals)
+  blindspot_score = detect_blindspots(merged_osu, input_signals)
+  fragility_score = test_fragility(merged_osu, input_signals)
+
+  A = max(contradiction_score, blindspot_score, fragility_score)
+
+  if A &gt; A_safety_threshold:
+    return InspectionResult {
+      passed: false,
+      score: A,
+      failure_reason: argmax(contradiction, blindspot, fragility)
+    }
+  else:
+    return InspectionResult {
+      passed: true,
+      score: A
+    }</code></pre>
+<h3 id="62-审查维度">6.2 审查维度</h3>
+<p><strong>矛盾度</strong>：衡量融合共识是否被任何输入信号所反驳。高矛盾度得分表明融合压制了有效的异议。</p>
+<pre><code>Contradiction(z) = max( semantic_distance(z.c, signal_i.c) * signal_i.omega )</code></pre>
+<p><strong>盲区度</strong>：检测融合共识是否遗漏了输入信号中存在但未出现在输出中的信息。</p>
+<pre><code>Blindspot(z) = 1 - (|information_retained| / |information_available|)</code></pre>
+<p><strong>脆弱度</strong>：测试融合共识在移除单个高权重输入信号后是否崩溃。高脆弱度表明过度依赖狭窄的证据基础。</p>
+<pre><code>Fragility(z) = 1 - (consensus_quality_without_top_signal / consensus_quality_with_all_signals)</code></pre>
+<h3 id="63-审查结果">6.3 审查结果</h3>
+<ul>
+<li><strong>通过（A &lt;= threshold）</strong>：融合输出被接受。写入 Field。</li>
+<li><strong>未通过（A &gt; threshold）</strong>：融合输出标记为 PENDING。路由至 NLB 缓冲池。请求更多差异化 OPU 信号。新信号到达后尝试二次收敛。</li>
+</ul>
+<h2 id="7-失效模式检测">7. 失效模式检测</h2>
+<h3 id="71-chc-检测">7.1 CHC 检测</h3>
+<p>CHC 在以下条件满足时被检测到：</p>
+<pre><code>CHC_condition = (
+  cluster_confidence &gt; C_high
+  AND prior_diversity &lt; D_low
+  AND contradiction_score &lt; epsilon
+)</code></pre>
+<p>具有极高置信度、低先验多样性和近乎零内部矛盾的集群为 CHC 候选。检测触发：</p>
+<ul>
+<li>立即执行 ACI 深度审查；</li>
+<li>强制多样性注入：向低先验、高 D 的 OPU 请求信号；</li>
+<li>降低当前共识的置信度。</li>
+</ul>
+<h3 id="72-esl-检测">7.2 ESL 检测</h3>
+<p>ESL 通过监测连续融合轮次的信息增益率来检测：</p>
+<pre><code>ESL_condition = (
+  consecutive_rounds_with_eta_below_threshold &gt; R_esl
+  AND cluster_cognitive_diversity D &lt; D_esl
+)</code></pre>
+<p>当 ESL 被检测到时：</p>
+<ul>
+<li>MCP 提升 EPG 探索权重；</li>
+<li>Flow 增加多样性注入比例；</li>
+<li>LAXI 回收冗余语义残留。</li>
+</ul>
+<h2 id="8-dsr-延迟语义残留">8. DSR 延迟语义残留</h2>
+<h3 id="81-残留分类">8.1 残留分类</h3>
+<p>无法即时整合的碎片语义归类为 DSR：</p>
+<pre><code>classify_residue(unmerged_fragments: OSU[]) -&gt; DSR[]:
+  for fragment in unmerged_fragments:
+    if fragment.eta &lt; eta_min:
+      标记为 LOW_VALUE —— 立即丢弃
+    else if fragment.rho &gt; rho_high:
+      标记为 HIGH_TENSION —— 保留供未来挑战
+    else:
+      标记为 INCOMPLETE —— 保留等待补充信号</code></pre>
+<h3 id="82-批量回收">8.2 批量回收</h3>
+<pre><code>reclaim_dsr(dsr_pool: DSR[], current_consensus: OSU) -&gt; void:
+  for dsr in dsr_pool:
+    age = now - dsr.arrival_time
+    if age &gt; max_retention:
+      丢弃 dsr
+    else if dsr 匹配 current_consensus 领域:
+      将 dsr 重新注入融合流水线
+    else:
+      保留 dsr 至下一周期</code></pre>
+<p>NLB 缓冲池定期执行批量回收，丢弃过期 DSR 并将相关片段重新注入融合流水线。</p>
+<h2 id="9-融合可逆性">9. 融合可逆性</h2>
+<p>每次融合操作都是可逆的。输出 OSU 的 provenance 字段包含完整的输入信号 id 集合。下游消费者可以：</p>
+<p>1. 从 Field 读取融合后的 OSU。2. 追溯其 provenance 获取所有输入信号。3. 使用不同参数或不同 OPU 集合重新执行融合。4. 通过向 Field 写入 critique 信号来挑战融合结果。</p>
+<p>此可逆性是协议"可被挑战的状态"保证的基础。</p>
+<h2 id="10-实现说明">10. 实现说明</h2>
+<h3 id="101-默认参数">10.1 默认参数</h3>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>参数</th><th>默认值</th><th>说明</th></tr></thead><tbody><tr><td>T_threshold</td><td>0.3</td><td>触发 ACI 审查的张力阈值</td></tr><tr><td>A_safety_threshold</td><td>0.5</td><td>ACI 综合得分安全阈值</td></tr><tr><td>C_high</td><td>0.85</td><td>CHC 检测的置信度阈值</td></tr><tr><td>D_low</td><td>0.2</td><td>CHC 检测的多样性阈值</td></tr><tr><td>R_esl</td><td>3</td><td>ESL 检测的连续低 eta 轮次</td></tr><tr><td>D_esl</td><td>0.3</td><td>ESL 检测的多样性阈值</td></tr><tr><td>eta_min</td><td>0.05</td><td>DSR 保留的最低 eta</td></tr><tr><td>rho_high</td><td>0.7</td><td>HIGH_TENSION DSR 的张力阈值</td></tr><tr><td>max_retention</td><td>600 s</td><td>DSR 最大保留时间</td></tr><tr><td>default_ttl</td><td>10</td><td>融合输出 OSU 的默认 TTL</td></tr></tbody></table></div>
+<h3 id="102-最小可行实现">10.2 最小可行实现</h3>
+<p>符合规范的实现必须支持：</p>
+<ul>
+<li>Collect、Group、Weight、Fuse 流水线阶段（§4）；</li>
+<li>带张力保留的链级加权共识（§5.1）；</li>
+<li>带压缩声明的跨链合成（§5.2–§5.3）；</li>
+<li>矛盾度、盲区度、脆弱度评分（§6.2）；</li>
+<li>ESL 检测（§7.2）。</li>
+</ul>
+<p>以下为可选：</p>
+<ul>
+<li>ACI 对抗性审查流水线（§6.1）；</li>
+<li>CHC 检测（§7.1）；</li>
+<li>DSR 分类与批量回收（§8）；</li>
+<li>融合可逆性支持（§9）。</li>
+</ul>
+<h2 id="11-参考文献">11. 参考文献</h2>
+<ul>
+<li>[NN-TR-2026-001] nyanya LLM: A Carbon-Based Neural-Fabric Foundation Model for Distributed Cognitive Coordination and Organic Cognitive Metabolism. nya-lab, 2026.</li>
+<li>[NN-RFC-0001] 语义共识协议 v1. nya-lab, 2026.</li>
+<li>[NN-RFC-0002] 动态路由与 Field 状态协议 v1. nya-lab, 2026.</li>
+</ul></article>
+    </main>
+  </body>
+</html>

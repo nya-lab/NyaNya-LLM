@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NN-RFC-0001 · nya-lab wiki</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body class="wiki-body">
+    <header class="topbar">
+      <a class="mark" href="../index.html#console" aria-label="nya-lab home">
+        <span class="mark-symbol" aria-hidden="true" data-final="：꒱ nya-lab">：꒱ <span class="lab-name"><strong>n</strong>ya-lab</span></span>
+      </a>
+      <nav aria-label="Wiki navigation">
+        <a href="index.html">Wiki</a>
+        <a href="../index.html#field">Field</a>
+        <a href="../index.html#archive">Archive</a>
+      </nav>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-sidebar">
+        <p class="eyebrow">协议</p>
+        <h1>NN-RFC-0001</h1>
+        <p>Version 1</p>
+        <a class="wiki-source" href="../../docs/rfc/NN-RFC-0001-cn.md">源文件</a>
+        <p class="lang-switch"><span>中文</span> | <a href="NN-RFC-0001.html">EN</a></p>
+        <nav aria-label="Table of contents"><a class="toc-l1" href="#nn-rfc-0001">NN-RFC-0001</a><a class="toc-l1" href="#语义共识协议">语义共识协议</a><a class="toc-l2" href="#摘要">摘要</a><a class="toc-l2" href="#状态">状态</a><a class="toc-l2" href="#1-术语">1. 术语</a><a class="toc-l2" href="#2-协议目标">2. 协议目标</a><a class="toc-l2" href="#3-非目标">3. 非目标</a><a class="toc-l2" href="#4-osu-消息格式">4. OSU 消息格式</a><a class="toc-l3" href="#41-编码结构">4.1 编码结构</a><a class="toc-l3" href="#42-核心语义内容">4.2 核心语义内容</a><a class="toc-l3" href="#43-字段语义">4.3 字段语义</a><a class="toc-l2" href="#5-融合规则">5. 融合规则</a><a class="toc-l3" href="#51-有效性条件">5.1 有效性条件</a><a class="toc-l3" href="#52-融合流程">5.2 融合流程</a><a class="toc-l3" href="#53-aci-审查">5.3 ACI 审查</a><a class="toc-l2" href="#6-路由协议">6. 路由协议</a><a class="toc-l3" href="#61-动态路由">6.1 动态路由</a><a class="toc-l3" href="#62-res-守卫">6.2 RES 守卫</a><a class="toc-l2" href="#7-异常处理">7. 异常处理</a><a class="toc-l3" href="#71-laxi-监测">7.1 LAXI 监测</a><a class="toc-l3" href="#72-分级处置">7.2 分级处置</a><a class="toc-l2" href="#8-稳态约束">8. 稳态约束</a><a class="toc-l3" href="#81-ccl-均热">8.1 CCL 均热</a><a class="toc-l3" href="#82-协调扩展律">8.2 协调扩展律</a><a class="toc-l3" href="#83-bes-饱和">8.3 BES 饱和</a><a class="toc-l2" href="#9-实现说明">9. 实现说明</a><a class="toc-l3" href="#91-默认参数">9.1 默认参数</a><a class="toc-l3" href="#92-最小可行实现">9.2 最小可行实现</a><a class="toc-l2" href="#10-参考文献">10. 参考文献</a></nav>
+      </aside>
+      <article class="wiki-article"><h1 id="nn-rfc-0001">NN-RFC-0001</h1>
+<h1 id="语义共识协议">语义共识协议</h1>
+<p>Version 1</p>
+<h2 id="摘要">摘要</h2>
+<p>语义共识协议定义了 nyanya LLM Agent 之间如何交换、比较和融合部分解释，而不将其降级为 token 级别的对齐。本协议规定了 nyanya LLM 分布式推理流水线中的消息格式、路由、融合规则、异常处理及稳态约束。</p>
+<h2 id="状态">状态</h2>
+<p>协议规范。取代 Draft 0。</p>
+<p>参考文献：<a href="https://github.com/nya-lab/NN-TR-2026-001">NN-TR-2026-001</a>。</p>
+<h2 id="1-术语">1. 术语</h2>
+<p><code>Field</code>（场）</p>
+<p>共享语义环境。所有 Agent 向 Field 贡献并从中读取。Field 不是数据库——它是通过持续信号交换维护的分布式状态。</p>
+<p><code>Signal</code>（信号）</p>
+<p>Agent 发出的有界解释。信号是协议中唯一的通信单元。每个信号携带来源、置信度和张力。</p>
+<p><code>Tension</code>（张力）</p>
+<p>兼容但不完整的解释之间的冲突。张力不是错误——它是达成共识的原材料。协议保留张力而非过早消解。</p>
+<p><code>Merge</code>（融合）</p>
+<p>将张力消解为协调状态的行为。一次有效的融合应当保留未消解的张力，声明有损压缩，并允许结果状态被挑战。</p>
+<p><code>Drift</code>（漂移）</p>
+<p>由重复摘要或不稳定路由导致的语义损失。漂移量化为信号与其经过协议栈重新编码后形式之间的语义距离。</p>
+<p><code>OSU</code>（有机语义单元）</p>
+<p>Organic Semantic Unit。跨节点传输的最小标准化载体。定义见 §2。</p>
+<p><code>OPU</code>（有机处理单元）</p>
+<p>Organic Processing Unit。CBNF 织物中的异构认知 Agent。定义见 NN-TR-2026-001 §5.1。</p>
+<p><code>Route</code>（路由）</p>
+<p>通过 OPU 集群的有向路径。路由是动态的，可因应张力、漂移或饱和而重新配置。</p>
+<h2 id="2-协议目标">2. 协议目标</h2>
+<p>本协议优化以下目标：</p>
+<ul>
+<li>Agent 间的语义一致性；</li>
+<li>可追溯的分歧；</li>
+<li>低语义漂移；</li>
+<li>可逆融合；</li>
+<li>简洁的状态传输。</li>
+</ul>
+<h2 id="3-非目标">3. 非目标</h2>
+<p>本协议不定义真理。</p>
+<p>本协议不声称生物学合理性。</p>
+<p>本协议不替代模型推理。</p>
+<p>本协议不规定具体的共识算法。它定义消息格式和规则；底层共识机制为实现定义。</p>
+<h2 id="4-osu-消息格式">4. OSU 消息格式</h2>
+<p>协议中的每条信号均编码为 OSU（有机语义单元）。OSU 是 OPU 外部输出和跨节点传输的最小标准化载体。</p>
+<h3 id="41-编码结构">4.1 编码结构</h3>
+<pre><code>osu {
+  id:        string       // 唯一信号标识符
+  source:    agent_id     // 来源 OPU
+  c:         semantic     // 核心语义内容（§4.2）
+  omega:     scalar       // 局部置信权重 [0, 1]
+  tau:       ms           // 生成延迟
+  rho:       scalar       // 观点冲突系数 [0, 1]
+  eta:       scalar       // 信息增量系数 [0, 1]
+  provenance: ref[]       // 上游 OSU 引用
+  ttl:       uint         // 剩余跳数
+}</code></pre>
+<h3 id="42-核心语义内容">4.2 核心语义内容</h3>
+<p><code>c</code> 字段承载有效载荷。可包含：</p>
+<ul>
+<li>局部结论；</li>
+<li>反例；</li>
+<li>推理经验；</li>
+<li>视觉联想；</li>
+<li>逻辑疑点；</li>
+<li>风险预警；</li>
+<li>不完整的推导片段。</li>
+</ul>
+<p><code>c</code> 字段对路由层不透明。其内部结构由消费方 OPU 定义。</p>
+<h3 id="43-字段语义">4.3 字段语义</h3>
+<ul>
+<li><code>omega</code> —— 置信度。值越高表示局部信念越强。协议使用 omega 进行加权投票，但不将高 omega 视为真值。</li>
+<li><code>tau</code> —— 延迟。OPU 生成此信号所花费的墙上时钟时间。NLB 用于分类慢推理片段。</li>
+<li><code>rho</code> —— 冲突度。指示此信号与当前共识的差异程度。高 rho 信号优先进入 ACI 审查。</li>
+<li><code>eta</code> —— 新颖度。衡量此信号相对于已有信号贡献了多少新信息。低 eta 触发 BES 饱和检测。</li>
+<li><code>provenance</code> —— 可追溯性。每条信号必须引用其上游 OSU。由此实现可逆融合和漂移度量。</li>
+<li><code>ttl</code> —— 跳数限制。每次路由跳转递减。ttl=0 的信号被丢弃。防止无限路由循环。</li>
+</ul>
+<h2 id="5-融合规则">5. 融合规则</h2>
+<h3 id="51-有效性条件">5.1 有效性条件</h3>
+<p>一次融合在以下条件满足时有效：</p>
+<ul>
+<li>输入信号保留来源追溯；</li>
+<li>未消解张力被继续传递；</li>
+<li>有损压缩被显式声明；</li>
+<li>结果状态可被后续信号挑战。</li>
+</ul>
+<h3 id="52-融合流程">5.2 融合流程</h3>
+<pre><code>merge(signals: OSU[]) -&gt; OSU:
+  1. 按来源链对信号分组
+  2. 对每条链：
+     a. 计算加权共识：Σ(omega_i * c_i) / Σ(omega_i)
+     b. 残余张力 = max(rho_i) 跨输入
+     c. 若残余张力 &gt; T_threshold：
+          将输出标记为 &quot;pending-inspection&quot;
+          入队等待 ACI 验证
+  3. 组合输出 OSU：
+     c = 聚合共识
+     omega = 输入 omega 的调和平均
+     rho = 残余张力
+     eta = 相对上一共识的信息增益
+     provenance = 输入信号 id 列表</code></pre>
+<h3 id="53-aci-审查">5.3 ACI 审查</h3>
+<p>对抗性共识审查（ACI）机制对高置信度共识簇进行多层逆向验证。当融合输出超过安全阈值时：</p>
+<pre><code>A = max(Contradiction(z), Blindspot(z), Fragility(z))</code></pre>
+<p>其中 z 为被审查的共识簇。若 A 超过安全阈值，结论标记为待定，路由至 NLB 异步缓冲池，等待差异化 OPU 补充信号后进行二次收敛。</p>
+<h2 id="6-路由协议">6. 路由协议</h2>
+<h3 id="61-动态路由">6.1 动态路由</h3>
+<p>Flow 模块按以下规则将信号路由通过 OPU 集群：</p>
+<pre><code>route(signal, cluster) -&gt; OPU[]:
+  1. 按语义类别对信号分类
+  2. 选择满足以下条件的 OPU：
+     - s_i（语义先验）匹配信号领域
+     - r_i（推理能力）满足任务复杂度
+     - a_i（可用注意力）超过最低阈值
+  3. 负载均衡：分配信号以避免热点饱和
+  4. 注入多样性：为低先验、高 D 的 OPU 保留 20% 容量</code></pre>
+<h3 id="62-res-守卫">6.2 RES 守卫</h3>
+<p>递归调度退化（RES）守卫监测路由重复度：</p>
+<pre><code>RES = R_repeat / (R_novel + epsilon)</code></pre>
+<p>分级干预：</p>
+<ul>
+<li><strong>轻度（RES &gt; threshold_1）</strong>：轮换活跃 OPU 集合，引入具有高认知多样性 D 的空闲单元。</li>
+<li><strong>中度（RES &gt; threshold_2）</strong>：重构 Split 阶段的任务分解，打破既有的固定路由路径。</li>
+<li><strong>重度（RES &gt; threshold_3）</strong>：强制终止循环调度链路，输出当前共识并附不确定性标注，停止非增量计算消耗。</li>
+</ul>
+<h2 id="7-异常处理">7. 异常处理</h2>
+<h3 id="71-laxi-监测">7.1 LAXI 监测</h3>
+<p>大规模自适应经验交互（LAXI）接口持续监测五类异常：</p>
+<ul>
+<li>认知疲劳累积；</li>
+<li>语义特征漂移；</li>
+<li>重复调度冗余；</li>
+<li>高熵语义堆积；</li>
+<li>共识收敛阻塞。</li>
+</ul>
+<p>复合异常指标：</p>
+<pre><code>Lambda_i = gamma_1 * F_i + gamma_2 * S_i + gamma_3 * A_i + gamma_4 * R_i</code></pre>
+<p>其中：</p>
+<ul>
+<li>F_i：单元疲劳度；</li>
+<li>S_i：语义漂移幅度；</li>
+<li>A_i：异常输出占比；</li>
+<li>R_i：循环调度频次。</li>
+</ul>
+<h3 id="72-分级处置">7.2 分级处置</h3>
+<p>当 Lambda_i 超过阈值时，节点进入代谢处置状态：</p>
+<p>1. 单元权重衰减；2. 局部上下文清除；3. 异常信号标记滞留；4. 路由链路切换；5. 单元临时休眠；6. 回退至低风险推理路径。</p>
+<p>无法立即整合的碎片语义归类为 DSR（延迟语义残留），在延迟批次中回收处理。</p>
+<h2 id="8-稳态约束">8. 稳态约束</h2>
+<h3 id="81-ccl-均热">8.1 CCL 均热</h3>
+<p>认知潜能均衡回路（CCL）监测单元热度：</p>
+<pre><code>T_i = w_e * E_i + w_v * V_i + w_h * H_i</code></pre>
+<p>当 T_i 超过全局安全阈值时，回路自动下调该单元的全局投票权重，阻断不受约束的单边认知潜能扩张所导致的全局观点偏移。</p>
+<h3 id="82-协调扩展律">8.2 协调扩展律</h3>
+<p>集群性能 P 受以下约束：</p>
+<pre><code>P = A * N^alpha * K^beta * (1 - sigma)^gamma * D^mu</code></pre>
+<p>协议必须在最优区间内运行：</p>
+<ul>
+<li>sigma（冲突密度）：适中，避免崩塌（sigma -&gt; 0）和饱和（sigma 过高）；</li>
+<li>D（认知多样性密度）：充足，防止 ESL 回声语义循环；</li>
+<li>N（活跃 OPU 数量）：仅在伴随 D 成比例增长时增加。</li>
+</ul>
+<h3 id="83-bes-饱和">8.3 BES 饱和</h3>
+<p>协议监测基础执行饱和度：</p>
+<pre><code>BES = Repeat(OSU) / (Novel(OSU) + epsilon)</code></pre>
+<p>当 BES 超过阈值时，MCP 协议下调对应单元的任务配额，LAXI 同步回收冗余语义残留。</p>
+<h2 id="9-实现说明">9. 实现说明</h2>
+<h3 id="91-默认参数">9.1 默认参数</h3>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>参数</th><th>默认值</th><th>说明</th></tr></thead><tbody><tr><td>T_threshold</td><td>0.3</td><td>ACI 审查的张力阈值</td></tr><tr><td>RES threshold_1</td><td>0.4</td><td>轻度退化触发</td></tr><tr><td>RES threshold_2</td><td>0.7</td><td>中度退化触发</td></tr><tr><td>RES threshold_3</td><td>1.2</td><td>重度退化触发</td></tr><tr><td>w_e</td><td>0.4</td><td>CCL 情绪激活权重</td></tr><tr><td>w_v</td><td>0.3</td><td>CCL 置信度权重</td></tr><tr><td>w_h</td><td>0.3</td><td>CCL 敌意度权重</td></tr><tr><td>delta</td><td>500 ms</td><td>NLB 延迟阈值</td></tr><tr><td>theta_1</td><td>0.3</td><td>BEW 复杂度分流阈值</td></tr></tbody></table></div>
+<h3 id="92-最小可行实现">9.2 最小可行实现</h3>
+<p>符合规范的实现必须支持：</p>
+<ul>
+<li>OSU 消息编解码（§4）；</li>
+<li>带张力保留的融合（§5）；</li>
+<li>带多样性注入的动态路由（§6.1）；</li>
+<li>RES 守卫监测（§6.2）；</li>
+<li>LAXI 异常检测（§7.1）。</li>
+</ul>
+<p>以下为可选：</p>
+<ul>
+<li>ACI 审查（§5.3）；</li>
+<li>CCL 均热（§8.1）；</li>
+<li>BES 饱和检测（§8.3）。</li>
+</ul>
+<h2 id="10-参考文献">10. 参考文献</h2>
+<ul>
+<li>[NN-TR-2026-001] nyanya LLM: A Carbon-Based Neural-Fabric Foundation Model for Distributed Cognitive Coordination and Organic Cognitive Metabolism. nya-lab, 2026.</li>
+</ul></article>
+    </main>
+  </body>
+</html>

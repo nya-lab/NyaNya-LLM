@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NN-RFC-0003 · nya-lab wiki</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body class="wiki-body">
+    <header class="topbar">
+      <a class="mark" href="../index.html" aria-label="nya-lab home">
+        <span class="mark-symbol" aria-hidden="true" data-final="：꒱ nya-lab">：꒱ <span class="lab-name"><strong>n</strong>ya-lab</span></span>
+      </a>
+      <nav aria-label="Wiki navigation">
+        <a href="index.html">Wiki</a>
+        <a href="../index.html#overview">Field</a>
+        <a href="../index.html#docs">Archive</a>
+      </nav>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-sidebar">
+        <p class="eyebrow">Protocol</p>
+        <h1>NN-RFC-0003</h1>
+        <p>Version 1</p>
+        <a class="wiki-source" href="../../docs/rfc/NN-RFC-0003.md">Source MD</a>
+        <div class="doc-links">
+          <a href="NN-RFC-0003-cn.html">中文</a>
+          <span>EN</span>
+        </div>
+        <nav aria-label="Table of contents"><a class="toc-l1" href="#nn-rfc-0003">NN-RFC-0003</a><a class="toc-l1" href="#semantic-merge-protocol">Semantic Merge Protocol</a><a class="toc-l2" href="#abstract">Abstract</a><a class="toc-l2" href="#status">Status</a><a class="toc-l2" href="#1-terms">1. Terms</a><a class="toc-l2" href="#2-protocol-goals">2. Protocol Goals</a><a class="toc-l2" href="#3-non-goals">3. Non-Goals</a><a class="toc-l2" href="#4-merge-pipeline">4. Merge Pipeline</a><a class="toc-l3" href="#41-pipeline-stages">4.1 Pipeline Stages</a><a class="toc-l3" href="#42-collect-stage">4.2 Collect Stage</a><a class="toc-l3" href="#43-group-stage">4.3 Group Stage</a><a class="toc-l2" href="#5-weighted-consensus">5. Weighted Consensus</a><a class="toc-l3" href="#51-chain-level-merge">5.1 Chain-Level Merge</a><a class="toc-l3" href="#52-cross-chain-fusion">5.2 Cross-Chain Fusion</a><a class="toc-l3" href="#53-lossy-compression-declaration">5.3 Lossy Compression Declaration</a><a class="toc-l2" href="#6-aci-adversarial-inspection">6. ACI Adversarial Inspection</a><a class="toc-l3" href="#61-inspection-pipeline">6.1 Inspection Pipeline</a><a class="toc-l3" href="#62-inspection-dimensions">6.2 Inspection Dimensions</a><a class="toc-l3" href="#63-inspection-outcomes">6.3 Inspection Outcomes</a><a class="toc-l2" href="#7-failure-mode-detection">7. Failure Mode Detection</a><a class="toc-l3" href="#71-chc-detection">7.1 CHC Detection</a><a class="toc-l3" href="#72-esl-detection">7.2 ESL Detection</a><a class="toc-l2" href="#8-dsr-deferred-semantic-residue">8. DSR Deferred Semantic Residue</a><a class="toc-l3" href="#81-residue-classification">8.1 Residue Classification</a><a class="toc-l3" href="#82-batch-reclamation">8.2 Batch Reclamation</a><a class="toc-l2" href="#9-merge-reversibility">9. Merge Reversibility</a><a class="toc-l2" href="#10-implementation-notes">10. Implementation Notes</a><a class="toc-l3" href="#101-default-parameters">10.1 Default Parameters</a></nav>
+      </aside>
+      <article class="wiki-article"><h1 id="nn-rfc-0003">NN-RFC-0003</h1>
+<h1 id="semantic-merge-protocol">Semantic Merge Protocol</h1>
+<p>Version 1</p>
+<h2 id="abstract">Abstract</h2>
+<p>The Semantic Merge Protocol defines how nyanya LLM agents aggregate, reconcile, and synthesize partial OSU interpretations into a coordinated consensus state. It specifies the merge procedure, the tension preservation rules, the ACI adversarial inspection pipeline, the CHC and ESL failure mode detection, and the DSR deferred residue handling. This protocol is the execution layer for the merge rules defined in NN-RFC-0001 §5.</p>
+<h2 id="status">Status</h2>
+<p>Protocol specification.</p>
+<p>References: <a href="https://github.com/nya-lab/NN-TR-2026-001">NN-TR-2026-001</a>, <a href="https://github.com/nya-lab/NN-RFC-0001">NN-RFC-0001</a>.</p>
+<h2 id="1-terms">1. Terms</h2>
+<p><code>Merge</code></p>
+<p>The act of resolving tension into a coordinated state. Merge is the fourth stage of the nyanya LLM pipeline (Split → Flow → Field → Merge → Speak). A valid merge preserves unresolved tension, declares lossy compression, and leaves the resulting state challengeable.</p>
+<p><code>Consensus Cluster</code></p>
+<p>A group of OSU signals that share a provenance chain and have converged on a compatible interpretation. A consensus cluster is not a final answer — it is a candidate state that may be challenged by future signals.</p>
+<p><code>Tension Preservation</code></p>
+<p>The rule that unresolved disagreement must be carried forward in the merged output. Tension is not eliminated; it is encoded in the output OSU&#x27;s rho field.</p>
+<p><code>CHC</code></p>
+<p>Cascade High-Confidence Cognitive Bias. A failure mode where multiple OPUs reach a unified high-confidence consensus based on a shared flawed prior. CHC is more dangerous than single-unit bias because the group&#x27;s confidence masks the underlying logical defect.</p>
+<p><code>ESL</code></p>
+<p>Echo Semantic Loop. A failure mode where OPUs repeatedly recycle similar formulations, producing expanding text with near-zero information gain. ESL is caused by critically low cognitive diversity density D.</p>
+<p><code>DSR</code></p>
+<p>Deferred Semantic Residue. Fragmented semantics that cannot be immediately integrated into the consensus. DSR is stored in the NLB buffer pool for delayed batch reclamation.</p>
+<h2 id="2-protocol-goals">2. Protocol Goals</h2>
+<p>The protocol optimizes for:</p>
+<ul>
+<li>weighted consensus from heterogeneous inputs;</li>
+<li>traceable disagreement preservation;</li>
+<li>CHC and ESL failure mode detection;</li>
+<li>reversible merge decisions;</li>
+<li>graceful degradation under high-tension scenarios.</li>
+</ul>
+<h2 id="3-non-goals">3. Non-Goals</h2>
+<p>The protocol does not determine the truth value of any signal.</p>
+<p>The protocol does not guarantee that all tension will be resolved.</p>
+<p>The protocol does not define the Speak stage output format.</p>
+<p>The protocol does not manage OPU lifecycles or routing — those are handled by Flow and OCML.</p>
+<h2 id="4-merge-pipeline">4. Merge Pipeline</h2>
+<h3 id="41-pipeline-stages">4.1 Pipeline Stages</h3>
+<pre><code>Merge Pipeline:
+  Collect → Group → Weight → Fuse → Inspect → Output</code></pre>
+<p>1. <strong>Collect</strong>: Gather all OSU signals from the Field for the current task window. 2. <strong>Group</strong>: Partition signals by provenance chain. 3. <strong>Weight</strong>: Compute weighted consensus within each chain. 4. <strong>Fuse</strong>: Compose a unified output OSU from chain-level results. 5. <strong>Inspect</strong>: Run ACI adversarial inspection on the fused output. 6. <strong>Output</strong>: Write the merged OSU to the Field, or defer to NLB if inspection fails.</p>
+<h3 id="42-collect-stage">4.2 Collect Stage</h3>
+<pre><code>collect(field, task_window) -&gt; OSU[]:
+  return field.read({
+    time_window: task_window,
+    ttl &gt; 0,
+    category != NOISE
+  })</code></pre>
+<p>NOISE-category signals are excluded from merge input to prevent dilution of consensus quality.</p>
+<h3 id="43-group-stage">4.3 Group Stage</h3>
+<pre><code>group(signals) -&gt; Map&lt;provenance_chain, OSU[]&gt;:
+  chains = {}
+  for signal in signals:
+    chain_id = hash(signal.provenance)
+    chains[chain_id].append(signal)
+  return chains</code></pre>
+<p>Signals with no provenance (root signals from the Split stage) form their own singleton chains.</p>
+<h2 id="5-weighted-consensus">5. Weighted Consensus</h2>
+<h3 id="51-chain-level-merge">5.1 Chain-Level Merge</h3>
+<p>For each provenance chain, the merge procedure computes a weighted consensus:</p>
+<pre><code>merge_chain(signals: OSU[]) -&gt; ChainResult:
+  consensus = Σ(omega_i * c_i) / Σ(omega_i)
+  residual_tension = max(rho_i) across inputs
+  chain_confidence = harmonic_mean(omega_i)
+  information_gain = max(0, eta_current - eta_previous)
+
+  if residual_tension &gt; T_threshold:
+    return ChainResult {
+      consensus: consensus,
+      confidence: chain_confidence * (1 - residual_tension),
+      tension: residual_tension,
+      status: PENDING_INSPECTION
+    }
+  else:
+    return ChainResult {
+      consensus: consensus,
+      confidence: chain_confidence,
+      tension: residual_tension,
+      status: ACCEPTED
+    }</code></pre>
+<h3 id="52-cross-chain-fusion">5.2 Cross-Chain Fusion</h3>
+<pre><code>fuse(chain_results: ChainResult[]) -&gt; OSU:
+  1. aggregate consensus across chains:
+       final_c = weighted_average(chain_results, weight=confidence)
+  2. final_omega = mean(chain_results.confidence)
+  3. final_rho = max(chain_results.tension)
+  4. final_eta = information_gain(
+       final_c,
+       previous_consensus_state
+     )
+  5. provenance = collect all input signal ids
+  6. return OSU {
+       c: final_c,
+       omega: final_omega,
+       tau: merge_computation_time,
+       rho: final_rho,
+       eta: final_eta,
+       provenance: provenance,
+       ttl: default_ttl
+     }</code></pre>
+<h3 id="53-lossy-compression-declaration">5.3 Lossy Compression Declaration</h3>
+<p>If the merge removes or abstracts any information from the input signals, the output OSU must include a compression annotation in its <code>c</code> field:</p>
+<pre><code>compression: {
+  original_signal_count: N,
+  merged_signal_count: 1,
+  compression_ratio: 1/N,
+  dropped_categories: [list of discarded semantic categories]
+}</code></pre>
+<p>This declaration ensures that downstream consumers can assess the information loss incurred by the merge.</p>
+<h2 id="6-aci-adversarial-inspection">6. ACI Adversarial Inspection</h2>
+<h3 id="61-inspection-pipeline">6.1 Inspection Pipeline</h3>
+<pre><code>inspect(merged_osu: OSU, input_signals: OSU[]) -&gt; InspectionResult:
+  contradiction_score = measure_contradiction(merged_osu, input_signals)
+  blindspot_score = detect_blindspots(merged_osu, input_signals)
+  fragility_score = test_fragility(merged_osu, input_signals)
+
+  A = max(contradiction_score, blindspot_score, fragility_score)
+
+  if A &gt; A_safety_threshold:
+    return InspectionResult {
+      passed: false,
+      score: A,
+      failure_reason: argmax(contradiction, blindspot, fragility)
+    }
+  else:
+    return InspectionResult {
+      passed: true,
+      score: A
+    }</code></pre>
+<h3 id="62-inspection-dimensions">6.2 Inspection Dimensions</h3>
+<p><strong>Contradiction</strong>: Measures whether the merged consensus is contradicted by any input signal. High contradiction scores indicate that the merge suppressed valid dissent.</p>
+<pre><code>Contradiction(z) = max( semantic_distance(z.c, signal_i.c) * signal_i.omega )</code></pre>
+<p><strong>Blindspot</strong>: Detects whether the merged consensus omits information present in input signals but absent from the output.</p>
+<pre><code>Blindspot(z) = 1 - (|information_retained| / |information_available|)</code></pre>
+<p><strong>Fragility</strong>: Tests whether the merged consensus collapses when a single high-weight input signal is removed. High fragility indicates over-reliance on a narrow evidence base.</p>
+<pre><code>Fragility(z) = 1 - (consensus_quality_without_top_signal / consensus_quality_with_all_signals)</code></pre>
+<h3 id="63-inspection-outcomes">6.3 Inspection Outcomes</h3>
+<ul>
+<li><strong>Passed (A &lt;= threshold)</strong>: Merge output is accepted. Written to Field.</li>
+<li><strong>Failed (A &gt; threshold)</strong>: Merge output is marked PENDING. Routed to NLB buffer pool. Additional differentiated OPU signals are requested. Secondary convergence is attempted after new signals arrive.</li>
+</ul>
+<h2 id="7-failure-mode-detection">7. Failure Mode Detection</h2>
+<h3 id="71-chc-detection">7.1 CHC Detection</h3>
+<p>CHC is detected when:</p>
+<pre><code>CHC_condition = (
+  cluster_confidence &gt; C_high
+  AND prior_diversity &lt; D_low
+  AND contradiction_score &lt; epsilon
+)</code></pre>
+<p>A cluster with extremely high confidence, low prior diversity, and near-zero internal contradiction is a CHC candidate. The detection triggers:</p>
+<ul>
+<li>Immediate ACI deep inspection;</li>
+<li>Forced diversity injection: request signals from low-prior, high-D OPUs;</li>
+<li>Confidence downgrade on the current consensus.</li>
+</ul>
+<h3 id="72-esl-detection">7.2 ESL Detection</h3>
+<p>ESL is detected by monitoring the information gain rate across consecutive merge rounds:</p>
+<pre><code>ESL_condition = (
+  consecutive_rounds_with_eta_below_threshold &gt; R_esl
+  AND cluster_cognitive_diversity D &lt; D_esl
+)</code></pre>
+<p>When ESL is detected:</p>
+<ul>
+<li>MCP increases EPG exploration weight;</li>
+<li>Flow increases diversity injection fraction;</li>
+<li>LAXI recycles redundant semantic residue.</li>
+</ul>
+<h2 id="8-dsr-deferred-semantic-residue">8. DSR Deferred Semantic Residue</h2>
+<h3 id="81-residue-classification">8.1 Residue Classification</h3>
+<p>Fragmented semantics that cannot be immediately integrated are classified as DSR:</p>
+<pre><code>classify_residue(unmerged_fragments: OSU[]) -&gt; DSR[]:
+  for fragment in unmerged_fragments:
+    if fragment.eta &lt; eta_min:
+      mark as LOW_VALUE — discard immediately
+    else if fragment.rho &gt; rho_high:
+      mark as HIGH_TENSION — retain for future challenge
+    else:
+      mark as INCOMPLETE — retain for supplementary signals</code></pre>
+<h3 id="82-batch-reclamation">8.2 Batch Reclamation</h3>
+<pre><code>reclaim_dsr(dsr_pool: DSR[], current_consensus: OSU) -&gt; void:
+  for dsr in dsr_pool:
+    age = now - dsr.arrival_time
+    if age &gt; max_retention:
+      discard dsr
+    else if dsr matches current_consensus domain:
+      re-inject dsr into merge pipeline
+    else:
+      retain dsr for next cycle</code></pre>
+<p>The NLB buffer pool periodically executes batch reclamation, discarding expired DSR and re-injecting relevant fragments into the merge pipeline.</p>
+<h2 id="9-merge-reversibility">9. Merge Reversibility</h2>
+<p>Every merge operation is reversible. The output OSU&#x27;s provenance field contains the complete set of input signal ids. A downstream consumer can:</p>
+<p>1. Read the merged OSU from the Field. 2. Trace its provenance to retrieve all input signals. 3. Re-execute the merge with different parameters or a different OPU set. 4. Challenge the merge by writing a critique signal to the Field.</p>
+<p>This reversibility is the foundation of the protocol&#x27;s &quot;challengeable state&quot; guarantee.</p>
+<h2 id="10-implementation-notes">10. Implementation Notes</h2>
+<h3 id="101-default-parameters">10.1 Default Parameters</h3>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Parameter</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>T_threshold</td><td>0.3</td><td>Tension threshold for ACI inspection trigger</td></tr><tr><td>A_safety_threshold</td><td>0.5</td><td>ACI composite score safety threshold</td></tr><tr><td>C_high</td><td>0.85</td><td>Confidence threshold for CHC detection</td></tr><tr><td>D_low</td><td>0.2</td><td>Diversity threshold for CHC detection</td></tr><tr><td>R_esl</td><td>3</td><td>Consecutive low-eta rounds for ESL detection</td></tr><tr><td>D_esl</td><td>0.3</td><td>Diversity threshold for ESL detection</td></tr><tr><td>eta_min</td><td>0.05</td><td>Minimum eta for DSR retention</td></tr><tr><td>rho_high</td><td>0.7</td><td>Tension threshold for HIGH_TENSION DSR</td></tr><tr><td>max_retention</td><td>600 s</td><td>Maximum DSR retention time</td></tr><tr><td>default_ttl</td><td>10</td><td>Default TTL for merged OSU output</td></tr></tbody></table></div>
+<h3 id="102-minimum-viable-implementation">10.2 Minimum Viable Implementation</h3>
+<p>A conforming implementation must support:</p>
+<ul>
+<li>Collect, Group, Weight, and Fuse pipeline stages (§4);</li>
+<li>Chain-level weighted consensus with tension preservation (§5.1);</li>
+<li>Cross-chain fusion with compression declaration (§5.2–§5.3);</li>
+<li>Contradiction, blindspot, and fragility scoring (§6.2);</li>
+<li>ESL detection (§7.2).</li>
+</ul>
+<p>The following are optional:</p>
+<ul>
+<li>ACI adversarial inspection pipeline (§6.1);</li>
+<li>CHC detection (§7.1);</li>
+<li>DSR classification and batch reclamation (§8);</li>
+<li>Merge reversibility support (§9).</li>
+</ul>
+<h2 id="11-references">11. References</h2>
+<ul>
+<li>[NN-TR-2026-001] nyanya LLM: A Carbon-Based Neural-Fabric Foundation Model for Distributed Cognitive Coordination and Organic Cognitive Metabolism. nya-lab, 2026.</li>
+<li>[NN-RFC-0001] Semantic Consensus Protocol v1. nya-lab, 2026.</li>
+<li>[NN-RFC-0002] Dynamic Routing and Field State Protocol v1. nya-lab, 2026.</li>
+</ul></article>
+    </main>
+  </body>
+</html>

@@ -3,129 +3,249 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Vallace Research</title>
+    <title>nyanya LLM — nya-lab</title>
+    <meta name="description" content="nyanya LLM：面向碳基神经协同与有机认知代谢的全模态基础模型。nya-lab 研究项目。">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
+    <div class="scanline" aria-hidden="true"></div>
+
     <header class="topbar">
-      <a class="mark" href="#archive" aria-label="Vallace Research home">
-        <span class="mark-symbol">V</span>
-        <span>Vallace Research</span>
+      <a class="mark" href="#hero" aria-label="nya-lab home">
+        <span class="mark-symbol" aria-hidden="true" data-final="：꒱ nya-lab">：꒱ <span class="lab-name"><strong>n</strong>ya-lab</span></span>
       </a>
       <nav aria-label="Primary">
-        <a href="#reports">Reports / 报告</a>
-        <a href="#protocols">RFC</a>
-        <a href="#benchmarks">Benchmarks / 基准</a>
-        <a href="#scope">Scope / 边界</a>
+        <a href="#overview">概览</a>
+        <a href="#architecture">架构</a>
+        <a href="#results">实验</a>
+        <a href="#docs">文档</a>
+        <a href="wiki/index.html">Wiki</a>
       </nav>
     </header>
 
-    <main id="archive">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow">Archive index / active file</p>
-          <h1 id="hero-title">Coordination scales intelligence.</h1>
-          <p class="zh-title">协调扩展智能。</p>
-          <p class="lede">
-            Vallace Research studies a fictional second scaling axis for AI:
-            structured coordination among reasoning processes.
+    <main>
+      <!-- Hero -->
+      <section class="hero" id="hero">
+        <div class="hero-content">
+          <p class="eyebrow">nya-lab 研究项目</p>
+          <h1>nyanya LLM</h1>
+          <p class="hero-tagline">协调扩展智能</p>
+          <p class="hero-desc">
+            以碳基神经网络（CBNF）为底层基座的分布式全模态基础模型框架，探索大规模异构认知单元的高效协同推理范式。
           </p>
-          <p class="lede zh">
-            Vallace Research 是一个架空 AI 研究实验室。它研究一个虚构但自洽的命题：
-            智能不仅由计算扩展，也可能由协调扩展。
-          </p>
-          <div class="hero-actions" aria-label="Archive actions">
-            <a class="button primary" href="../docs/research/VR-TR-2026-001.md">Read VR-TR-2026-001 / 阅读报告</a>
-            <a class="button" href="../docs/constitution.md">Project Constitution / 项目宪法</a>
+          <p class="hero-desc-en">A distributed multimodal foundation model framework built on carbon-based neural fabric, exploring efficient coordination paradigms for large-scale heterogeneous cognitive inference.</p>
+          <div class="hero-links">
+            <a href="wiki/NN-TR-2026-001-cn.html" class="btn-primary">技术报告</a>
+            <a href="https://github.com/nya-lab" class="btn-secondary">GitHub</a>
+            <a href="#start" class="btn-secondary">快速开始</a>
           </div>
         </div>
-        <figure class="field-panel" aria-label="Coordination field visualization">
-          <canvas id="fieldCanvas" width="920" height="620"></canvas>
-          <figcaption>
-            <span>Field / Merge / Flow</span>
-            <span id="fieldReadout">K=0.73 D=0.18</span>
-          </figcaption>
-        </figure>
-      </section>
-
-      <section class="ticker" aria-label="Vallace archive statement">
-        <span>Alternate-reality AI lab<br><em>架空 AI 研究实验室</em></span>
-        <span>Academic satire<br><em>学术戏仿</em></span>
-        <span>Real references only<br><em>只使用真实引用</em></span>
-        <span>Fictional claims clearly scoped<br><em>虚构结论必须标明边界</em></span>
-      </section>
-
-      <section class="grid-section" id="reports" aria-labelledby="reports-title">
-        <div class="section-head">
-          <p class="eyebrow">Technical reports / 技术报告</p>
-          <h2 id="reports-title">The first record.</h2>
-          <p class="section-subtitle">第一份档案。</p>
+        <div class="hero-canvas">
+          <canvas id="fieldCanvas"></canvas>
         </div>
-        <article class="record wide">
-          <div>
-            <p class="record-code">VR-TR-2026-001</p>
-            <h3>The Vallace Project</h3>
-            <p class="zh-line">Vallace 项目</p>
-            <p>
-              Establishes the coordination-first hypothesis and defines
-              intelligence as a function of computation and coordination.
-            </p>
-            <p class="zh">
-              建立“协调优先”的核心假设，并把有效智能定义为计算能力与协调效率的函数。
-            </p>
+      </section>
+
+      <!-- Overview -->
+      <section class="section" id="overview">
+        <div class="section-inner">
+          <div class="section-head">
+            <p class="eyebrow">概览</p>
+            <h2>智能 = 算力 + 协同 + 多样性</h2>
+            <p class="section-subtitle">智能系统的能力上限不仅取决于单体计算规模，更取决于异构单元间的协同效率与认知多样性。</p>
+            <p class="section-subtitle-en">The capability ceiling of intelligent systems is bounded not only by individual compute capacity, but by coordination efficiency and cognitive diversity across heterogeneous units.</p>
           </div>
-          <a href="../docs/research/VR-TR-2026-001.md">Open report / 打开报告</a>
-        </article>
-      </section>
-
-      <section class="grid-section two" id="protocols" aria-label="Protocol and benchmark records">
-        <article class="record">
-          <p class="record-code">VR-RFC-0001</p>
-          <h3>Semantic Consensus Protocol</h3>
-          <p class="zh-line">语义共识协议</p>
-          <p>
-            A draft protocol for exchanging partial interpretations while
-            preserving tension, provenance, and reversible merges.
-          </p>
-          <p class="zh">
-            用于交换局部解释的协议草案，同时保留张力、来源和可逆合并。
-          </p>
-          <a href="../docs/rfc/VR-RFC-0001.md">Open RFC / 打开 RFC</a>
-        </article>
-        <article class="record" id="benchmarks">
-          <p class="record-code">VR-BM-0001</p>
-          <h3>WallBench</h3>
-          <p class="zh-line">墙基准</p>
-          <p>
-            A fictional benchmark family for semantic drift, conflict recovery,
-            and provenance retention under coordinated reasoning.
-          </p>
-          <p class="zh">
-            面向协调推理的虚构基准族，用于观察语义漂移、冲突恢复和来源保留。
-          </p>
-          <a href="../docs/benchmarks/VR-BM-0001.md">Open benchmark / 打开基准</a>
-        </article>
-      </section>
-
-      <section class="scope" id="scope" aria-labelledby="scope-title">
-        <div>
-          <p class="eyebrow">Scope control / 边界控制</p>
-          <h2 id="scope-title">Respect reality. Satirize ideas, not facts.</h2>
-          <p class="section-subtitle">尊重现实。讽刺观念，而不是伪造事实。</p>
+          <div class="overview-grid">
+            <div class="overview-card">
+              <h3>碳基神经网络 CBNF</h3>
+              <p>作为分布式协同的底层基质，将异构认知单元抽象为有机处理单元（OPU），以有机语义单元（OSU）作为跨节点标准化通信载体。</p>
+            </div>
+            <div class="overview-card">
+              <h3>有机认知代谢层 OCML</h3>
+              <p>五层代谢控制子系统 —— BCW、CCL、NLB、MCP、LAXI，分别负责上下文封装、认知稳态、异步缓存、动态资源配给与异常回收。</p>
+            </div>
+            <div class="overview-card">
+              <h3>协调扩展律</h3>
+              <p>形式化框架，量化集群规模、协同轮次、冲突密度与认知多样性对系统性能的联合影响，界定最优协同区间。</p>
+            </div>
+          </div>
         </div>
-        <div>
-          <p>
-            Vallace may invent systems, protocols, and internal reports. It must
-            not fake real validation, impersonate real institutions, or imply
-            fictional results are established science.
-          </p>
-          <p class="zh">
-            Vallace 可以创造不存在的系统、协议和内部报告，但不能伪造真实验证，
-            不能冒充真实机构，也不能暗示虚构结果已经成为现实科学结论。
-          </p>
+      </section>
+
+      <!-- Architecture -->
+      <section class="section section-alt" id="architecture">
+        <div class="section-inner">
+          <div class="section-head">
+            <p class="eyebrow">流水线架构</p>
+            <h2>Split → Flow → Field → Merge → Speak</h2>
+            <p class="section-subtitle">标准化五阶段分布式推理流水线，LAXI 贯穿全链路提供异常监测与语义残留回收。</p>
+          </div>
+          <div class="pipeline-grid">
+            <div class="pipeline-stage">
+              <span class="stage-num">01</span>
+              <h3>Split 拆分</h3>
+              <p>将原始输入分解为结构化语义片段，提取任务约束与依赖关系。</p>
+            </div>
+            <div class="pipeline-stage">
+              <span class="stage-num">02</span>
+              <h3>Flow 路由</h3>
+              <p>动态 OPU 路由，差异化认知单元筛选与负载均衡分配。</p>
+            </div>
+            <div class="pipeline-stage">
+              <span class="stage-num">03</span>
+              <h3>Field 场</h3>
+              <p>分布式语义场构建，跨单元 OSU 传播与张力存储。</p>
+            </div>
+            <div class="pipeline-stage">
+              <span class="stage-num">04</span>
+              <h3>Merge 融合</h3>
+              <p>多路径语义共识压缩，冲突消解与冗余信息过滤。</p>
+            </div>
+            <div class="pipeline-stage">
+              <span class="stage-num">05</span>
+              <h3>Speak 输出</h3>
+              <p>收敛共识自然语言生成，附带来源链与置信度边界。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section class="section" id="results">
+        <div class="section-inner">
+          <div class="section-head">
+            <p class="eyebrow">实验结果</p>
+            <h2>仿真消融</h2>
+            <p class="section-subtitle">以 MoE 混合专家基线与无管控集群基线为对照。</p>
+          </div>
+          <div class="results-grid">
+            <div class="result-card">
+              <span class="result-value">-41%</span>
+              <span class="result-label">协同通信延迟<br>vs. MoE 基线</span>
+            </div>
+            <div class="result-card">
+              <span class="result-value">-44%</span>
+              <span class="result-label">群体认知偏差<br>vs. MoE 基线</span>
+            </div>
+            <div class="result-card">
+              <span class="result-value">-54%</span>
+              <span class="result-label">循环调度<br>算力损耗</span>
+            </div>
+            <div class="result-card">
+              <span class="result-value">-58%</span>
+              <span class="result-label">延迟 vs.<br>无管控集群</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Docs -->
+      <section class="section section-alt" id="docs">
+        <div class="section-inner">
+          <div class="section-head">
+            <p class="eyebrow">技术文档</p>
+            <h2>归档索引</h2>
+          </div>
+          <div class="docs-grid">
+            <article class="doc-card doc-wide">
+              <p class="doc-code">NN-TR-2026-001</p>
+              <h3>技术报告</h3>
+              <p>碳基神经协同、有机认知代谢、协调扩展律与实验分析。面向分布式推理系统。</p>
+              <div class="doc-links">
+                <a href="wiki/NN-TR-2026-001-cn.html">中文</a>
+                <a href="wiki/NN-TR-2026-001.html">EN</a>
+              </div>
+            </article>
+            <article class="doc-card">
+              <p class="doc-code">NN-RFC-0001</p>
+              <h3>语义共识协议</h3>
+              <p>消息格式、路由、融合规则与故障边界。分布式共识基础协议。</p>
+              <div class="doc-links">
+                <a href="wiki/NN-RFC-0001-cn.html">中文</a>
+                <a href="wiki/NN-RFC-0001.html">EN</a>
+              </div>
+            </article>
+            <article class="doc-card">
+              <p class="doc-code">NN-RFC-0002</p>
+              <h3>动态路由与 Field 状态协议</h3>
+              <p>OSU 信号在共享语义场中的动态路由与状态管理。</p>
+              <div class="doc-links">
+                <a href="wiki/NN-RFC-0002-cn.html">中文</a>
+                <a href="wiki/NN-RFC-0002.html">EN</a>
+              </div>
+            </article>
+            <article class="doc-card">
+              <p class="doc-code">NN-RFC-0003</p>
+              <h3>语义融合协议</h3>
+              <p>部分解释如何聚合为可被挑战的共识状态。</p>
+              <div class="doc-links">
+                <a href="wiki/NN-RFC-0003-cn.html">中文</a>
+                <a href="wiki/NN-RFC-0003.html">EN</a>
+              </div>
+            </article>
+            <article class="doc-card">
+              <p class="doc-code">NN-BM-0001</p>
+              <h3>WallBench</h3>
+              <p>语义压力下的协同能力评估基准套件。</p>
+              <div class="doc-links">
+                <a href="wiki/NN-BM-0001-cn.html">中文</a>
+                <a href="wiki/NN-BM-0001.html">EN</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Getting Started -->
+      <section class="section" id="start">
+        <div class="section-inner">
+          <div class="section-head">
+            <p class="eyebrow">快速开始</p>
+            <h2>构建与预览</h2>
+          </div>
+          <div class="start-grid">
+            <div class="start-card">
+              <h3>构建论文</h3>
+              <pre><code>cd papers/NN-TR-2026-001
+make</code></pre>
+              <p>使用 ReportLab 生成中文 PDF。Typst 与 LaTeX 源文件作为备用格式保留。</p>
+            </div>
+            <div class="start-card">
+              <h3>预览站点</h3>
+              <pre><code>python3 -m http.server 4173</code></pre>
+              <p>从仓库根目录启动静态服务，访问 <code>http://127.0.0.1:4173/site/</code>。</p>
+            </div>
+          </div>
         </div>
       </section>
     </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="footer-mark">：꒱ <strong>nya-lab</strong></span>
+          <p>协调扩展智能</p>
+        </div>
+        <nav class="footer-col" aria-label="文档">
+          <strong>文档</strong>
+          <a href="wiki/NN-TR-2026-001-cn.html">技术报告</a>
+          <a href="wiki/index.html">Wiki</a>
+        </nav>
+        <nav class="footer-col" aria-label="协议">
+          <strong>协议</strong>
+          <a href="wiki/NN-RFC-0001-cn.html">NN-RFC-0001</a>
+          <a href="wiki/NN-RFC-0002-cn.html">NN-RFC-0002</a>
+          <a href="wiki/NN-RFC-0003-cn.html">NN-RFC-0003</a>
+        </nav>
+        <nav class="footer-col" aria-label="资源">
+          <strong>资源</strong>
+          <a href="wiki/NN-BM-0001-cn.html">WallBench</a>
+          <a href="https://github.com/nya-lab">GitHub</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>nya-lab &copy; 2026</span>
+      </div>
+    </footer>
 
     <script src="app.js"></script>
   </body>

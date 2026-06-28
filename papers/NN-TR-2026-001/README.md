@@ -1,8 +1,8 @@
-# VR-TR-2026-001
+# NN-TR-2026-001
 
-`Vallace-LLM：面向碳基神经协同与有机认知代谢的全模态基础模型`
+`nyanya LLM：面向碳基神经协同与有机认知代谢的全模态基础模型`
 
-This directory contains the first formal Vallace Research technical report — a comprehensive 13-section paper covering distributed cognitive coordination architecture, organic cognitive metabolism, coordination scaling laws, and experimental validation.
+This directory contains the first formal nya-lab technical report — a comprehensive 13-section paper covering distributed cognitive coordination architecture, organic cognitive metabolism, coordination scaling laws, and experimental validation.
 
 ## Files
 
@@ -15,7 +15,7 @@ This directory contains the first formal Vallace Research technical report — a
 
 ## Authoritative Version
 
-The definitive Chinese version is maintained at `docs/research/VR-TR-2026-001.md`. Both `paper.typ` and `paper.md` are derived from this source.
+The definitive Chinese version is maintained at `docs/research/NN-TR-2026-001.md`. Both `paper.typ` and `paper.md` are derived from this source.
 
 ## Build
 

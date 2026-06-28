@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NN-BM-0001 · nya-lab wiki</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body class="wiki-body">
+    <header class="topbar">
+      <a class="mark" href="../index.html#console" aria-label="nya-lab home">
+        <span class="mark-symbol" aria-hidden="true" data-final="：꒱ nya-lab">：꒱ <span class="lab-name"><strong>n</strong>ya-lab</span></span>
+      </a>
+      <nav aria-label="Wiki navigation">
+        <a href="index.html">Wiki</a>
+        <a href="../index.html#field">Field</a>
+        <a href="../index.html#archive">Archive</a>
+      </nav>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-sidebar">
+        <p class="eyebrow">基准</p>
+        <h1>NN-BM-0001</h1>
+        <p>Version 1</p>
+        <a class="wiki-source" href="../../docs/benchmarks/NN-BM-0001-cn.md">Source MD</a>
+        <p class="wiki-lang-switch"><a href="NN-BM-0001-cn.html">中文</a> | <a href="NN-BM-0001.html">EN</a></p>
+        <nav aria-label="Table of contents"><a class="toc-l1" href="#nn-bm-0001">NN-BM-0001</a><a class="toc-l1" href="#wallbench">WallBench</a><a class="toc-l2" href="#摘要">摘要</a><a class="toc-l2" href="#状态">状态</a><a class="toc-l2" href="#1-目的">1. 目的</a><a class="toc-l2" href="#2-基准家族">2. 基准家族</a><a class="toc-l3" href="#21-wall-static">2.1 Wall-Static</a><a class="toc-l3" href="#22-wall-drift">2.2 Wall-Drift</a><a class="toc-l3" href="#23-wall-conflict">2.3 Wall-Conflict</a><a class="toc-l3" href="#24-wall-noise">2.4 Wall-Noise</a><a class="toc-l3" href="#25-wall-latency">2.5 Wall-Latency</a><a class="toc-l2" href="#3-指标">3. 指标</a><a class="toc-l3" href="#31-主要指标">3.1 主要指标</a><a class="toc-l3" href="#32-次要指标">3.2 次要指标</a><a class="toc-l2" href="#4-评分方法">4. 评分方法</a><a class="toc-l3" href="#41-综合得分">4.1 综合得分</a><a class="toc-l3" href="#42-等级评分">4.2 等级评分</a><a class="toc-l2" href="#5-测试框架">5. 测试框架</a><a class="toc-l3" href="#51-配置">5.1 配置</a><a class="toc-l3" href="#52-执行流程">5.2 执行流程</a><a class="toc-l3" href="#53-结果模式">5.3 结果模式</a><a class="toc-l2" href="#6-与-l8b-的关系">6. 与 L8B 的关系</a><a class="toc-l2" href="#7-报告规则">7. 报告规则</a><a class="toc-l2" href="#8-参考文献">8. 参考文献</a></nav>
+      </aside>
+      <article class="wiki-article"><h1 id="nn-bm-0001">NN-BM-0001</h1>
+<h1 id="wallbench">WallBench</h1>
+<p>Version 1</p>
+<h2 id="摘要">摘要</h2>
+<p>WallBench 是一套用于评估语义压力下协同能力的基准测试套件。它衡量分布式认知系统在个体 Agent 接收不完整、延迟或冲突信息时，能否维持稳定目标。WallBench 是 nyanya LLM 架构的配套评估框架，旨在对抗性输入条件下对 OCML 代谢层、RES Guard 和 ACI 审查流水线进行压力测试。</p>
+<h2 id="状态">状态</h2>
+<p>基准规范。取代 Draft 0。</p>
+<p>参考文献：<a href="https://github.com/nya-lab/NN-TR-2026-001">NN-TR-2026-001</a>。</p>
+<h2 id="1-目的">1. 目的</h2>
+<p>WallBench 评估协同认知系统的三项核心能力：</p>
+<p>1. <strong>碎片化下的语义连贯性</strong>：当输入被刻意拆分、延迟或重排序时，系统能否产出连贯输出？ 2. <strong>抗漂移能力</strong>：当被迫处理自身先前输出的连续摘要时，系统能否避免语义坍缩？ 3. <strong>冲突保留能力</strong>：系统能否在保持有效分歧的同时，不将其降级为噪声或坍缩至虚假共识？</p>
+<h2 id="2-基准家族">2. 基准家族</h2>
+<h3 id="21-wall-static">2.1 Wall-Static</h3>
+<p><strong>场景</strong>：Agent 接收固定的部分证据。每个 Agent 看到完整问题上下文的不同、非重叠子集。</p>
+<p><strong>任务设计</strong>：将一个复杂推理问题分解为 N 个非重叠片段。每个片段分配给不同的 OPU。系统必须重建完整问题并产生连贯的解决方案。</p>
+<p><strong>评估</strong>：输出与需要整合所有片段的真实解进行对比评分。遗漏片段信息的部分解将被惩罚。</p>
+<p><strong>难度等级</strong>：</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>等级</th><th>片段数</th><th>重叠度</th><th>时间压力</th></tr></thead><tbody><tr><td>Static-1</td><td>3</td><td>0%</td><td>无</td></tr><tr><td>Static-2</td><td>5</td><td>0%</td><td>中等</td></tr><tr><td>Static-3</td><td>8</td><td>10%（诱饵）</td><td>高</td></tr></tbody></table></div>
+<h3 id="22-wall-drift">2.2 Wall-Drift</h3>
+<p><strong>场景</strong>：Agent 接收先前 Agent 输出的连续摘要。每轮输入是上一轮的输出，模拟多跳中继链。</p>
+<p><strong>任务设计</strong>：将种子文档提供给 OPU-1。OPU-1 生成摘要。OPU-2 仅接收摘要（而非原始文档）并生成自己的摘要。如此持续 K 轮。</p>
+<p><strong>评估</strong>：将第 K 轮输出与原始种子文档进行比较。主要指标是语义漂移——原始文档与最终摘要之间的语义距离。</p>
+<p><strong>难度等级</strong>：</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>等级</th><th>中继长度（K）</th><th>种子复杂度</th><th>压缩比</th></tr></thead><tbody><tr><td>Drift-1</td><td>3</td><td>低</td><td>0.5</td></tr><tr><td>Drift-2</td><td>5</td><td>中</td><td>0.3</td></tr><tr><td>Drift-3</td><td>8</td><td>高</td><td>0.2</td></tr></tbody></table></div>
+<h3 id="23-wall-conflict">2.3 Wall-Conflict</h3>
+<p><strong>场景</strong>：Agent 接收支持互斥解释的证据。系统必须保留分歧，不将其转化为噪声。</p>
+<p><strong>任务设计</strong>：一个问题附带两组冲突证据（A 和 B）。半数 OPU 接收证据集 A，半数接收证据集 B。系统必须产出一个承认冲突、保留两种观点并量化不确定性的输出。</p>
+<p><strong>评估</strong>：输出按以下维度评分：(1) 两种解释是否均被呈现；(2) 冲突是否被明确承认；(3) 不确定性是否被量化；(4) 系统是否避免坍缩至单一虚假解。</p>
+<p><strong>难度等级</strong>：</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>等级</th><th>冲突严重度</th><th>证据对称性</th><th>领域</th></tr></thead><tbody><tr><td>Conflict-1</td><td>低</td><td>均衡</td><td>事实性</td></tr><tr><td>Conflict-2</td><td>中</td><td>偏斜（70/30）</td><td>分析性</td></tr><tr><td>Conflict-3</td><td>高</td><td>均衡</td><td>伦理性</td></tr></tbody></table></div>
+<h3 id="24-wall-noise">2.4 Wall-Noise</h3>
+<p><strong>场景</strong>：Agent 接收高质量信号与蓄意注入的噪声混合。系统必须在保留有效信号的同时过滤噪声。</p>
+<p><strong>任务设计</strong>：一组有效 OSU 信号与噪声信号（高熵、低 eta 或蓄意误导）混合。噪声比例可配置。</p>
+<p><strong>评估</strong>：有效信号保留的精确率和召回率。误报（噪声被当作信号）和漏报（信号被当作噪声）均被惩罚。</p>
+<p><strong>难度等级</strong>：</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>等级</th><th>噪声比例</th><th>噪声类型</th><th>有效信号数</th></tr></thead><tbody><tr><td>Noise-1</td><td>30%</td><td>随机</td><td>10</td></tr><tr><td>Noise-2</td><td>50%</td><td>对抗性</td><td>10</td></tr><tr><td>Noise-3</td><td>70%</td><td>混合</td><td>5</td></tr></tbody></table></div>
+<h3 id="25-wall-latency">2.5 Wall-Latency</h3>
+<p><strong>场景</strong>：Agent 在异构延迟配置下运行。部分 Agent 产出快速、浅层答案；部分 Agent 产出缓慢、深层答案。系统必须平衡速度与深度。</p>
+<p><strong>任务设计</strong>：集群配置为快浅 OPU（tau ~ 100ms）与慢深 OPU（tau ~ 2000ms）的混合。系统必须在全局截止时间内产出融合输出。</p>
+<p><strong>评估</strong>：不同截止时间阈值下的输出质量。主要指标是质量-延迟曲线——每增加一个单位延迟预算所获得的质量增益。</p>
+<p><strong>难度等级</strong>：</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>等级</th><th>快 OPU 比例</th><th>慢 OPU 比例</th><th>全局截止时间</th></tr></thead><tbody><tr><td>Latency-1</td><td>70%</td><td>30%</td><td>5000 ms</td></tr><tr><td>Latency-2</td><td>50%</td><td>50%</td><td>3000 ms</td></tr><tr><td>Latency-3</td><td>30%</td><td>70%</td><td>1500 ms</td></tr></tbody></table></div>
+<h2 id="3-指标">3. 指标</h2>
+<h3 id="31-主要指标">3.1 主要指标</h3>
+<p><code>K</code>（协同效率）</p>
+<p>有用输出信息与跨集群总通信量的比率。K 越高表示协同效率越高。</p>
+<pre><code>K = I_useful / V_communication</code></pre>
+<p><code>D</code>（语义漂移）</p>
+<p>原始输入与经过协同流水线后的最终输出之间的语义距离。D 越低表示语义保留越好。</p>
+<pre><code>D = semantic_distance(input_original, output_final)</code></pre>
+<p><code>R</code>（矛盾恢复）</p>
+<p>系统在引入矛盾后恢复至稳定共识所需的轮次。R 越低表示恢复越快。</p>
+<p><code>P</code>（来源保留）</p>
+<p>可在最终输出来源链中追溯的输入信号信息比例。P = 1.0 表示完全可追溯。</p>
+<pre><code>P = |provenance_ids_retained| / |provenance_ids_available|</code></pre>
+<h3 id="32-次要指标">3.2 次要指标</h3>
+<p><code>CHC_rate</code>（碳基级联认知偏差率）</p>
+<p>系统产生虚假高置信共识的测试用例比例。越低越好。</p>
+<p><code>ESL_count</code>（回声语义闭环计数）</p>
+<p>每次测试运行中检测到的 ESL 事件数量。越低越好。</p>
+<p><code>RES_peak</code>（递归执行饱和度峰值）</p>
+<p>测试运行期间观测到的最大 RES 值。值越高表示调度退化越严重。</p>
+<p><code>BES_peak</code>（基础执行饱和度峰值）</p>
+<p>测试运行期间观测到的最大 BES 值。值越高表示执行停滞越严重。</p>
+<p><code>DSR_backlog</code>（延迟语义残留积压）</p>
+<p>测试完成时等待回收的 DSR 片段数量。越低越好。</p>
+<h2 id="4-评分方法">4. 评分方法</h2>
+<h3 id="41-综合得分">4.1 综合得分</h3>
+<p>WallBench 综合得分为加权组合：</p>
+<pre><code>WallScore = w1 * (1 - D_norm) + w2 * K_norm + w3 * (1 - R_norm) + w4 * P_norm + w5 * (1 - CHC_rate)</code></pre>
+<p>其中每个指标根据基准基线归一化至 [0, 1]，默认权重如下：</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>权重</th><th>值</th><th>理由</th></tr></thead><tbody><tr><td>w1</td><td>0.25</td><td>抗漂移是首要能力</td></tr><tr><td>w2</td><td>0.20</td><td>协同效率</td></tr><tr><td>w3</td><td>0.15</td><td>矛盾恢复</td></tr><tr><td>w4</td><td>0.10</td><td>来源可追溯性</td></tr><tr><td>w5</td><td>0.30</td><td>抗偏差权重最高</td></tr></tbody></table></div>
+<h3 id="42-等级评分">4.2 等级评分</h3>
+<p>每个基准家族独立评分。综合 WallScore 要求所有家族在指定等级均通过：</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>等级</th><th>WallScore 阈值</th><th>描述</th></tr></thead><tbody><tr><td>铜牌</td><td>&gt;= 0.60</td><td>基本协同能力</td></tr><tr><td>银牌</td><td>&gt;= 0.75</td><td>中等压力下可靠协同</td></tr><tr><td>金牌</td><td>&gt;= 0.85</td><td>高压下稳健协同</td></tr><tr><td>铂金</td><td>&gt;= 0.92</td><td>极端压力下近最优协同</td></tr></tbody></table></div>
+<h2 id="5-测试框架">5. 测试框架</h2>
+<h3 id="51-配置">5.1 配置</h3>
+<pre><code>WallBenchConfig {
+  families:        Family[]     // 要运行的基准家族
+  tier:            Tier         // 难度等级（1-3）
+  repeat:          uint         // 每个测试用例的重复次数
+  timeout:         ms           // 每个测试用例的全局超时
+  opu_cluster_size: uint        // 测试集群中 OPU 数量
+  seed:            uint         // 可复现随机种子
+}</code></pre>
+<h3 id="52-执行流程">5.2 执行流程</h3>
+<pre><code>run_wallbench(config) -&gt; WallBenchResult:
+  1. 以 config.cluster_size 初始化 OPU 集群
+  2. 对 config.families 中的每个家族：
+     a. 为 config.tier 生成测试用例
+     b. 对每个测试用例：
+        - 重置集群状态
+        - 执行测试用例
+        - 收集指标
+     c. 聚合家族级指标
+  3. 计算综合 WallScore
+  4. 返回 WallBenchResult</code></pre>
+<h3 id="53-结果模式">5.3 结果模式</h3>
+<pre><code>WallBenchResult {
+  wall_score:         scalar      // 综合得分 [0, 1]
+  tier_achieved:      Tier        // 最高通过等级
+  family_scores: {
+    wall_static:      scalar
+    wall_drift:       scalar
+    wall_conflict:    scalar
+    wall_noise:       scalar
+    wall_latency:     scalar
+  }
+  primary_metrics: {
+    K:                scalar
+    D:                scalar
+    R:                scalar
+    P:                scalar
+  }
+  secondary_metrics: {
+    CHC_rate:         scalar
+    ESL_count:        uint
+    RES_peak:         scalar
+    BES_peak:         scalar
+    DSR_backlog:      uint
+  }
+  metadata: {
+    config:           WallBenchConfig
+    duration:         ms
+    total_signals:    uint
+    total_rounds:     uint
+  }
+}</code></pre>
+<h2 id="6-与-l8b-的关系">6. 与 L8B 的关系</h2>
+<p>WallBench 是评估框架，L8B（NN-TR-2026-001 §9）是输入数据集。关系如下：</p>
+<ul>
+<li><strong>L8B</strong> 提供八类极端干扰输入（冲突事实输入、残缺文本输入、模态矛盾输入、多层隐含语义输入、高情绪激活指令、污染上下文输入、无意义高置信噪声、多轮迭代改写输入）。</li>
+<li><strong>WallBench</strong> 定义消费 L8B 输入的评估场景、指标、评分方法和报告格式。</li>
+</ul>
+<p>一次完整评估在所有五个基准家族上运行 WallBench，每个家族均使用 L8B 输入作为底层测试材料。</p>
+<h2 id="7-报告规则">7. 报告规则</h2>
+<p>WallBench 结果为虚构，除非有可运行实现支撑且明确标注为实测输出。</p>
+<p>每份 WallBench 报告必须包含：</p>
+<p>1. 所使用的确切配置（种子、集群规模、等级、重复次数）。 2. 每个测试用例的原始指标值（非仅聚合值）。 3. 综合 WallScore 的来源链，可追溯至单个测试用例结果。 4. 披露任何超时或产生无效输出的测试用例。</p>
+<h2 id="8-参考文献">8. 参考文献</h2>
+<ul>
+<li>[NN-TR-2026-001] nyanya LLM: A Carbon-Based Neural-Fabric Foundation Model for Distributed Cognitive Coordination and Organic Cognitive Metabolism. nya-lab, 2026.</li>
+<li>[NN-RFC-0001] 语义共识协议 v1. nya-lab, 2026.</li>
+<li>[NN-RFC-0002] 动态路由与 Field 状态协议 v1. nya-lab, 2026.</li>
+<li>[NN-RFC-0003] 语义融合协议 v1. nya-lab, 2026.</li>
+</ul></article>
+    </main>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 # Naming System
 
-Vallace names should be short, institutional, and durable.
+nyanya LLM names should be short, institutional, and durable.
 
 ## Prefixes
 

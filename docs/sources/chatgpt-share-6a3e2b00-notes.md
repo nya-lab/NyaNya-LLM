@@ -7,12 +7,12 @@ Read date: 2026-06-26
 
 ## Non-Negotiable Direction
 
-Vallace is an academic satire project and an alternate-reality AI lab.
+nyanya LLM is an academic satire project and an alternate-reality AI lab.
 
 The first artifact should be a paper, not a website.
 
 The project must feel like the digital remains of a nonexistent research lab.
-Its artifacts should come from `Vallace Research`, not from us.
+Its artifacts should come from `nya-lab`, not from us.
 
 ## Project Constitution
 
@@ -30,14 +30,14 @@ Its artifacts should come from `Vallace Research`, not from us.
 ## Safety Boundary
 
 The project may invent theories, protocols, labs, systems, and internal
-artifacts inside the Vallace universe.
+artifacts inside the nyanya LLM universe.
 
 It must not:
 
 - fake real experimental results;
 - impersonate real institutions;
 - claim fictional results have been validated;
-- mislead readers into believing Vallace is a real scientific breakthrough.
+- mislead readers into believing nyanya LLM is a real scientific breakthrough.
 
 ## Style Rule
 
@@ -50,14 +50,14 @@ Each chapter should do one thing. Each sentence should carry information.
 
 ## World Model
 
-Vallace is not:
+nyanya LLM is not:
 
 - a joke project;
 - an April Fools project;
 - pseudoscience;
 - a generic AI joke.
 
-Vallace is:
+nyanya LLM is:
 
 > a complete digital archive left by a nonexistent AI research lab.
 
@@ -94,11 +94,11 @@ single idea.
 
 Identifier:
 
-`VR-TR-2026-001`
+`NN-TR-2026-001`
 
 Title:
 
-`The Vallace Project`
+`The nyanya LLM Project`
 
 Subtitle:
 
@@ -117,7 +117,7 @@ Modern AI systems scale by increasing:
 - training data;
 - computational resources.
 
-Vallace asks whether another axis exists:
+nyanya LLM asks whether another axis exists:
 
 ```text
 I = f(C, K)

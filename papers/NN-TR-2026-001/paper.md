@@ -1,14 +1,14 @@
-# Vallace-LLM: A Multimodal Foundation Model for Carbon-Based Neural Coordination and Organic Cognitive Metabolism
+# nyanya LLM: A Multimodal Foundation Model for Carbon-Based Neural Coordination and Organic Cognitive Metabolism
 
-**Vallace Research**  
-**Technical Report VR-TR-2026-001**  
+**nya-lab**  
+**Technical Report NN-TR-2026-001**  
 **2026**
 
 ---
 
 ## Abstract
 
-Current approaches to scaling large language models rely heavily on expanding parameter counts, training data volume, and silicon-based compute. This paradigm exposes significant shortcomings under ultra-high concurrency, extended-context continuous reasoning, multimodal complex logical derivation, and high-frequency human-machine dialogue: semantic representation homogenization, rising multi-agent coordination overhead, fragmented context windows, and the difficulty of structurally reusing high-value historical reasoning experience. We present Vallace-LLM, a distributed multimodal foundation model framework built upon the Carbon-Based Neural Fabric (CBNF) as its underlying substrate. The framework abstracts heterogeneous cognitive units as Organic Processing Units (OPUs) and uses Organic Semantic Units (OSUs) as the minimum carrier for cross-node collaborative transmission. It enables distributed parallel reasoning for complex tasks through semantic dynamic routing, collective consensus compression, organic cognitive metabolism, and tiered anomaly offloading. The core innovation of this framework is not the unbounded expansion of reasoning nodes, but the improvement of coordination efficiency among heterogeneous units. To this end, we design the Organic Cognitive Metabolism Layer (OCML), comprising five collaborative subsystems: BCW Hierarchical Semantic Encapsulation Unit, CCL Cognitive Potential Equalization Circuit, NLB Asynchronous Latency Semantic Buffer Pool, MCP Task-Adaptive Resource Provisioning Protocol, and LAXI Large-Scale Adaptive Experience Interaction Interface. These respectively handle long-text structured encapsulation, local cognitive overheating suppression, slow-reasoning fragment retention, dynamic resource scheduling, and anomalous semantic recovery. We define a Coordination Scaling Law to quantify cluster performance boundaries, and construct a complete supporting infrastructure: BEW Pool standardized execution unit pool, RES Guard recursive scheduling degradation protection, L8B eight-category extreme disturbance input benchmark, and ACI adversarial consensus reverse inspection mechanism. We also provide a complete multi-objective joint loss function, quantified anomaly determination indicators, and system steady-state constraints. Simulation ablation experiments demonstrate that, compared to the MoE baseline, Vallace-LLM reduces coordination latency by 41%, collective cognitive bias incidence by 44%, and cyclic scheduling compute waste by 54%; compared to the unmanaged cluster baseline, the three metrics improve by 58%, 70%, and 67% respectively.
+Current approaches to scaling large language models rely heavily on expanding parameter counts, training data volume, and silicon-based compute. This paradigm exposes significant shortcomings under ultra-high concurrency, extended-context continuous reasoning, multimodal complex logical derivation, and high-frequency human-machine dialogue: semantic representation homogenization, rising multi-agent coordination overhead, fragmented context windows, and the difficulty of structurally reusing high-value historical reasoning experience. We present nyanya LLM, a distributed multimodal foundation model framework built upon the Carbon-Based Neural Network (CBNF) as its underlying substrate. The framework abstracts heterogeneous cognitive units as Organic Processing Units (OPUs) and uses Organic Semantic Units (OSUs) as the minimum carrier for cross-node collaborative transmission. It enables distributed parallel reasoning for complex tasks through semantic dynamic routing, collective consensus compression, organic cognitive metabolism, and tiered anomaly offloading. The core innovation of this framework is not the unbounded expansion of reasoning nodes, but the improvement of coordination efficiency among heterogeneous units. To this end, we design the Organic Cognitive Metabolism Layer (OCML), comprising five collaborative subsystems: BCW Hierarchical Semantic Encapsulation Unit, CCL Cognitive Potential Equalization Circuit, NLB Asynchronous Latency Semantic Buffer Pool, MCP Task-Adaptive Resource Provisioning Protocol, and LAXI Large-Scale Adaptive Experience Interaction Interface. These respectively handle long-text structured encapsulation, local cognitive overheating suppression, slow-reasoning fragment retention, dynamic resource scheduling, and anomalous semantic recovery. We define a Coordination Scaling Law to quantify cluster performance boundaries, and construct a complete supporting infrastructure: BEW Pool standardized execution unit pool, RES Guard recursive scheduling degradation protection, L8B eight-category extreme disturbance input benchmark, and ACI adversarial consensus reverse inspection mechanism. We also provide a complete multi-objective joint loss function, quantified anomaly determination indicators, and system steady-state constraints. Simulation ablation experiments demonstrate that, compared to the MoE baseline, nyanya LLM reduces coordination latency by 41%, collective cognitive bias incidence by 44%, and cyclic scheduling compute waste by 54%; compared to the unmanaged cluster baseline, the three metrics improve by 58%, 70%, and 67% respectively.
 
 > Coordination scheduling itself is non-negligible computational overhead.
 
@@ -20,7 +20,7 @@ The Transformer attention architecture laid the foundation for modern large lang
 
 $$R = f_\theta(Q)$$
 
-where an input query $Q$ passes through a fixed-parameter network $\theta$ to produce an output response $R$, with performance optimization revolving solely around three dimensions: parameter scale, training data, and computational resources [2][3][4]. Research in collective intelligence has confirmed that the comprehensive performance of multi-agent collaborative systems cannot be linearly characterized by individual average ability or best-individual ability; collective coordination efficiency and agent diversity are key variables independent of individual computational capacity [6][8]. Based on this finding, Vallace-LLM proposes a new performance growth paradigm:
+where an input query $Q$ passes through a fixed-parameter network $\theta$ to produce an output response $R$, with performance optimization revolving solely around three dimensions: parameter scale, training data, and computational resources [2][3][4]. Research in collective intelligence has confirmed that the comprehensive performance of multi-agent collaborative systems cannot be linearly characterized by individual average ability or best-individual ability; collective coordination efficiency and agent diversity are key variables independent of individual computational capacity [6][8]. Based on this finding, nyanya LLM proposes a new performance growth paradigm:
 
 $$\text{Intelligence} = \text{Compute} + \text{Coordination} + \text{Diversity}$$
 
@@ -36,7 +36,7 @@ Existing silicon-based large models focus exclusively on optimizing the Compute 
 
 ### 1.2 Core Contributions
 
-- Propose the CBNF Carbon-Based Neural Fabric distributed coordination substrate, define OPU heterogeneous cognitive units and OSU standardized semantic transmission units, constructing a complete carbon-based cluster modeling system;
+- Propose the CBNF Carbon-Based Neural Network distributed coordination substrate, define OPU heterogeneous cognitive units and OSU standardized semantic transmission units, constructing a complete carbon-based cluster modeling system;
 - Design the OCML Organic Cognitive Metabolism five-layer subsystem, forming a complete full-chain control mechanism covering context encapsulation, steady-state regulation, asynchronous caching, dynamic provisioning, and anomaly recovery;
 - Establish the Coordination Scaling Law, quantifying the impact of cluster size, coordination rounds, conflict density, and cognitive diversity on system performance, providing optimal coordination interval constraints;
 - Build a complete supporting operational verification system: BEW standardized execution pool, RES recursive scheduling protection, L8B extreme input benchmark, ACI consensus reverse inspection;
@@ -66,7 +66,7 @@ The free-energy principle [7] and extended mind theory [9] provide theoretical s
 
 ## 3 Problem Formalization
 
-Given a user input query $Q$, Vallace-LLM decomposes the complete distributed reasoning pipeline into a standardized five-stage pipeline:
+Given a user input query $Q$, nyanya LLM decomposes the complete distributed reasoning pipeline into a standardized five-stage pipeline:
 
 $$Q \rightarrow \text{Split} \rightarrow \text{Flow} \rightarrow \text{Field} \rightarrow \text{Merge} \rightarrow \text{Speak}$$
 
@@ -79,7 +79,7 @@ $$Q \rightarrow \text{Split} \rightarrow \text{Flow} \rightarrow \text{Field} \r
 | Speak | Post-convergence consensus natural language generation, multimodal output formatting |
 | LAXI | Full-chain anomaly monitoring, semantic residual recovery, faulty unit degradation, spanning all five pipeline stages |
 
-**Figure 1: Vallace-LLM Five-Stage Reasoning Pipeline**
+**Figure 1: nyanya LLM Five-Stage Reasoning Pipeline**
 
 ![Five-Stage Pipeline](images/fig-pipeline.svg)
 
@@ -101,9 +101,9 @@ Hyperparameters $\lambda_1,\lambda_2,\lambda_3,\lambda_4$ are dynamically adjust
 
 ## 4 System Overview
 
-The overall architecture of Vallace-LLM is organized into three collaborative layers, from bottom to top:
+The overall architecture of nyanya LLM is organized into three collaborative layers, from bottom to top:
 
-- **Bottom Layer — Carbon-Based Neural Fabric CBNF (§5)**: Provides the heterogeneous cognitive unit cluster (including general-purpose OPUs and specialized BigXS variants) and standardized semantic transmission carriers, serving as the computational substrate for distributed reasoning;
+- **Bottom Layer — Carbon-Based Neural Network CBNF (§5)**: Provides the heterogeneous cognitive unit cluster (including general-purpose OPUs and specialized BigXS variants) and standardized semantic transmission carriers, serving as the computational substrate for distributed reasoning;
 - **Middle Layer — Organic Cognitive Metabolism Layer OCML (§6)**: Responsible for the entire chain of semantic resource ingestion, structured encapsulation, dynamic steady-state regulation, asynchronous latency caching, task-adaptive provisioning, and anomalous semantic recovery and digestion. It does not directly generate final reasoning conclusions;
 - **Top Layer — Collective Consensus Protocol**: Drives the Split→Flow→Field→Merge→Speak five-stage reasoning pipeline (§3), completing distributed parallel reasoning for complex tasks under the joint support of the CBNF computational substrate and OCML metabolic regulation.
 
@@ -111,13 +111,13 @@ Beyond the three layers, the supporting operational verification system (§7) sp
 
 The following sections detail the bottom-layer computational substrate and middle-layer metabolic layer design (§5–§6), introduce the supporting operational verification system (§7), derive the Coordination Scaling Law (§8), define the L8B evaluation benchmark (§9), and present complete experimental validation (§10).
 
-**Figure 2: Vallace-LLM System Architecture Overview**
+**Figure 2: nyanya LLM System Architecture Overview**
 
 ![System Architecture](images/fig-architecture.svg)
 
 ---
 
-## 5 Carbon-Based Neural Fabric (CBNF)
+## 5 Carbon-Based Neural Network (CBNF)
 
 ### 5.1 Overall Definition of the Carbon-Based Coordination Substrate
 
@@ -230,7 +230,7 @@ When $\Lambda_i$ exceeds the limit, the node enters metabolic disposal status. T
 
 ## 7 Supporting Operational Verification System
 
-Beyond the CBNF computational substrate and OCML metabolic regulation, Vallace-LLM is equipped with a three-layer operational verification subsystem, respectively responsible for lightweight task diversion, recursive scheduling degradation protection, and collective consensus reverse inspection, forming a full-chain anomaly detection and self-healing closed loop.
+Beyond the CBNF computational substrate and OCML metabolic regulation, nyanya LLM is equipped with a three-layer operational verification subsystem, respectively responsible for lightweight task diversion, recursive scheduling degradation protection, and collective consensus reverse inspection, forming a full-chain anomaly detection and self-healing closed loop.
 
 ### 7.1 BEW Pool: Base Execution Unit Pool
 
@@ -358,9 +358,9 @@ The following table presents the comprehensive performance comparison of each me
 | Baseline 1 (Single Model) | — | 12.7 | — | 78.3 | 1 |
 | Baseline 2 (MoE) | 184.2 | 10.4 | 31.5 | 81.6 | 3.2 |
 | Baseline 3 (Unmanaged Cluster) | 256.8 | 19.3 | 44.2 | 72.1 | 6.8 |
-| **Vallace-LLM (Full)** | **108.7** | **5.8** | **14.6** | **91.4** | **4.1** |
+| **nyanya LLM (Full)** | **108.7** | **5.8** | **14.6** | **91.4** | **4.1** |
 
-Compared to Baseline 3 (unmanaged cluster), Vallace-LLM reduces coordination latency by 57.7%, decreases CHC bias rate by 69.9%, lowers compute waste by 67.0%, and improves semantic integrity by 19.3 percentage points. Compared to Baseline 2 (MoE), coordination latency is reduced by 41.0%, CHC bias rate drops by 44.2%, and compute waste decreases by 53.7%.
+Compared to Baseline 3 (unmanaged cluster), nyanya LLM reduces coordination latency by 57.7%, decreases CHC bias rate by 69.9%, lowers compute waste by 67.0%, and improves semantic integrity by 19.3 percentage points. Compared to Baseline 2 (MoE), coordination latency is reduced by 41.0%, CHC bias rate drops by 44.2%, and compute waste decreases by 53.7%.
 
 **Figure 3: Comprehensive Comparison Results**
 
@@ -449,11 +449,11 @@ To evaluate the independent impact of each scaling exponent in the Coordination 
 
 ## 12 Conclusion
 
-Vallace-LLM constructs a distributed multimodal foundation model architecture centered on carbon-based heterogeneous cognitive coordination, organic cognitive metabolism scheduling, and collective consensus verification. The bottom-layer CBNF Carbon-Based Neural Fabric provides a differentiated cognitive unit cluster; the middle-layer OCML five-layer metabolic subsystem completely controls context encapsulation, cognitive steady-state, asynchronous latency caching, dynamic resource provisioning, and anomalous semantic recovery; the supporting BEW standardized execution pool diverts lightweight tasks, RES Guard suppresses cyclic scheduling waste, the ACI mechanism intercepts collective cognitive bias, and the L8B benchmark fully validates system extreme input steady-state. The Coordination Scaling Law proves from a theoretical level that the core source of cluster performance growth is coordination efficiency and cognitive diversity, not simply stacking reasoning nodes. This framework reconstructs the logic of large model performance growth:
+nyanya LLM constructs a distributed multimodal foundation model architecture centered on carbon-based heterogeneous cognitive coordination, organic cognitive metabolism scheduling, and collective consensus verification. The bottom-layer CBNF Carbon-Based Neural Network provides a differentiated cognitive unit cluster; the middle-layer OCML five-layer metabolic subsystem completely controls context encapsulation, cognitive steady-state, asynchronous latency caching, dynamic resource provisioning, and anomalous semantic recovery; the supporting BEW standardized execution pool diverts lightweight tasks, RES Guard suppresses cyclic scheduling waste, the ACI mechanism intercepts collective cognitive bias, and the L8B benchmark fully validates system extreme input steady-state. The Coordination Scaling Law proves from a theoretical level that the core source of cluster performance growth is coordination efficiency and cognitive diversity, not simply stacking reasoning nodes. This framework reconstructs the logic of large model performance growth:
 
 $$\text{Intelligence} = \text{Compute} + \text{Coordination} + \text{Diversity}$$
 
-Vallace does not require all cognitive units to output unified derivation paths. Instead, it allows differentiated units, under adapted metabolic resource configurations, to participate in the collaborative reasoning of the same complex task at optimal timing.
+nyanya LLM does not require all cognitive units to output unified derivation paths. Instead, it allows differentiated units, under adapted metabolic resource configurations, to participate in the collaborative reasoning of the same complex task at optimal timing.
 
 > High-confidence conclusions without reverse inspection carry the risk of collective cognitive bias.
 

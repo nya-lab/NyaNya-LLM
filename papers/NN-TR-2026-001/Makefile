@@ -29,4 +29,4 @@ check-tex:
 
 clean:
 	rm -f $(TARGET).aux $(TARGET).bbl $(TARGET).blg $(TARGET).log $(TARGET).out $(TARGET).pdf
-	rm -f ../../output/pdf/VR-TR-2026-001-cn.pdf
+	rm -f ../../output/pdf/NN-TR-2026-001-cn.pdf

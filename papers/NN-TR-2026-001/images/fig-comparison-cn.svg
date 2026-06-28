@@ -16,7 +16,7 @@
   <!-- ============================================================ -->
   <g>
     <rect x="60" y="50" width="320" height="205" fill="none" stroke="#ddd" stroke-width="1"/>
-    <text x="220" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Coordination Latency (ms)</text>
+    <text x="220" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">协同延迟 (ms)</text>
 
     <!-- Y-axis -->
     <line x1="100" y1="78" x2="100" y2="235" stroke="#333" stroke-width="1"/>
@@ -43,7 +43,7 @@
     <!-- Baseline 3: 256.8 → h=134.4, y=100.6 -->
     <rect x="195" y="100.6" width="50" height="134.4" fill="#a0b8d0" rx="1"/>
     <text x="220" y="96.6" text-anchor="middle" font-size="8" fill="#333">256.8</text>
-    <!-- Vallace-LLM: 108.7 → h=56.9, y=178.1 -->
+    <!-- nyanya LLM: 108.7 → h=56.9, y=178.1 -->
     <rect x="264" y="178.1" width="50" height="56.9" fill="#3a6b97" rx="1"/>
     <text x="289" y="174.1" text-anchor="middle" font-size="8" font-weight="bold" fill="#3a6b97">108.7</text>
 
@@ -51,9 +51,9 @@
     <text x="151" y="248" text-anchor="middle" font-size="7.5" fill="#555">Baseline 2</text>
     <text x="151" y="258" text-anchor="middle" font-size="7.5" fill="#888">(MoE)</text>
     <text x="220" y="248" text-anchor="middle" font-size="7.5" fill="#555">Baseline 3</text>
-    <text x="220" y="258" text-anchor="middle" font-size="7.5" fill="#888">(Unmanaged)</text>
-    <text x="289" y="248" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">Vallace-LLM</text>
-    <text x="289" y="258" text-anchor="middle" font-size="7.5" fill="#3a6b97">(Full)</text>
+    <text x="220" y="258" text-anchor="middle" font-size="7.5" fill="#888">(无管控)</text>
+    <text x="289" y="248" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">nyanya LLM</text>
+    <text x="289" y="258" text-anchor="middle" font-size="7.5" fill="#3a6b97">(完整)</text>
   </g>
 
   <!-- ============================================================ -->
@@ -61,7 +61,7 @@
   <!-- ============================================================ -->
   <g>
     <rect x="420" y="50" width="320" height="205" fill="none" stroke="#ddd" stroke-width="1"/>
-    <text x="580" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">CHC Bias Rate (%)</text>
+    <text x="580" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">CHC偏差率 (%)</text>
 
     <!-- Y-axis -->
     <line x1="460" y1="78" x2="460" y2="235" stroke="#333" stroke-width="1"/>
@@ -99,19 +99,19 @@
     <!-- Baseline 3: 19.3 → h=121.2, y=113.8 -->
     <rect x="586" y="113.8" width="40" height="121.2" fill="#a0b8d0" rx="1"/>
     <text x="606" y="109.8" text-anchor="middle" font-size="7.5" fill="#555">19.3</text>
-    <!-- Vallace-LLM: 5.8 → h=36.4, y=198.6 -->
+    <!-- nyanya LLM: 5.8 → h=36.4, y=198.6 -->
     <rect x="638" y="198.6" width="40" height="36.4" fill="#3a6b97" rx="1"/>
     <text x="658" y="194.6" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">5.8</text>
 
     <!-- X-axis labels -->
     <text x="502" y="248" text-anchor="middle" font-size="7.5" fill="#555">Baseline 1</text>
-    <text x="502" y="258" text-anchor="middle" font-size="7.5" fill="#888">(Single)</text>
+    <text x="502" y="258" text-anchor="middle" font-size="7.5" fill="#888">(单模型)</text>
     <text x="554" y="248" text-anchor="middle" font-size="7.5" fill="#555">Baseline 2</text>
     <text x="554" y="258" text-anchor="middle" font-size="7.5" fill="#888">(MoE)</text>
     <text x="606" y="248" text-anchor="middle" font-size="7.5" fill="#555">Baseline 3</text>
-    <text x="606" y="258" text-anchor="middle" font-size="7.5" fill="#888">(Unmanaged)</text>
-    <text x="658" y="248" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">Vallace-LLM</text>
-    <text x="658" y="258" text-anchor="middle" font-size="7.5" fill="#3a6b97">(Full)</text>
+    <text x="606" y="258" text-anchor="middle" font-size="7.5" fill="#888">(无管控)</text>
+    <text x="658" y="248" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">nyanya LLM</text>
+    <text x="658" y="258" text-anchor="middle" font-size="7.5" fill="#3a6b97">(完整)</text>
   </g>
 
   <!-- ============================================================ -->
@@ -119,7 +119,7 @@
   <!-- ============================================================ -->
   <g>
     <rect x="60" y="275" width="320" height="205" fill="none" stroke="#ddd" stroke-width="1"/>
-    <text x="220" y="293" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Compute Waste (%)</text>
+    <text x="220" y="293" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">算力损耗 (%)</text>
 
     <!-- Y-axis -->
     <line x1="100" y1="303" x2="100" y2="460" stroke="#333" stroke-width="1"/>
@@ -154,7 +154,7 @@
     <!-- Baseline 3: 44.2 → h=138.8, y=321.2 -->
     <rect x="195" y="321.2" width="50" height="138.8" fill="#a0b8d0" rx="1"/>
     <text x="220" y="317.2" text-anchor="middle" font-size="8" fill="#333">44.2</text>
-    <!-- Vallace-LLM: 14.6 → h=45.8, y=414.2 -->
+    <!-- nyanya LLM: 14.6 → h=45.8, y=414.2 -->
     <rect x="264" y="414.2" width="50" height="45.8" fill="#3a6b97" rx="1"/>
     <text x="289" y="410.2" text-anchor="middle" font-size="8" font-weight="bold" fill="#3a6b97">14.6</text>
 
@@ -162,9 +162,9 @@
     <text x="151" y="473" text-anchor="middle" font-size="7.5" fill="#555">Baseline 2</text>
     <text x="151" y="483" text-anchor="middle" font-size="7.5" fill="#888">(MoE)</text>
     <text x="220" y="473" text-anchor="middle" font-size="7.5" fill="#555">Baseline 3</text>
-    <text x="220" y="483" text-anchor="middle" font-size="7.5" fill="#888">(Unmanaged)</text>
-    <text x="289" y="473" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">Vallace-LLM</text>
-    <text x="289" y="483" text-anchor="middle" font-size="7.5" fill="#3a6b97">(Full)</text>
+    <text x="220" y="483" text-anchor="middle" font-size="7.5" fill="#888">(无管控)</text>
+    <text x="289" y="473" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">nyanya LLM</text>
+    <text x="289" y="483" text-anchor="middle" font-size="7.5" fill="#3a6b97">(完整)</text>
   </g>
 
   <!-- ============================================================ -->
@@ -172,7 +172,7 @@
   <!-- ============================================================ -->
   <g>
     <rect x="420" y="275" width="320" height="205" fill="none" stroke="#ddd" stroke-width="1"/>
-    <text x="580" y="293" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Semantic Integrity (%)</text>
+    <text x="580" y="293" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">语义完整度 (%)</text>
 
     <!-- Y-axis -->
     <line x1="460" y1="303" x2="460" y2="460" stroke="#333" stroke-width="1"/>
@@ -206,19 +206,19 @@
     <!-- Baseline 3: 72.1 → h=113.2, y=346.8 -->
     <rect x="586" y="346.8" width="40" height="113.2" fill="#a0b8d0" rx="1"/>
     <text x="606" y="342.8" text-anchor="middle" font-size="7.5" fill="#555">72.1</text>
-    <!-- Vallace-LLM: 91.4 → h=143.5, y=316.5 -->
+    <!-- nyanya LLM: 91.4 → h=143.5, y=316.5 -->
     <rect x="638" y="316.5" width="40" height="143.5" fill="#3a6b97" rx="1"/>
     <text x="658" y="312.5" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">91.4</text>
 
     <!-- X-axis labels -->
     <text x="502" y="473" text-anchor="middle" font-size="7.5" fill="#555">Baseline 1</text>
-    <text x="502" y="483" text-anchor="middle" font-size="7.5" fill="#888">(Single)</text>
+    <text x="502" y="483" text-anchor="middle" font-size="7.5" fill="#888">(单模型)</text>
     <text x="554" y="473" text-anchor="middle" font-size="7.5" fill="#555">Baseline 2</text>
     <text x="554" y="483" text-anchor="middle" font-size="7.5" fill="#888">(MoE)</text>
     <text x="606" y="473" text-anchor="middle" font-size="7.5" fill="#555">Baseline 3</text>
-    <text x="606" y="483" text-anchor="middle" font-size="7.5" fill="#888">(Unmanaged)</text>
-    <text x="658" y="473" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">Vallace-LLM</text>
-    <text x="658" y="483" text-anchor="middle" font-size="7.5" fill="#3a6b97">(Full)</text>
+    <text x="606" y="483" text-anchor="middle" font-size="7.5" fill="#888">(无管控)</text>
+    <text x="658" y="473" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#3a6b97">nyanya LLM</text>
+    <text x="658" y="483" text-anchor="middle" font-size="7.5" fill="#3a6b97">(完整)</text>
   </g>
 
   <!-- Legend at bottom center -->
@@ -230,6 +230,6 @@
     <rect x="0" y="-6" width="12" height="12" fill="#a0b8d0" rx="1"/>
     <text x="16" y="4" font-size="7.5" fill="#555">Baseline 3</text>
     <rect x="85" y="-6" width="12" height="12" fill="#3a6b97" rx="1"/>
-    <text x="101" y="4" font-size="7.5" font-weight="bold" fill="#3a6b97">Vallace-LLM</text>
+    <text x="101" y="4" font-size="7.5" font-weight="bold" fill="#3a6b97">nyanya LLM</text>
   </g>
 </svg>

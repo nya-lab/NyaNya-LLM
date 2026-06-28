@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NN-RFC-0001 · nya-lab wiki</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body class="wiki-body">
+    <header class="topbar">
+      <a class="mark" href="../index.html" aria-label="nya-lab home">
+        <span class="mark-symbol" aria-hidden="true" data-final="：꒱ nya-lab">：꒱ <span class="lab-name"><strong>n</strong>ya-lab</span></span>
+      </a>
+      <nav aria-label="Wiki navigation">
+        <a href="index.html">Wiki</a>
+        <a href="../index.html#overview">Field</a>
+        <a href="../index.html#docs">Archive</a>
+      </nav>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-sidebar">
+        <p class="eyebrow">Protocol</p>
+        <h1>NN-RFC-0001</h1>
+        <p>Version 1</p>
+        <a class="wiki-source" href="../../docs/rfc/NN-RFC-0001.md">Source MD</a>
+        <div class="doc-links">
+          <a href="NN-RFC-0001-cn.html">中文</a>
+          <span>EN</span>
+        </div>
+        <nav aria-label="Table of contents"><a class="toc-l1" href="#nn-rfc-0001">NN-RFC-0001</a><a class="toc-l1" href="#semantic-consensus-protocol">Semantic Consensus Protocol</a><a class="toc-l2" href="#abstract">Abstract</a><a class="toc-l2" href="#status">Status</a><a class="toc-l2" href="#1-terms">1. Terms</a><a class="toc-l2" href="#2-protocol-goals">2. Protocol Goals</a><a class="toc-l2" href="#3-non-goals">3. Non-Goals</a><a class="toc-l2" href="#4-osu-message-format">4. OSU Message Format</a><a class="toc-l3" href="#41-encoding-structure">4.1 Encoding Structure</a><a class="toc-l3" href="#42-core-semantic-content">4.2 Core Semantic Content</a><a class="toc-l3" href="#43-field-semantics">4.3 Field Semantics</a><a class="toc-l2" href="#5-merge-rules">5. Merge Rules</a><a class="toc-l3" href="#51-validity-conditions">5.1 Validity Conditions</a><a class="toc-l3" href="#52-merge-procedure">5.2 Merge Procedure</a><a class="toc-l3" href="#53-aci-inspection">5.3 ACI Inspection</a><a class="toc-l2" href="#6-routing-protocol">6. Routing Protocol</a><a class="toc-l3" href="#61-dynamic-routing">6.1 Dynamic Routing</a><a class="toc-l3" href="#62-res-guard">6.2 RES Guard</a><a class="toc-l2" href="#7-anomaly-handling">7. Anomaly Handling</a><a class="toc-l3" href="#71-laxi-monitoring">7.1 LAXI Monitoring</a><a class="toc-l3" href="#72-tiered-disposal">7.2 Tiered Disposal</a><a class="toc-l2" href="#8-steady-state-constraints">8. Steady-State Constraints</a><a class="toc-l3" href="#81-ccl-equalization">8.1 CCL Equalization</a><a class="toc-l3" href="#82-coordination-scaling-law">8.2 Coordination Scaling Law</a><a class="toc-l3" href="#83-bes-saturation">8.3 BES Saturation</a><a class="toc-l2" href="#9-implementation-notes">9. Implementation Notes</a><a class="toc-l3" href="#91-default-parameters">9.1 Default Parameters</a><a class="toc-l3" href="#92-minimum-viable-implementation">9.2 Minimum Viable Implementation</a></nav>
+      </aside>
+      <article class="wiki-article"><h1 id="nn-rfc-0001">NN-RFC-0001</h1>
+<h1 id="semantic-consensus-protocol">Semantic Consensus Protocol</h1>
+<p>Version 1</p>
+<h2 id="abstract">Abstract</h2>
+<p>The Semantic Consensus Protocol defines how nyanya LLM agents exchange, compare, and merge partial interpretations without reducing them to token-level agreement. It specifies the message format, routing, merge rules, anomaly handling, and steady-state constraints for the nyanya LLM distributed reasoning pipeline.</p>
+<h2 id="status">Status</h2>
+<p>Protocol specification. Supersedes Draft 0.</p>
+<p>References: <a href="https://github.com/nya-lab/NN-TR-2026-001">NN-TR-2026-001</a>.</p>
+<h2 id="1-terms">1. Terms</h2>
+<p><code>Field</code></p>
+<p>The shared semantic environment. All agents contribute to and read from the Field. The Field is not a database — it is a distributed state maintained through continuous signal exchange.</p>
+<p><code>Signal</code></p>
+<p>A bounded interpretation emitted by an agent. Signals are the only unit of communication in the protocol. Every signal carries provenance, confidence, and tension.</p>
+<p><code>Tension</code></p>
+<p>A conflict between compatible but incomplete interpretations. Tension is not an error — it is the raw material for consensus. The protocol preserves tension rather than resolving it prematurely.</p>
+<p><code>Merge</code></p>
+<p>The act of resolving tension into a coordinated state. A valid merge preserves unresolved tension, declares lossy compression, and leaves the resulting state challengeable.</p>
+<p><code>Drift</code></p>
+<p>Loss of meaning caused by repeated summarization or unstable routing. Drift is measured as the semantic distance between a signal and its re-encoded form after passing through the protocol stack.</p>
+<p><code>OSU</code></p>
+<p>Organic Semantic Unit. The minimum standardized carrier for cross-node transmission. Defined in §2.</p>
+<p><code>OPU</code></p>
+<p>Organic Processing Unit. A heterogeneous cognitive agent in the CBNF fabric. Defined in NN-TR-2026-001 §5.1.</p>
+<p><code>Route</code></p>
+<p>A directed path through the OPU cluster. Routes are dynamic and may be reconfigured in response to tension, drift, or saturation.</p>
+<h2 id="2-protocol-goals">2. Protocol Goals</h2>
+<p>The protocol optimizes for:</p>
+<ul>
+<li>coherence across agents;</li>
+<li>traceable disagreement;</li>
+<li>low semantic drift;</li>
+<li>reversible merges;</li>
+<li>concise state transfer.</li>
+</ul>
+<h2 id="3-non-goals">3. Non-Goals</h2>
+<p>The protocol does not define truth.</p>
+<p>The protocol does not claim biological plausibility.</p>
+<p>The protocol does not replace model inference.</p>
+<p>The protocol does not prescribe a specific consensus algorithm. It defines the message format and rules; the underlying consensus mechanism is implementation-defined.</p>
+<h2 id="4-osu-message-format">4. OSU Message Format</h2>
+<p>Every signal in the protocol is encoded as an OSU (Organic Semantic Unit). The OSU is the minimum standardized carrier for OPU external output and cross-node transmission.</p>
+<h3 id="41-encoding-structure">4.1 Encoding Structure</h3>
+<pre><code>osu {
+  id:        string       // unique signal identifier
+  source:    agent_id     // originating OPU
+  c:         semantic     // core semantic content (§4.2)
+  omega:     scalar       // local confidence weight [0, 1]
+  tau:       ms           // generation latency
+  rho:       scalar       // viewpoint conflict coefficient [0, 1]
+  eta:       scalar       // information increment coefficient [0, 1]
+  provenance: ref[]       // upstream OSU references
+  ttl:       uint         // remaining hop count
+}</code></pre>
+<h3 id="42-core-semantic-content">4.2 Core Semantic Content</h3>
+<p>The <code>c</code> field carries the payload. It may contain:</p>
+<ul>
+<li>local conclusions;</li>
+<li>counterexamples;</li>
+<li>reasoning experience;</li>
+<li>visual associations;</li>
+<li>logical疑点;</li>
+<li>risk warnings;</li>
+<li>incomplete derivation fragments.</li>
+</ul>
+<p>The <code>c</code> field is opaque to the routing layer. Its internal structure is defined by the consuming OPU.</p>
+<h3 id="43-field-semantics">4.3 Field Semantics</h3>
+<ul>
+<li><code>omega</code> — confidence. Higher values indicate stronger local conviction. The protocol uses omega for weighted voting, but does not treat high omega as truth.</li>
+<li><code>tau</code> — latency. The wall-clock time the OPU spent generating this signal. Used by NLB to classify slow-reasoning fragments.</li>
+<li><code>rho</code> — conflict. Indicates how strongly this signal disagrees with the current consensus. High rho signals are prioritized for ACI inspection.</li>
+<li><code>eta</code> — novelty. Measures how much new information this signal contributes relative to existing signals. Low eta triggers BES saturation detection.</li>
+<li><code>provenance</code> — traceability. Every signal must reference its upstream OSUs. This enables reversible merges and drift measurement.</li>
+<li><code>ttl</code> — hop limit. Decremented at each routing hop. Signals with ttl=0 are discarded. Prevents infinite routing loops.</li>
+</ul>
+<h2 id="5-merge-rules">5. Merge Rules</h2>
+<h3 id="51-validity-conditions">5.1 Validity Conditions</h3>
+<p>A merge is valid when:</p>
+<ul>
+<li>input signals preserve provenance;</li>
+<li>unresolved tension is carried forward;</li>
+<li>lossy compression is declared;</li>
+<li>the resulting state can be challenged by a later signal.</li>
+</ul>
+<h3 id="52-merge-procedure">5.2 Merge Procedure</h3>
+<pre><code>merge(signals: OSU[]) -&gt; OSU:
+  1. group signals by provenance chain
+  2. for each chain:
+     a. compute weighted consensus: Σ(omega_i * c_i) / Σ(omega_i)
+     b. residual tension = max(rho_i) across inputs
+     c. if residual tension &gt; T_threshold:
+          mark output as &quot;pending-inspection&quot;
+          enqueue for ACI verification
+  3. compose output OSU:
+     c = aggregated consensus
+     omega = harmonic mean of input omegas
+     rho = residual tension
+     eta = information gain relative to previous consensus
+     provenance = input signal ids</code></pre>
+<h3 id="53-aci-inspection">5.3 ACI Inspection</h3>
+<p>The Adversarial Consensus Inspection (ACI) mechanism performs multi-layer reverse verification on high-confidence consensus clusters. When a merged output exceeds the safety threshold:</p>
+<pre><code>A = max(Contradiction(z), Blindspot(z), Fragility(z))</code></pre>
+<p>where z is the consensus cluster under inspection. If A exceeds the safety threshold, the conclusion is marked as pending and routed to the NLB asynchronous buffer pool, awaiting supplementary signals from differentiated OPUs before secondary convergence.</p>
+<h2 id="6-routing-protocol">6. Routing Protocol</h2>
+<h3 id="61-dynamic-routing">6.1 Dynamic Routing</h3>
+<p>The Flow module routes signals through the OPU cluster according to:</p>
+<pre><code>route(signal, cluster) -&gt; OPU[]:
+  1. classify signal by semantic category
+  2. select OPUs where:
+     - s_i (semantic prior) matches signal domain
+     - r_i (reasoning capacity) meets task complexity
+     - a_i (available attention) exceeds minimum threshold
+  3. apply load-balancing: distribute signals to avoid hotspot saturation
+  4. inject diversity: reserve 20% of capacity for low-prior, high-D OPUs</code></pre>
+<h3 id="62-res-guard">6.2 RES Guard</h3>
+<p>The Recursive Scheduling Degradation (RES) Guard monitors routing repetition:</p>
+<pre><code>RES = R_repeat / (R_novel + epsilon)</code></pre>
+<p>Tiered intervention:</p>
+<ul>
+<li><strong>Mild (RES &gt; threshold_1)</strong>: rotate active OPU set, introduce idle units with high cognitive diversity D.</li>
+<li><strong>Moderate (RES &gt; threshold_2)</strong>: restructure the Split-stage task decomposition, break existing fixed routing paths.</li>
+<li><strong>Severe (RES &gt; threshold_3)</strong>: force-terminate the cyclic scheduling link, output current consensus with uncertainty annotation, halt non-incremental compute consumption.</li>
+</ul>
+<h2 id="7-anomaly-handling">7. Anomaly Handling</h2>
+<h3 id="71-laxi-monitoring">7.1 LAXI Monitoring</h3>
+<p>The Large-Scale Adaptive Experience Interaction (LAXI) interface continuously monitors five anomaly categories:</p>
+<ul>
+<li>cognitive fatigue accumulation;</li>
+<li>semantic feature drift;</li>
+<li>repeated scheduling redundancy;</li>
+<li>high-entropy semantic accumulation;</li>
+<li>consensus convergence阻塞.</li>
+</ul>
+<p>Composite anomaly indicator:</p>
+<pre><code>Lambda_i = gamma_1 * F_i + gamma_2 * S_i + gamma_3 * A_i + gamma_4 * R_i</code></pre>
+<p>where:</p>
+<ul>
+<li>F_i: unit fatigue degree;</li>
+<li>S_i: semantic drift magnitude;</li>
+<li>A_i: anomaly output proportion;</li>
+<li>R_i: cyclic scheduling frequency.</li>
+</ul>
+<h3 id="72-tiered-disposal">7.2 Tiered Disposal</h3>
+<p>When Lambda_i exceeds the threshold, the node enters metabolic disposal status:</p>
+<p>1. unit weight衰减; 2. local context clearing; 3. anomaly signal标记滞留; 4. routing link switching; 5. unit temporary休眠; 6. fallback to low-risk reasoning path.</p>
+<p>Fragmented semantics that cannot be immediately integrated are classified as DSR (Deferred Semantic Residue) and processed in delayed batch回收.</p>
+<h2 id="8-steady-state-constraints">8. Steady-State Constraints</h2>
+<h3 id="81-ccl-equalization">8.1 CCL Equalization</h3>
+<p>The Cognitive Potential Equalization Circuit (CCL) monitors unit heat:</p>
+<pre><code>T_i = w_e * E_i + w_v * V_i + w_h * H_i</code></pre>
+<p>When T_i exceeds the global safety threshold, the circuit自动下调s the unit&#x27;s global voting weight, blocking global viewpoint偏移 caused by unrestrained unilateral cognitive potential expansion.</p>
+<h3 id="82-coordination-scaling-law">8.2 Coordination Scaling Law</h3>
+<p>Cluster performance P is bounded by:</p>
+<pre><code>P = A * N^alpha * K^beta * (1 - sigma)^gamma * D^mu</code></pre>
+<p>The protocol must operate within the optimal interval:</p>
+<ul>
+<li>sigma (conflict density): moderate, avoiding both collapse (sigma -&gt; 0) and saturation (sigma过高);</li>
+<li>D (cognitive diversity density): sufficient to prevent ESL echo semantic loops;</li>
+<li>N (active OPU count): increased only when accompanied by proportional D growth.</li>
+</ul>
+<h3 id="83-bes-saturation">8.3 BES Saturation</h3>
+<p>The protocol monitors Base Execution Saturation:</p>
+<pre><code>BES = Repeat(OSU) / (Novel(OSU) + epsilon)</code></pre>
+<p>When BES exceeds the threshold, the MCP protocol下调s the corresponding unit task quota, and LAXI synchronously回收s redundant semantic residue.</p>
+<h2 id="9-implementation-notes">9. Implementation Notes</h2>
+<h3 id="91-default-parameters">9.1 Default Parameters</h3>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Parameter</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>T_threshold</td><td>0.3</td><td>Tension threshold for ACI inspection</td></tr><tr><td>RES threshold_1</td><td>0.4</td><td>Mild degradation trigger</td></tr><tr><td>RES threshold_2</td><td>0.7</td><td>Moderate degradation trigger</td></tr><tr><td>RES threshold_3</td><td>1.2</td><td>Severe degradation trigger</td></tr><tr><td>w_e</td><td>0.4</td><td>CCL emotional activation weight</td></tr><tr><td>w_v</td><td>0.3</td><td>CCL confidence weight</td></tr><tr><td>w_h</td><td>0.3</td><td>CCL hostility weight</td></tr><tr><td>delta</td><td>500 ms</td><td>NLB latency threshold</td></tr><tr><td>theta_1</td><td>0.3</td><td>BEW complexity分流 threshold</td></tr></tbody></table></div>
+<h3 id="92-minimum-viable-implementation">9.2 Minimum Viable Implementation</h3>
+<p>A conforming implementation must support:</p>
+<ul>
+<li>OSU message encoding and decoding (§4);</li>
+<li>Merge with tension preservation (§5);</li>
+<li>Dynamic routing with diversity injection (§6.1);</li>
+<li>RES Guard monitoring (§6.2);</li>
+<li>LAXI anomaly detection (§7.1).</li>
+</ul>
+<p>The following are optional:</p>
+<ul>
+<li>ACI inspection (§5.3);</li>
+<li>CCL equalization (§8.1);</li>
+<li>BES saturation detection (§8.3).</li>
+</ul>
+<h2 id="10-references">10. References</h2>
+<ul>
+<li>[NN-TR-2026-001] nyanya LLM: A Carbon-Based Neural-Fabric Foundation Model for Distributed Cognitive Coordination and Organic Cognitive Metabolism. nya-lab, 2026.</li>
+</ul></article>
+    </main>
+  </body>
+</html>

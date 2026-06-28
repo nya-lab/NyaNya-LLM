@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NN-RFC-0002 · nya-lab wiki</title>
+    <link rel="stylesheet" href="../styles.css">
+  </head>
+  <body class="wiki-body">
+    <header class="topbar">
+      <a class="mark" href="../index.html" aria-label="nya-lab home">
+        <span class="mark-symbol" aria-hidden="true" data-final="：꒱ nya-lab">：꒱ <span class="lab-name"><strong>n</strong>ya-lab</span></span>
+      </a>
+      <nav aria-label="Wiki navigation">
+        <a href="index.html">Wiki</a>
+        <a href="../index.html#overview">Field</a>
+        <a href="../index.html#docs">Archive</a>
+      </nav>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-sidebar">
+        <p class="eyebrow">Protocol</p>
+        <h1>NN-RFC-0002</h1>
+        <p>Version 1</p>
+        <a class="wiki-source" href="../../docs/rfc/NN-RFC-0002.md">Source MD</a>
+        <div class="doc-links">
+          <a href="NN-RFC-0002-cn.html">中文</a>
+          <span>EN</span>
+        </div>
+        <nav aria-label="Table of contents"><a class="toc-l1" href="#nn-rfc-0002">NN-RFC-0002</a><a class="toc-l1" href="#dynamic-routing-and-field-state-protocol">Dynamic Routing and Field State Protocol</a><a class="toc-l2" href="#abstract">Abstract</a><a class="toc-l2" href="#status">Status</a><a class="toc-l2" href="#1-terms">1. Terms</a><a class="toc-l2" href="#2-protocol-goals">2. Protocol Goals</a><a class="toc-l2" href="#3-non-goals">3. Non-Goals</a><a class="toc-l2" href="#4-field-state">4. Field State</a><a class="toc-l3" href="#41-field-definition">4.1 Field Definition</a><a class="toc-l3" href="#42-field-primitives">4.2 Field Primitives</a><a class="toc-l3" href="#43-field-garbage-collection">4.3 Field Garbage Collection</a><a class="toc-l2" href="#5-signal-classification">5. Signal Classification</a><a class="toc-l3" href="#51-taxonomy">5.1 Taxonomy</a><a class="toc-l3" href="#52-classification-procedure">5.2 Classification Procedure</a><a class="toc-l2" href="#6-dynamic-routing">6. Dynamic Routing</a><a class="toc-l3" href="#61-opu-selection">6.1 OPU Selection</a><a class="toc-l3" href="#62-diversity-injection">6.2 Diversity Injection</a><a class="toc-l3" href="#63-load-balancing">6.3 Load Balancing</a><a class="toc-l3" href="#64-route-stability">6.4 Route Stability</a><a class="toc-l2" href="#7-res-guard-integration">7. RES Guard Integration</a><a class="toc-l2" href="#8-field-consistency">8. Field Consistency</a><a class="toc-l3" href="#81-tension-propagation">8.1 Tension Propagation</a><a class="toc-l3" href="#82-drift-monitoring">8.2 Drift Monitoring</a><a class="toc-l2" href="#9-implementation-notes">9. Implementation Notes</a><a class="toc-l3" href="#91-default-parameters">9.1 Default Parameters</a><a class="toc-l3" href="#92-minimum-viable-implementation">9.2 Minimum Viable Implementation</a><a class="toc-l2" href="#10-references">10. References</a></nav>
+      </aside>
+      <article class="wiki-article"><h1 id="nn-rfc-0002">NN-RFC-0002</h1>
+<h1 id="dynamic-routing-and-field-state-protocol">Dynamic Routing and Field State Protocol</h1>
+<p>Version 1</p>
+<h2 id="abstract">Abstract</h2>
+<p>The Dynamic Routing and Field State Protocol defines how nyanya LLM agents discover, classify, and route OSU signals through the OPU cluster, and how they read from and write to the shared semantic Field. It specifies the signal classification taxonomy, the OPU selection algorithm, the load-balancing and diversity injection mechanisms, and the Field state primitives. This protocol is the execution layer for the routing rules defined in NN-RFC-0001 §6.</p>
+<h2 id="status">Status</h2>
+<p>Protocol specification.</p>
+<p>References: <a href="https://github.com/nya-lab/NN-TR-2026-001">NN-TR-2026-001</a>, <a href="https://github.com/nya-lab/NN-RFC-0001">NN-RFC-0001</a>.</p>
+<h2 id="1-terms">1. Terms</h2>
+<p><code>Field</code></p>
+<p>The shared semantic environment. All agents contribute to and read from the Field. The Field is a distributed state maintained through continuous signal exchange. It is not a database — it is a living semantic substrate.</p>
+<p><code>Flow</code></p>
+<p>The act of routing OSU signals through the OPU cluster. Flow is the second stage of the nyanya LLM pipeline (Split → Flow → Field → Merge → Speak). Flow determines *which* OPU processes *what* signal, *when*.</p>
+<p><code>Route</code></p>
+<p>A directed path through the OPU cluster. Routes are dynamic, computed per-signal, and may be reconfigured in response to tension, drift, or saturation.</p>
+<p><code>Hotspot</code></p>
+<p>An OPU or cluster region that receives a disproportionate share of routing traffic. Hotspots degrade throughput and increase semantic drift.</p>
+<p><code>Semantic Category</code></p>
+<p>A label assigned to each OSU signal by the classifier. Categories determine routing priority and OPU affinity.</p>
+<p><code>Diversity Injection</code></p>
+<p>The deliberate allocation of routing capacity to low-prior, high-cognitive-diversity OPUs. This prevents the cluster from collapsing into a narrow reasoning path.</p>
+<h2 id="2-protocol-goals">2. Protocol Goals</h2>
+<p>The protocol optimizes for:</p>
+<ul>
+<li>signal delivery to the most capable OPU subset;</li>
+<li>load distribution across the cluster;</li>
+<li>cognitive diversity preservation;</li>
+<li>hotspot avoidance;</li>
+<li>low routing latency.</li>
+</ul>
+<h2 id="3-non-goals">3. Non-Goals</h2>
+<p>The protocol does not define the content of signals.</p>
+<p>The protocol does not evaluate signal quality.</p>
+<p>The protocol does not perform merge or consensus operations.</p>
+<p>The protocol does not replace the OCML metabolic layer — it is a routing substrate that operates under OCML regulation.</p>
+<h2 id="4-field-state">4. Field State</h2>
+<h3 id="41-field-definition">4.1 Field Definition</h3>
+<p>The Field is a distributed, append-only semantic state. It is the shared memory of the nyanya LLM cluster.</p>
+<pre><code>Field {
+  entries:    OSU[]       // ordered signal log
+  tension_map: Map&lt;id, rho&gt;  // current tension per signal chain
+  drift_index: scalar      // aggregate semantic drift
+  version:    uint         // monotonic state version
+}</code></pre>
+<h3 id="42-field-primitives">4.2 Field Primitives</h3>
+<pre><code>write(field, osu):
+  append osu to entries
+  update tension_map for osu.provenance chain
+  recompute drift_index
+  increment version
+
+read(field, query) -&gt; OSU[]:
+  return entries matching query filter
+  query may include: provenance chain, semantic category, time window, ttl &gt; 0
+
+subscribe(field, filter) -&gt; stream&lt;OSU&gt;:
+  return live stream of OSU entries matching filter
+  used by Merge stage to await pending signals</code></pre>
+<h3 id="43-field-garbage-collection">4.3 Field Garbage Collection</h3>
+<p>Entries with ttl = 0 are marked as expired. Expired entries are compacted on a configurable interval. The compaction preserves provenance chains by retaining the id mappings of expired entries.</p>
+<h2 id="5-signal-classification">5. Signal Classification</h2>
+<h3 id="51-taxonomy">5.1 Taxonomy</h3>
+<p>Every OSU signal is classified into one of the following semantic categories before routing:</p>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Category</th><th>Description</th><th>Routing Priority</th></tr></thead><tbody><tr><td>FACT</td><td>Factual assertions, knowledge retrieval</td><td>High</td></tr><tr><td>REASON</td><td>Logical derivation, multi-step inference</td><td>Medium</td></tr><tr><td>CREATIVE</td><td>Divergent thinking, novel hypotheses</td><td>Low</td></tr><tr><td>CRITIQUE</td><td>Counterexamples, challenge signals</td><td>High</td></tr><tr><td>WARNING</td><td>Risk flags, safety alerts</td><td>Critical</td></tr><tr><td>FRAGMENT</td><td>Incomplete derivations, partial results</td><td>Low</td></tr><tr><td>NOISE</td><td>Low-information, high-entropy signals</td><td>Deprioritized</td></tr></tbody></table></div>
+<h3 id="52-classification-procedure">5.2 Classification Procedure</h3>
+<pre><code>classify(osu) -&gt; Category:
+  1. extract semantic features from osu.c
+  2. compute category affinity scores
+  3. if osu.rho &gt; 0.6:
+       promote to CRITIQUE (high-conflict signals need priority routing)
+  4. if osu.eta &lt; 0.1:
+       demote to NOISE (low-information signals waste routing capacity)
+  5. return argmax(affinity scores)</code></pre>
+<h2 id="6-dynamic-routing">6. Dynamic Routing</h2>
+<h3 id="61-opu-selection">6.1 OPU Selection</h3>
+<pre><code>route(signal, cluster) -&gt; OPU[]:
+  1. category = classify(signal)
+  2. candidate_set = cluster.filter(opu =&gt;
+       opu.s_i matches signal domain
+       AND opu.r_i &gt;= task_complexity(signal)
+       AND opu.a_i &gt; A_min
+     )
+  3. if candidate_set is empty:
+       relax constraints: lower r_i threshold, expand domain match
+  4. sort candidate_set by fitness score:
+       fitness = w1 * domain_match + w2 * capacity_headroom + w3 * (1 - load)
+  5. select top-k OPUs (k = target_parallelism)
+  6. apply diversity injection (§6.2)
+  7. return selected OPUs</code></pre>
+<h3 id="62-diversity-injection">6.2 Diversity Injection</h3>
+<p>The router reserves a configurable fraction of capacity for low-prior, high-D OPUs:</p>
+<pre><code>diversity_injection(candidates, fraction=0.2):
+  diverse_set = candidates.filter(opu =&gt;
+    opu.s_i has low prior match BUT opu.D is above threshold
+  )
+  inject_count = ceil(total_capacity * fraction)
+  add inject_count diverse OPUs to final routing set
+  remove inject_count lowest-fitness candidates from final set</code></pre>
+<p>This ensures that a fixed percentage of routing capacity is always allocated to cognitively diverse OPUs, preventing the cluster from converging on a single narrow reasoning path.</p>
+<h3 id="63-load-balancing">6.3 Load Balancing</h3>
+<pre><code>balance(cluster, routes):
+  for each opu in cluster:
+    if opu.load &gt; L_high:
+      mark opu as saturated
+      redirect overflow signals to next-best candidates
+    if opu.load &lt; L_low:
+      mark opu as underutilized
+      increase diversity injection weight for this opu</code></pre>
+<h3 id="64-route-stability">6.4 Route Stability</h3>
+<p>Routes are computed per-signal. The protocol does not cache routes between signals. However, for signals within the same provenance chain, the router applies a sticky bias: OPUs that processed upstream signals are weighted higher in the candidate set, reducing context-switching overhead.</p>
+<h2 id="7-res-guard-integration">7. RES Guard Integration</h2>
+<p>The Flow module integrates with RES Guard (NN-RFC-0001 §6.2) to detect and respond to recursive scheduling degradation:</p>
+<pre><code>RES = R_repeat / (R_novel + epsilon)
+
+if RES &gt; threshold_1:
+  rotate active OPU set, increase diversity injection fraction
+if RES &gt; threshold_2:
+  restructure Split-stage task decomposition
+if RES &gt; threshold_3:
+  halt routing, output current consensus with uncertainty annotation</code></pre>
+<p>The Flow module reports R_repeat and R_novel metrics to RES Guard after each routing decision.</p>
+<h2 id="8-field-consistency">8. Field Consistency</h2>
+<h3 id="81-tension-propagation">8.1 Tension Propagation</h3>
+<p>When an OPU writes a high-rho signal to the Field, the protocol broadcasts a tension notification to all OPUs subscribed to the affected provenance chain. This triggers re-evaluation of prior consensus and may initiate a new round of signal generation.</p>
+<h3 id="82-drift-monitoring">8.2 Drift Monitoring</h3>
+<p>The Field drift index is computed as:</p>
+<pre><code>drift_index = mean( semantic_distance(osu_i.c, re_encode(osu_i)) )</code></pre>
+<p>across all active OSU entries. When drift_index exceeds the global threshold, the protocol triggers a Field compaction event, discarding low-confidence entries and re-anchoring the Field state to high-confidence consensus clusters.</p>
+<h2 id="9-implementation-notes">9. Implementation Notes</h2>
+<h3 id="91-default-parameters">9.1 Default Parameters</h3>
+<div class="wiki-table-wrap"><table class="wiki-table"><thead><tr><th>Parameter</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>A_min</td><td>0.2</td><td>Minimum available attention for routing eligibility</td></tr><tr><td>target_parallelism</td><td>3</td><td>Default number of OPUs per signal route</td></tr><tr><td>diversity_fraction</td><td>0.2</td><td>Routing capacity reserved for diverse OPUs</td></tr><tr><td>L_high</td><td>0.8</td><td>Load threshold for saturation</td></tr><tr><td>L_low</td><td>0.3</td><td>Load threshold for underutilization</td></tr><tr><td>drift_threshold</td><td>0.15</td><td>Field drift index trigger for compaction</td></tr><tr><td>compaction_interval</td><td>1000 signals</td><td>Field compaction frequency</td></tr></tbody></table></div>
+<h3 id="92-minimum-viable-implementation">9.2 Minimum Viable Implementation</h3>
+<p>A conforming implementation must support:</p>
+<ul>
+<li>Field write, read, and subscribe primitives (§4);</li>
+<li>Signal classification into the seven-category taxonomy (§5);</li>
+<li>Dynamic OPU selection with fitness scoring (§6.1);</li>
+<li>Diversity injection (§6.2);</li>
+<li>RES Guard metric reporting (§7).</li>
+</ul>
+<p>The following are optional:</p>
+<ul>
+<li>Field drift monitoring and compaction (§8.2);</li>
+<li>Sticky routing bias for provenance chains (§6.4).</li>
+</ul>
+<h2 id="10-references">10. References</h2>
+<ul>
+<li>[NN-TR-2026-001] nyanya LLM: A Carbon-Based Neural-Fabric Foundation Model for Distributed Cognitive Coordination and Organic Cognitive Metabolism. nya-lab, 2026.</li>
+<li>[NN-RFC-0001] Semantic Consensus Protocol v1. nya-lab, 2026.</li>
+</ul></article>
+    </main>
+  </body>
+</html>
