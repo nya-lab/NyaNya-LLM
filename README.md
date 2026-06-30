@@ -1,2 +1,119 @@
-# NyaNya-LLM
-nyanya LLM is a distributed multimodal foundation model framework built on carbon-based neural fabric (CBNF), exploring efficient coordination paradigms for large-scale heterogeneous cognitive inference. The core thesis: coordination scales intelligence.
+# nyanya LLM
+
+> 协调扩展智能 — Coordination Scales Intelligence
+
+nyanya LLM 是一个以碳基神经网络（CBNF）为底层基座的分布式全模态基础模型框架，探索大规模异构认知单元的高效协同推理范式。核心论点：智能的增长不仅取决于单体算力规模，更取决于异构单元间的协同效率与认知多样性。
+
+$$\text{Intelligence} = \text{Compute} + \text{Coordination} + \text{Diversity}$$
+
+## 核心理论
+
+### 协调扩展律
+
+$$P = A \cdot N^\alpha \cdot K^\beta \cdot (1 - \sigma)^\gamma \cdot D^\mu$$
+
+- $P$：集群综合有效推理性能
+- $N$：活跃 OPU 数量
+- $K$：有效协同交互轮次
+- $\sigma$：全局观点冲突密度
+- $D$：集群认知差异密度
+
+**核心推论**：单纯提升活跃单元数量 $N$ 无法线性提升性能；需维持适度冲突密度与充足认知差异，平衡收敛速度与推理多元性。
+
+## 系统架构
+
+### 三层协同体系
+
+| 层级 | 名称 | 职责 |
+|---|---|---|
+| 底层 | **CBNF 碳基神经网络** | 异构认知单元集群（OPU）与标准化语义传输载体（OSU） |
+| 中层 | **OCML 有机认知代谢层** | 语义资源封装、稳态调控、异步缓存、动态配给、异常回收 |
+| 顶层 | **群体共识协议** | 五阶段推理流水线驱动 |
+
+### 五阶段推理流水线
+
+```
+Q → Split → Flow → Field → Merge → Speak
+```
+
+- **Split**：语义拆分、任务分层、约束提取
+- **Flow**：OPU 动态路由、负载均衡
+- **Field**：分布式语义场构建、OSU 传播
+- **Merge**：共识压缩、冲突消解、冗余过滤
+- **Speak**：自然语言生成、多模态输出
+- **LAXI**：全链路异常监测与语义回收（贯穿五阶段）
+
+### OCML 代谢子系统
+
+| 子系统 | 职责 |
+|---|---|
+| **BCW** | 三层嵌套语义封装 |
+| **CCL** | 认知势能均衡，抑制热失衡 |
+| **NLB** | 异步时延缓存，收容滞后输出 |
+| **MCP** | 任务自适应资源配给 |
+| **LAXI** | 异常监测与语义回收 |
+
+### 运维校验体系
+
+- **BEW Pool**：标准化执行池，按复杂度自动分流
+- **RES Guard**：递归调度退化保护
+- **ACI**：共识反向核验，检测 CHC 偏差与 ESL 闭环
+
+## 实验结果
+
+### L8B 极端干扰输入基准（1600 条测试样本）
+
+| 方法 | 协同延迟 (ms) | CHC偏差率 (%) | 算力损耗 (%) | 语义完整度 (%) |
+|---|---|---|---|---|
+| 单模型 | — | 12.7 | — | 78.3 |
+| MoE | 184.2 | 10.4 | 31.5 | 81.6 |
+| 无管控集群 | 256.8 | 19.3 | 44.2 | 72.1 |
+| **nyanya LLM** | **108.7** | **5.8** | **14.6** | **91.4** |
+
+相较 MoE 基线：协同延迟降低 41%，群体认知偏差下降 44%，循环调度算力损耗减少 54%。
+
+### 消融实验关键结论
+
+- 移除 CCL → CHC 偏差率升至 14.2%（+144.8%）
+- 移除 NLB → 语义完整度降至 78.2%（-13.2pp）
+- 移除 RES Guard → 算力损耗飙升至 44.8%（+206.8%）
+- 移除 ACI → CHC 偏差率升至 19.6%（+237.9%）
+
+## 文档
+
+| 编号 | 类型 | 标题 |
+|---|---|---|
+| [NN-TR-2026-001](docs/research/NN-TR-2026-001.md) | 技术报告 | nyanya LLM |
+| [NN-RFC-0001](docs/rfc/NN-RFC-0001.md) | 协议规范 | 语义共识协议 |
+| [NN-RFC-0002](docs/rfc/NN-RFC-0002.md) | 协议规范 | 动态路由与 Field 状态协议 |
+| [NN-RFC-0003](docs/rfc/NN-RFC-0003.md) | 协议规范 | 语义融合协议 |
+| [NN-BM-0001](docs/benchmarks/NN-BM-0001.md) | 基准规范 | WallBench 协同能力评估 |
+
+## 快速开始
+
+```bash
+# 预览项目网站
+python3 -m http.server 4173
+# 访问 http://127.0.0.1:4173/site/
+
+# 构建论文 PDF
+cd papers/NN-TR-2026-001 && make
+```
+
+## 仓库结构
+
+```
+├── docs/
+│   ├── research/          # 技术报告
+│   ├── rfc/               # 协议规范（EN/CN）
+│   ├── benchmarks/         # 评测基准
+│   └── constitution.md     # 项目宪章
+├── papers/
+│   └── NN-TR-2026-001/    # 论文源码与配图
+├── site/                  # 项目网站
+└── nyachat.html           # NyaChat 对话演示
+```
+
+## 许可
+
+© 2026 nya-lab. All rights reserved.
